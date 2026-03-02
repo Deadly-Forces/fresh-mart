@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Search, Download, Upload, Package, CheckCircle, AlertTriangle } from "lucide-react";
+import { Plus, Search, Download, Upload, Package, CheckCircle, AlertTriangle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,15 +9,39 @@ import { DeleteProductButton, InlineStockEditor } from "./ProductActions";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminProductsPage() {
+const PAGE_SIZE = 50;
+
+export default async function AdminProductsPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+    const params = await searchParams;
+    const pageRaw = typeof params?.page === "string" ? params.page : "1";
+    const currentPage = Math.max(1, parseInt(pageRaw, 10) || 1);
     const supabase = await createClient();
 
-    // Fetch products along with their category names
+    // Get total count efficiently (no data transfer)
+    const { count: totalProducts } = await supabase
+        .from("products")
+        .select("*", { count: "exact", head: true });
+
+    const { data: totalStock } = await supabase.rpc("get_total_stock" as any);
+
+    const { count: lowStockProducts } = await supabase
+        .from("products")
+        .select("*", { count: "exact", head: true })
+        .lte("stock", 10);
+
+    // Fetch only the current page of products
+    const from = (currentPage - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
     const { data: productsData } = await supabase
         .from("products")
-        .select("*, categories(name)")
+        .select("id, name, price, stock, is_active, images, categories(name)")
         .order("created_at", { ascending: false })
-        .limit(5000);
+        .range(from, to);
 
     const products = (productsData || []).map((p: any) => ({
         id: p.id,
@@ -29,9 +53,10 @@ export default async function AdminProductsPage() {
         image_url: p.images?.[0] || null,
     }));
 
-    const totalProducts = products.length;
-    const activeProducts = products.filter((p) => p.active).length;
-    const lowStockProducts = products.filter((p) => p.stock <= 10).length;
+    const total = totalProducts ?? 0;
+    const activeStock = Number(totalStock ?? 0);
+    const lowStock = lowStockProducts ?? 0;
+    const totalPages = Math.ceil(total / PAGE_SIZE);
 
     return (
         <div className="space-y-6">
@@ -43,15 +68,15 @@ export default async function AdminProductsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-card border border-border rounded-card p-4 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center"><Package className="w-5 h-5" /></div>
-                    <div><p className="text-2xl font-bold">{totalProducts}</p><p className="text-xs text-muted-foreground">Total Products</p></div>
+                    <div><p className="text-2xl font-bold">{total}</p><p className="text-xs text-muted-foreground">Total Products</p></div>
                 </div>
                 <div className="bg-card border border-border rounded-card p-4 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-success/10 text-success flex items-center justify-center"><CheckCircle className="w-5 h-5" /></div>
-                    <div><p className="text-2xl font-bold">{activeProducts}</p><p className="text-xs text-muted-foreground">Active Products</p></div>
+                    <div><p className="text-2xl font-bold">{activeStock.toLocaleString()}</p><p className="text-xs text-muted-foreground">Active Stock</p></div>
                 </div>
                 <div className="bg-card border border-border rounded-card p-4 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-destructive/10 text-destructive flex items-center justify-center"><AlertTriangle className="w-5 h-5" /></div>
-                    <div><p className="text-2xl font-bold">{lowStockProducts}</p><p className="text-xs text-muted-foreground">Low Stock (&le;10)</p></div>
+                    <div><p className="text-2xl font-bold">{lowStock}</p><p className="text-xs text-muted-foreground">Low Stock (&le;10)</p></div>
                 </div>
             </div>
 
@@ -123,9 +148,46 @@ export default async function AdminProductsPage() {
                         </tbody>
                     </table>
                 </div>
-                {/* Footer with count */}
-                <div className="px-4 py-3 border-t border-border bg-secondary/30 text-xs text-muted-foreground">
-                    Showing {products.length} product{products.length !== 1 ? "s" : ""}
+                {/* Footer with count and pagination */}
+                <div className="px-4 py-3 border-t border-border bg-secondary/30 text-xs text-muted-foreground flex items-center justify-between">
+                    <span>Showing {from + 1}–{Math.min(from + products.length, total)} of {total} products</span>
+                    {totalPages > 1 && (
+                        <div className="flex items-center gap-1">
+                            {currentPage > 1 && (
+                                <Link href={`/admin/products?page=${currentPage - 1}`}>
+                                    <Button variant="outline" size="sm" className="h-7 w-7 p-0"><ChevronLeft className="w-3.5 h-3.5" /></Button>
+                                </Link>
+                            )}
+                            {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                                let pageNum: number;
+                                if (totalPages <= 7) {
+                                    pageNum = i + 1;
+                                } else if (currentPage <= 4) {
+                                    pageNum = i + 1;
+                                } else if (currentPage >= totalPages - 3) {
+                                    pageNum = totalPages - 6 + i;
+                                } else {
+                                    pageNum = currentPage - 3 + i;
+                                }
+                                return (
+                                    <Link key={pageNum} href={`/admin/products?page=${pageNum}`}>
+                                        <Button
+                                            variant={pageNum === currentPage ? "default" : "outline"}
+                                            size="sm"
+                                            className="h-7 w-7 p-0 text-xs"
+                                        >
+                                            {pageNum}
+                                        </Button>
+                                    </Link>
+                                );
+                            })}
+                            {currentPage < totalPages && (
+                                <Link href={`/admin/products?page=${currentPage + 1}`}>
+                                    <Button variant="outline" size="sm" className="h-7 w-7 p-0"><ChevronRight className="w-3.5 h-3.5" /></Button>
+                                </Link>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

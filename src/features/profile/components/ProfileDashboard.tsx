@@ -14,6 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { updateProfileAction } from "@/features/profile/actions/updateProfile";
 import { uploadAvatarAction } from "@/features/profile/actions/uploadAvatar";
+import { AddressesSection } from "@/features/profile/components/AddressesSection";
+import { getProfileAddressesAction } from "@/features/profile/actions/addressActions";
 import { UserOrder } from "@/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -47,15 +49,45 @@ interface ProfileDashboardProps {
     initialEditing?: boolean;
 }
 
+interface DefaultAddress {
+    id: string;
+    label: string | null;
+    building: string | null;
+    street: string | null;
+    area: string | null;
+    landmark: string | null;
+    city: string | null;
+    state: string | null;
+    pincode: string | null;
+    is_default: boolean | null;
+}
+
 export function ProfileDashboard({ profile, email, orders = [], initialEditing = false }: ProfileDashboardProps) {
     const [isEditing, setIsEditing] = useState(initialEditing);
     const [isSaving, setIsSaving] = useState(false);
     const [activeTab, setActiveTab] = useState("details");
     const [avatarUrl, setAvatarUrl] = useState<string | null>(profile.avatar_url);
     const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+    const [defaultAddress, setDefaultAddress] = useState<DefaultAddress | null>(null);
+    const [isLoadingAddress, setIsLoadingAddress] = useState(true);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
     const addItem = useCartStore((state) => state.addItem);
+
+    // Fetch default address on mount
+    useEffect(() => {
+        const fetchDefaultAddress = async () => {
+            setIsLoadingAddress(true);
+            const res = await getProfileAddressesAction();
+            if (res.addresses && res.addresses.length > 0) {
+                // Find the default address, or use the first one
+                const defaultAddr = res.addresses.find((a: DefaultAddress) => a.is_default) || res.addresses[0];
+                setDefaultAddress(defaultAddr);
+            }
+            setIsLoadingAddress(false);
+        };
+        fetchDefaultAddress();
+    }, [activeTab]);
 
     useEffect(() => {
         if (initialEditing) {
@@ -328,6 +360,13 @@ export function ProfileDashboard({ profile, email, orders = [], initialEditing =
                         <User className="w-4 h-4" /> Profile Details
                     </TabsTrigger>
                     <TabsTrigger
+                        value="addresses"
+                        className="flex-1 min-w-[150px] shrink-0 snap-start rounded-lg font-semibold text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 gap-2"
+                        disabled={isEditing}
+                    >
+                        <MapPin className="w-4 h-4" /> My Addresses
+                    </TabsTrigger>
+                    <TabsTrigger
                         value="orders"
                         className="flex-1 min-w-[150px] shrink-0 snap-start rounded-lg font-semibold text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 gap-2"
                         disabled={isEditing}
@@ -405,7 +444,7 @@ export function ProfileDashboard({ profile, email, orders = [], initialEditing =
                             </div>
                         </div>
 
-                        {/* Address Card */}
+                        {/* Address Card - Quick View */}
                         <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group">
                             <div className="h-1 bg-gradient-to-r from-accent via-amber-300 to-accent/50" />
                             <div className="p-6 sm:p-7">
@@ -416,65 +455,47 @@ export function ProfileDashboard({ profile, email, orders = [], initialEditing =
                                     Delivery Address
                                 </h3>
 
-                                {isEditing ? (
-                                    <div className="grid gap-4 bg-secondary/30 p-5 rounded-xl border border-border/50">
-                                        <div className="space-y-1.5">
-                                            <Label htmlFor="building" className="text-xs font-semibold text-muted-foreground">Building / Flat No.</Label>
-                                            <Input id="building" name="address.building" defaultValue={profile.address?.building || ""} className="bg-background border-2 focus:border-primary" />
+                                {isLoadingAddress ? (
+                                    <div className="p-8 rounded-xl border-2 border-dashed border-border/60 flex items-center justify-center">
+                                        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                                    </div>
+                                ) : defaultAddress ? (
+                                    <div className="p-5 rounded-xl bg-secondary/30 border border-border/50 space-y-1.5">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="inline-block bg-accent/20 text-accent text-xs font-bold px-2 py-0.5 rounded-pill uppercase tracking-wider">
+                                                {defaultAddress.label || "Address"}
+                                            </span>
+                                            {defaultAddress.is_default && (
+                                                <span className="inline-block bg-primary/15 text-primary text-xs font-semibold px-2 py-0.5 rounded-pill">
+                                                    Default
+                                                </span>
+                                            )}
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <Label htmlFor="street" className="text-xs font-semibold text-muted-foreground">Street / Road</Label>
-                                            <Input id="street" name="address.street" defaultValue={profile.address?.street || ""} className="bg-background border-2 focus:border-primary" />
+                                        {defaultAddress.building && <p className="font-semibold text-base">{defaultAddress.building}</p>}
+                                        {defaultAddress.street && <p className="text-foreground">{defaultAddress.street}</p>}
+                                        {defaultAddress.area && <p className="text-foreground">{defaultAddress.area}</p>}
+                                        {defaultAddress.landmark && <p className="text-muted-foreground text-sm italic mt-2">Near {defaultAddress.landmark}</p>}
+                                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/40">
+                                            <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
+                                            <p className="text-muted-foreground text-sm">
+                                                {defaultAddress.city}{defaultAddress.city && defaultAddress.state ? ", " : ""}{defaultAddress.state}
+                                                {defaultAddress.pincode && <span className="font-semibold text-foreground ml-2">PIN: {defaultAddress.pincode}</span>}
+                                            </p>
                                         </div>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <div className="space-y-1.5">
-                                                <Label htmlFor="area" className="text-xs font-semibold text-muted-foreground">Area</Label>
-                                                <Input id="area" name="address.area" defaultValue={profile.address?.area || ""} className="bg-background border-2 focus:border-primary" />
-                                            </div>
-                                            <div className="space-y-1.5">
-                                                <Label htmlFor="landmark" className="text-xs font-semibold text-muted-foreground">Landmark</Label>
-                                                <Input id="landmark" name="address.landmark" defaultValue={profile.address?.landmark || ""} className="bg-background border-2 focus:border-primary" />
-                                            </div>
-                                        </div>
-                                        <div className="grid grid-cols-3 gap-3">
-                                            <div className="space-y-1.5">
-                                                <Label htmlFor="city" className="text-xs font-semibold text-muted-foreground">City</Label>
-                                                <Input id="city" name="address.city" defaultValue={profile.address?.city || ""} className="bg-background border-2 focus:border-primary" />
-                                            </div>
-                                            <div className="space-y-1.5">
-                                                <Label htmlFor="state" className="text-xs font-semibold text-muted-foreground">State</Label>
-                                                <Input id="state" name="address.state" defaultValue={profile.address?.state || ""} className="bg-background border-2 focus:border-primary" />
-                                            </div>
-                                            <div className="space-y-1.5">
-                                                <Label htmlFor="pincode" className="text-xs font-semibold text-muted-foreground">Pincode</Label>
-                                                <Input id="pincode" name="address.pincode" defaultValue={profile.address?.pincode || ""} className="bg-background border-2 focus:border-primary" />
-                                            </div>
+                                        <div className="pt-3">
+                                            <Button type="button" variant="outline" size="sm" onClick={() => setActiveTab("addresses")} className="gap-2">
+                                                <MapPin className="w-3.5 h-3.5" /> Manage All Addresses
+                                            </Button>
                                         </div>
                                     </div>
                                 ) : (
-                                    profile.address && Object.values(profile.address).some(Boolean) ? (
-                                        <div className="p-5 rounded-xl bg-secondary/30 border border-border/50 space-y-1.5">
-                                            {profile.address.building && <p className="font-semibold text-base">{profile.address.building}</p>}
-                                            {profile.address.street && <p className="text-foreground">{profile.address.street}</p>}
-                                            {profile.address.area && <p className="text-foreground">{profile.address.area}</p>}
-                                            {profile.address.landmark && <p className="text-muted-foreground text-sm italic mt-2">Near {profile.address.landmark}</p>}
-                                            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/40">
-                                                <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
-                                                <p className="text-muted-foreground text-sm">
-                                                    {profile.address.city}{profile.address.city && profile.address.state ? ", " : ""}{profile.address.state}
-                                                    {profile.address.pincode && <span className="font-semibold text-foreground ml-2">PIN: {profile.address.pincode}</span>}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="p-8 rounded-xl border-2 border-dashed border-border/60 text-center">
-                                            <MapPin className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
-                                            <p className="text-muted-foreground italic mb-2">No address provided</p>
-                                            <Button type="button" variant="outline" onClick={() => setIsEditing(true)} className="mt-2 gap-2 font-medium">
-                                                <MapPin className="w-3.5 h-3.5" /> Add Address
-                                            </Button>
-                                        </div>
-                                    )
+                                    <div className="p-8 rounded-xl border-2 border-dashed border-border/60 text-center">
+                                        <MapPin className="w-10 h-10 text-muted-foreground/30 mx-auto mb-3" />
+                                        <p className="text-muted-foreground italic mb-2">No address saved yet</p>
+                                        <Button type="button" variant="outline" onClick={() => setActiveTab("addresses")} className="mt-2 gap-2 font-medium">
+                                            <MapPin className="w-3.5 h-3.5" /> Add Address
+                                        </Button>
+                                    </div>
                                 )}
                             </div>
                         </div>
@@ -553,6 +574,11 @@ export function ProfileDashboard({ profile, email, orders = [], initialEditing =
                             </div>
                         </div>
                     </div>
+                </TabsContent>
+
+                {/* ═══════ ADDRESSES TAB ═══════ */}
+                <TabsContent value="addresses" className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <AddressesSection />
                 </TabsContent>
 
                 {/* ═══════ ORDER HISTORY TAB ═══════ */}

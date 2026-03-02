@@ -9,13 +9,29 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboardPage() {
     const supabase = await createClient();
 
-    // 1. Fetch Orders for KPIs
-    const { data: rawOrders } = await supabase
-        .from("orders")
-        .select("*")
-        .order("created_at", { ascending: false });
+    // 1. Fetch Orders for KPIs (paginated to handle >1000)
+    const ORDER_PAGE_SIZE = 1000;
+    let allOrders: any[] = [];
+    let orderFrom = 0;
+    let hasMoreOrders = true;
 
-    const orders = rawOrders || [];
+    while (hasMoreOrders) {
+        const { data: batch } = await supabase
+            .from("orders")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .range(orderFrom, orderFrom + ORDER_PAGE_SIZE - 1);
+
+        if (batch && batch.length > 0) {
+            allOrders = allOrders.concat(batch);
+            orderFrom += ORDER_PAGE_SIZE;
+            hasMoreOrders = batch.length === ORDER_PAGE_SIZE;
+        } else {
+            hasMoreOrders = false;
+        }
+    }
+
+    const orders = allOrders;
 
     // Revenue is only from successfully delivered orders in this simple model
     const totalRevenue = orders

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,12 +34,36 @@ export default function CheckoutPage() {
     const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
     const [isPending, startTransition] = useTransition();
 
-    const { items, getTotal, clearCart, appliedPromo } = useCartStore();
+    const { items, getTotal, clearCart, appliedPromo, removeItem } = useCartStore();
+
+    // UUID validation regex
+    const isValidUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+    // Auto-cleanup: Remove any invalid cart items on page load
+    useEffect(() => {
+        const invalidItemIds = items
+            .filter(item => !item.productId || !isValidUUID(item.productId))
+            .map(item => item.id);
+        
+        if (invalidItemIds.length > 0) {
+            invalidItemIds.forEach(id => removeItem(id));
+            toast.error(`Removed ${invalidItemIds.length} invalid item(s) from cart.`);
+        }
+    }, []); // Run once on mount
 
     const handlePlaceOrder = async () => {
         if (!selectedAddress) {
             toast.error("Please select a delivery address.");
             setCurrentStep(0);
+            return;
+        }
+
+        // Check for invalid product IDs in cart (e.g., old mock data)
+        const invalidItems = items.filter(item => !isValidUUID(item.productId));
+        if (invalidItems.length > 0) {
+            // Auto-remove invalid items and notify
+            invalidItems.forEach(item => removeItem(item.id));
+            toast.error(`Removed ${invalidItems.length} invalid item(s) from cart. Please try again.`);
             return;
         }
 

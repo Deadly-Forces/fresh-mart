@@ -3,7 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { FilterSidebar } from "@/features/filters/components/FilterSidebar";
 import { SortDropdown } from "@/features/filters/components/SortDropdown";
 import { ProductGrid } from "@/features/products/components/ProductGrid";
-import { AllMockProducts, getCategoryCounts } from "@/features/products/utils/mock-data";
+import { fetchProducts, fetchCategoryCounts } from "@/lib/supabase/products";
 
 export default async function CategoryPage({
     params,
@@ -41,11 +41,13 @@ export default async function CategoryPage({
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
         .join(" ");
 
-    /* Count the products that will be shown (approximate for display) */
-    let displayProducts = AllMockProducts;
-    if (slug !== "all") {
-        displayProducts = displayProducts.filter(p => !p.categorySlug || p.categorySlug === slug);
-    }
+    /* Fetch products from Supabase, filtered by category when not "all" */
+    const allProducts = await fetchProducts({
+        categorySlug: slug !== "all" ? slug : undefined,
+    });
+
+    /* Apply additional client-side filters for the display count */
+    let displayProducts = allProducts;
     if (categories.length > 0) {
         const catSet = new Set(categories);
         displayProducts = displayProducts.filter((p) => p.categorySlug && catSet.has(p.categorySlug));
@@ -61,7 +63,7 @@ export default async function CategoryPage({
         displayProducts = displayProducts.filter((p) => (p.rating ?? 0) >= minRating);
     }
     const totalProducts = displayProducts.length;
-    const categoryCounts = getCategoryCounts();
+    const categoryCounts = await fetchCategoryCounts();
 
     return (
         <div className="container mx-auto px-4 max-w-7xl py-6">
@@ -93,6 +95,7 @@ export default async function CategoryPage({
 
                     {/* Product Grid */}
                     <ProductGrid
+                        products={allProducts}
                         sortBy={sort}
                         categorySlug={slug}
                         categories={categories}

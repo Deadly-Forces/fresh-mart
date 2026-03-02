@@ -2,9 +2,11 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { rateLimit } from "@/lib/security";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
 const BUCKET_NAME = "avatars";
 
 export async function uploadAvatarAction(formData: FormData) {
@@ -13,6 +15,11 @@ export async function uploadAvatarAction(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
         return { error: "You must be logged in to update your avatar." };
+    }
+
+    // Rate limit: 5 avatar uploads per minute per user
+    if (!rateLimit(`avatar:${user.id}`, 5, 60_000)) {
+        return { error: "Too many upload attempts. Please wait a moment." };
     }
 
     const file = formData.get("avatar") as File | null;
@@ -30,9 +37,20 @@ export async function uploadAvatarAction(formData: FormData) {
         return { error: "File is too large. Maximum size is 2MB." };
     }
 
+    // Determine file extension from MIME type (not user input) for security
+    const extensionMap: Record<string, string> = {
+        "image/jpeg": "jpg",
+        "image/png": "png",
+        "image/webp": "webp",
+        "image/gif": "gif",
+    };
+    const ext = extensionMap[file.type] || "jpg";
+    
+    // Double-check extension is allowed
+    if (!ALLOWED_EXTENSIONS.includes(ext)) {
+        return { error: "Invalid file type." };
+    }
 
-    // Determine file extension
-    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
     const filePath = `${user.id}/avatar.${ext}`;
 
     // Convert File to ArrayBuffer for server-side upload

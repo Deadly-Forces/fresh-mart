@@ -9,7 +9,7 @@ import { PopularSearches } from "@/features/home/components/PopularSearches";
 import { HeroBackground } from "@/features/home/components/HeroBackground";
 import { createClient } from "@/lib/supabase/server";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function HomePage() {
     const supabase = await createClient();

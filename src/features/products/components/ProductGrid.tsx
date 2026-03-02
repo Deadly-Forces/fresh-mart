@@ -28,11 +28,10 @@ interface ProductGridProps {
     page?: number;
 }
 
-import { AllMockProducts } from "@/features/products/utils/mock-data";
 import { ProductPagination } from "./ProductPagination";
 
 export function ProductGrid({
-    products = AllMockProducts,
+    products = [],
     sortBy = "relevance",
     categorySlug,
     searchQuery,

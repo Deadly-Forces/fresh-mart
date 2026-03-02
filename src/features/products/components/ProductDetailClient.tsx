@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Heart, Star, Truck, ShieldCheck, Minus, Plus } from "lucide-react";
+import DOMPurify from "dompurify";
+import { ChevronRight, Heart, Star, Truck, ShieldCheck, Minus, Plus, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { ReviewCard } from "@/features/reviews/components/ReviewCard";
@@ -24,9 +25,16 @@ export function ProductDetailClient({ product }: { product: any }) {
     const [selectedVariant, setSelectedVariant] = useState("2");
     const [quantity, setQuantity] = useState(1);
     const [mounted, setMounted] = useState(false);
+    const [showSparkle, setShowSparkle] = useState(false);
+    const sparkleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Hydration check
-    useEffect(() => setMounted(true), []);
+    useEffect(() => {
+        setMounted(true);
+        return () => {
+            if (sparkleTimeoutRef.current) clearTimeout(sparkleTimeoutRef.current);
+        };
+    }, []);
 
     const addItem = useCartStore((state) => state.addItem);
     const { toggleItem, isInWishlist } = useWishlistStore();
@@ -59,6 +67,7 @@ export function ProductDetailClient({ product }: { product: any }) {
 
     const handleToggleWishlist = () => {
         if (!product) return;
+        const wasLiked = isLiked;
         toggleItem({
             id: product.id,
             name: product.name,
@@ -71,7 +80,15 @@ export function ProductDetailClient({ product }: { product: any }) {
             reviewsCount: product.reviewsCount,
             badge: product.badge,
         });
-        toast.success(isLiked ? `Removed ${product.name} from wishlist` : `Added ${product.name} to wishlist`);
+        
+        // Trigger sparkle animation when adding to wishlist
+        if (!wasLiked) {
+            setShowSparkle(true);
+            if (sparkleTimeoutRef.current) clearTimeout(sparkleTimeoutRef.current);
+            sparkleTimeoutRef.current = setTimeout(() => setShowSparkle(false), 700);
+        }
+        
+        toast.success(wasLiked ? `Removed ${product.name} from wishlist` : `Added ${product.name} to wishlist`);
     };
 
     return (
@@ -201,7 +218,7 @@ export function ProductDetailClient({ product }: { product: any }) {
                             size="icon"
                             onClick={handleToggleWishlist}
                             className={cn(
-                                "h-12 w-12 shrink-0 rounded-full border-2 transition-all duration-300 shadow-sm",
+                                "h-12 w-12 shrink-0 rounded-full border-2 transition-all duration-300 shadow-sm relative overflow-visible",
                                 isLiked
                                     ? "border-red-500 bg-red-50 text-red-500 hover:bg-red-100 hover:border-red-600 dark:bg-red-500/10 dark:hover:bg-red-500/20"
                                     : "hover:bg-destructive/5 hover:text-destructive hover:border-destructive/30"
@@ -209,7 +226,20 @@ export function ProductDetailClient({ product }: { product: any }) {
                             title={isLiked ? "Remove from wishlist" : "Add to wishlist"}
                             aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
                         >
-                            <Heart className={cn("w-5 h-5", isLiked && "fill-current")} />
+                            <Heart className={cn(
+                                "w-5 h-5 transition-all duration-300",
+                                isLiked && "fill-current",
+                                showSparkle && "animate-heart-pop"
+                            )} />
+                            {/* Sparkle effects */}
+                            {showSparkle && (
+                                <>
+                                    <span className="wishlist-sparkle" />
+                                    <span className="wishlist-sparkle-ring" />
+                                    <Sparkles className="absolute -top-1.5 -right-1.5 w-4 h-4 text-amber-400 animate-ping" />
+                                    <Sparkles className="absolute -bottom-1 -left-1 w-3 h-3 text-red-400 animate-ping" style={{ animationDelay: '100ms' }} />
+                                </>
+                            )}
                         </Button>
                     </div>
 
@@ -256,11 +286,11 @@ export function ProductDetailClient({ product }: { product: any }) {
                 </TabsList>
 
                 <TabsContent value="description">
-                    <div className="prose prose-sm max-w-none text-foreground/80" dangerouslySetInnerHTML={{ __html: product.description }} />
+                    <div className="prose prose-sm max-w-none text-foreground/80" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description || '') }} />
                 </TabsContent>
 
                 <TabsContent value="nutrition">
-                    <div className="prose prose-sm max-w-none text-foreground/80" dangerouslySetInnerHTML={{ __html: product.nutritionalInfo }} />
+                    <div className="prose prose-sm max-w-none text-foreground/80" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.nutritionalInfo || '') }} />
                 </TabsContent>
 
                 <TabsContent value="reviews" id="reviews">

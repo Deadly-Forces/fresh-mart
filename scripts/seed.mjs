@@ -85,7 +85,7 @@ async function seed() {
             price: p.price,
             compare_price: p.comparePrice || null,
             images: [imageUrl],
-            stock: Math.floor(Math.random() * 100) + 10,
+            stock: 200,
             category_id: categoryMap.get(p.categorySlug) || null,
             unit: p.unit || "unit",
             is_active: true

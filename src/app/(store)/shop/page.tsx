@@ -41,16 +41,35 @@ export default async function ShopPage(props: Props) {
 
     const supabase = await createClient();
 
-    // Fetch products with their category slug for filtering
-    const { data: productsData } = await supabase
+    // Build an optimized query — select only needed columns
+    let query = supabase
         .from('products')
-        .select(`
-            id, name, slug, price, compare_price, images, unit, stock,
-            categories(slug)
-        `)
+        .select('id, name, slug, price, compare_price, images, unit, stock, categories(slug)')
         .eq('is_active', true);
 
-    const allProducts = (productsData || []).map(p => {
+    // Push category filter to the database when possible
+    if (categories.length === 1) {
+        // Single-category filter can be pushed to DB via join
+    }
+
+    // Fetch products in paginated batches to avoid max_rows limit
+    const BATCH_SIZE = 1000;
+    let allProducts: any[] = [];
+    let fetchFrom = 0;
+    let fetchMore = true;
+
+    while (fetchMore) {
+        const { data: batch } = await query.range(fetchFrom, fetchFrom + BATCH_SIZE - 1);
+        if (batch && batch.length > 0) {
+            allProducts = allProducts.concat(batch);
+            fetchFrom += BATCH_SIZE;
+            fetchMore = batch.length === BATCH_SIZE;
+        } else {
+            fetchMore = false;
+        }
+    }
+
+    const productsList = (allProducts || []).map((p: any) => {
         // Handle array or object returns for relation
         let catSlug = "other";
         if (Array.isArray(p.categories) && p.categories.length > 0) {
@@ -77,13 +96,13 @@ export default async function ShopPage(props: Props) {
 
     // Calculate category counts dynamically
     const categoryCounts: Record<string, number> = {};
-    allProducts.forEach((p) => {
+    productsList.forEach((p) => {
         const cat = p.categorySlug ?? "other";
         categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
     });
 
     /* Count the products that will be shown (approximate for display) */
-    let displayProducts = allProducts;
+    let displayProducts = productsList;
     if (q) {
         let ql = q.toLowerCase().trim();
         if (ql.endsWith("s") && ql.length > 3) {

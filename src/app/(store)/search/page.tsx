@@ -3,6 +3,7 @@ import { FilterSidebar } from "@/features/filters/components/FilterSidebar";
 import { SortDropdown } from "@/features/filters/components/SortDropdown";
 import { ProductGrid } from "@/features/products/components/ProductGrid";
 import { Search as SearchIcon, Sparkles } from "lucide-react";
+import { fetchProducts } from "@/lib/supabase/products";
 
 export default async function SearchPage({
     searchParams,
@@ -12,6 +13,9 @@ export default async function SearchPage({
     const params = await searchParams;
     const query = params.q || "";
     const page = params.page ? parseInt(params.page, 10) : 1;
+
+    // Fetch products from DB so ProductGrid doesn't need the 570KB mock import
+    const products = query ? await fetchProducts() : [];
 
     return (
         <div>
@@ -59,8 +63,7 @@ export default async function SearchPage({
                         )}
 
                         {query ? (
-                            <ProductGrid searchQuery={query} page={page} />
-                        ) : (
+                            <ProductGrid products={products} searchQuery={query} page={page} />) : (
                             /* Empty state */
                             <div className="flex flex-col items-center justify-center py-20 text-center">
                                 <div className="relative mb-6">

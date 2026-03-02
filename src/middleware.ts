@@ -1,7 +1,29 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Public route prefixes that never need authentication
+const PUBLIC_PREFIXES = [
+    '/_next', '/api', '/product', '/category', '/shop', '/cart',
+    '/search', '/about', '/contact', '/faq', '/terms', '/privacy',
+    '/cookies', '/refunds', '/shipping', '/blog', '/careers',
+    '/stores', '/security',
+];
+
+function isPublicRoute(pathname: string): boolean {
+    if (pathname === '/') return true;
+    return PUBLIC_PREFIXES.some(prefix => pathname.startsWith(prefix));
+}
+
 export async function middleware(request: NextRequest) {
+    const url = request.nextUrl.clone()
+    const isAuthRoute = url.pathname.startsWith('/login')
+
+    // Fast-path: skip Supabase auth call entirely for public routes (except /login)
+    if (isPublicRoute(url.pathname) && !isAuthRoute) {
+        return NextResponse.next({ request })
+    }
+
+    // Only create Supabase client for protected routes
     let supabaseResponse = NextResponse.next({
         request,
     })
@@ -33,35 +55,17 @@ export async function middleware(request: NextRequest) {
         user = data.user;
     } catch {
         // If Supabase is unreachable, treat as unauthenticated
-        // and allow access to public routes
     }
 
-    const url = request.nextUrl.clone()
-    const isAuthRoute = url.pathname.startsWith('/login')
     const isOnboardingRoute = url.pathname.startsWith('/onboarding')
 
-    // Public routes that don't need auth check
-    if (
-        url.pathname.startsWith('/_next') ||
-        url.pathname.startsWith('/api') ||
-        url.pathname === '/' ||
-        url.pathname.startsWith('/product') ||
-        url.pathname.startsWith('/category') ||
-        url.pathname.startsWith('/shop') ||
-        url.pathname.startsWith('/cart') ||
-        url.pathname.startsWith('/search') ||
-        url.pathname.startsWith('/checkout')
-    ) {
-        // If user is logged in and tries to access /login, redirect to home
-        if (user && isAuthRoute) {
-            url.pathname = '/'
-            return NextResponse.redirect(url)
-        }
-        return supabaseResponse
+    // If user is logged in and tries to access /login, redirect to home
+    if (user && isAuthRoute) {
+        url.pathname = '/'
+        return NextResponse.redirect(url)
     }
 
     if (!user && !isAuthRoute) {
-        // Redirect unauthenticated users to login if they try to access protected routes
         url.pathname = '/login'
         return NextResponse.redirect(url)
     }
@@ -89,6 +93,22 @@ export async function middleware(request: NextRequest) {
         // Protect admin routes
         if (url.pathname.startsWith('/admin')) {
             if (profile?.role !== 'admin') {
+                url.pathname = '/'
+                return NextResponse.redirect(url)
+            }
+        }
+
+        // Protect picker routes - only pickers and admins can access
+        if (url.pathname.startsWith('/picker')) {
+            if (profile?.role !== 'admin' && profile?.role !== 'delivery') {
+                url.pathname = '/'
+                return NextResponse.redirect(url)
+            }
+        }
+
+        // Protect rider/delivery routes - only delivery personnel and admins can access
+        if (url.pathname.startsWith('/rider')) {
+            if (profile?.role !== 'admin' && profile?.role !== 'delivery') {
                 url.pathname = '/'
                 return NextResponse.redirect(url)
             }

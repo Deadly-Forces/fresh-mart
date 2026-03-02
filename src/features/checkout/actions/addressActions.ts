@@ -1,6 +1,18 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { z } from "zod";
+
+const addressSchema = z.object({
+    label: z.string().max(50).default("Home"),
+    building: z.string().max(200).default(""),
+    street: z.string().max(200).default(""),
+    area: z.string().max(200).default(""),
+    landmark: z.string().max(200).default(""),
+    city: z.string().min(1, "City is required").max(100),
+    state: z.string().min(1, "State is required").max(100),
+    pincode: z.string().min(1, "Pincode is required").regex(/^\d{6}$/, "Pincode must be 6 digits"),
+});
 
 export async function getUserAddressesAction() {
     try {
@@ -49,22 +61,17 @@ export async function addAddressAction(formData: FormData) {
         const state = formData.get("state")?.toString() || "";
         const pincode = formData.get("pincode")?.toString() || "";
 
-        if (!city || !state || !pincode) {
-            return { error: "City, state, and pincode are required." };
+        const validated = addressSchema.safeParse({ label, building, street, area, landmark, city, state, pincode });
+        if (!validated.success) {
+            const firstError = validated.error.issues[0]?.message || "Invalid address data.";
+            return { error: firstError };
         }
 
         const { data: newAddress, error } = await supabase
             .from("addresses")
             .insert({
                 user_id: user.id,
-                label,
-                building,
-                street,
-                area,
-                landmark,
-                city,
-                state,
-                pincode,
+                ...validated.data,
             })
             .select()
             .single();

@@ -115,6 +115,7 @@ export function Footer() {
                                 { label: "Refund Policy", href: "/refunds" },
                                 { label: "Shipping", href: "/shipping" },
                                 { label: "Cookies", href: "/cookies" },
+                                { label: "Security", href: "/security" },
                             ].map((link) => (
                                 <li key={link.href}>
                                     <Link href={link.href} className="hover:text-primary transition-colors">{link.label}</Link>

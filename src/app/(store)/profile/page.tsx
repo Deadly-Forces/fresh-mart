@@ -31,12 +31,14 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
         redirect("/onboarding");
     }
 
-    // Fetch user's default address
+    // Fetch user's default address (limit 1 in case multiple are marked default)
     const { data: address } = await supabase
         .from("addresses")
         .select("*")
         .eq("user_id", user.id)
         .eq("is_default", true)
+        .order("created_at", { ascending: false })
+        .limit(1)
         .maybeSingle(); // Use maybeSingle to avoid errors if none exist
 
     // Fetch user's orders with items

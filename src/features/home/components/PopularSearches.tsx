@@ -1,32 +1,10 @@
 import Link from "next/link";
-import { AllMockProducts } from "@/features/products/utils/mock-data";
+import { fetchProducts, type MappedProduct } from "@/lib/supabase/products";
 
-export function PopularSearches() {
-    // 1. Get 30 random products, seeded by current date
-    const todaySeed = new Date().toISOString().split("T")[0];
-
-    // Simple seeded random function
-    const seededRandom = (seedStr: string, index: number) => {
-        let hash = 0;
-        const str = seedStr + index;
-        for (let i = 0; i < str.length; i++) {
-            hash = ((hash << 5) - hash) + str.charCodeAt(i);
-            hash |= 0;
-        }
-        const x = Math.sin(hash++) * 10000;
-        return x - Math.floor(x);
-    };
-
-    // Get unique indices to avoid duplicate products
-    const uniqueIndices = new Set<number>();
-    let attempts = 0;
-    while (uniqueIndices.size < 30 && attempts < 100) {
-        const randomIndex = Math.floor(seededRandom(todaySeed, attempts) * AllMockProducts.length);
-        uniqueIndices.add(randomIndex);
-        attempts++;
-    }
-
-    const popularProducts = Array.from(uniqueIndices).map((index) => AllMockProducts[index]);
+export async function PopularSearches() {
+    // Fetch a small set of products from Supabase (limit 30) instead of loading all 2000
+    const products = await fetchProducts({ limit: 30 });
+    const popularProducts = products;
 
     // 3. Categories List
     const categoryLinks = [

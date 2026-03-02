@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, ShoppingCart, Minus, Plus, Heart } from "lucide-react";
+import { Star, ShoppingCart, Minus, Plus, Heart, Sparkles } from "lucide-react";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -41,9 +41,14 @@ export function ProductCard({
     const { items, addItem, updateQuantity, removeItem } = useCartStore();
     const { toggleItem, isInWishlist } = useWishlistStore();
     const [mounted, setMounted] = useState(false);
+    const [showSparkle, setShowSparkle] = useState(false);
+    const sparkleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         setMounted(true);
+        return () => {
+            if (sparkleTimeoutRef.current) clearTimeout(sparkleTimeoutRef.current);
+        };
     }, []);
 
     const isLiked = mounted ? isInWishlist(id) : false;
@@ -84,6 +89,7 @@ export function ProductCard({
 
     const handleToggleWishlist = (e: React.MouseEvent) => {
         e.preventDefault();
+        const wasLiked = isLiked;
         toggleItem({
             id,
             name,
@@ -96,7 +102,15 @@ export function ProductCard({
             reviewsCount,
             badge,
         });
-        toast.success(isLiked ? `Removed ${name} from wishlist` : `Added ${name} to wishlist`);
+        
+        // Trigger sparkle animation when adding to wishlist
+        if (!wasLiked) {
+            setShowSparkle(true);
+            if (sparkleTimeoutRef.current) clearTimeout(sparkleTimeoutRef.current);
+            sparkleTimeoutRef.current = setTimeout(() => setShowSparkle(false), 700);
+        }
+        
+        toast.success(wasLiked ? `Removed ${name} from wishlist` : `Added ${name} to wishlist`);
     };
 
     return (
@@ -116,15 +130,28 @@ export function ProductCard({
 
             <button
                 onClick={handleToggleWishlist}
-                className="absolute top-3 right-3 z-10 p-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:scale-110 active:scale-95 transition-all duration-200"
+                className={cn(
+                    "absolute top-3 right-3 z-10 p-2 rounded-full bg-background/80 backdrop-blur-sm border shadow-sm hover:scale-110 active:scale-95 transition-all duration-200",
+                    isLiked ? "border-red-200 bg-red-50/80 dark:bg-red-950/30" : "border-border/50"
+                )}
                 aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
             >
                 <Heart
                     className={cn(
-                        "w-4 h-4 transition-colors",
-                        isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"
+                        "w-4 h-4 transition-all duration-300",
+                        isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground",
+                        showSparkle && "animate-heart-pop"
                     )}
                 />
+                {/* Sparkle effects */}
+                {showSparkle && (
+                    <>
+                        <span className="wishlist-sparkle" />
+                        <span className="wishlist-sparkle-ring" />
+                        <Sparkles className="absolute -top-1 -right-1 w-3 h-3 text-amber-400 animate-ping" />
+                        <Sparkles className="absolute -bottom-1 -left-1 w-2.5 h-2.5 text-red-400 animate-ping" style={{ animationDelay: '100ms' }} />
+                    </>
+                )}
             </button>
 
             <Link href={`/product/${slug}`} className="block relative aspect-square w-full bg-gradient-to-br from-secondary/40 to-secondary/10 overflow-hidden">

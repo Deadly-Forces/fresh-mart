@@ -103,15 +103,25 @@ export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url)
     const code = searchParams.get('code')
 
+    // Validate origin to prevent open redirect attacks
+    const allowedOrigins = [
+        process.env.NEXT_PUBLIC_APP_URL,
+        'http://localhost:3000',
+        'http://127.0.0.1:3000',
+    ].filter(Boolean);
+
+    // Use a safe default origin if the current one isn't allowed
+    const safeOrigin = allowedOrigins.includes(origin) ? origin : (process.env.NEXT_PUBLIC_APP_URL || origin);
+
     if (code) {
         const { error } = await exchangeCodeWithRetry(code)
 
         if (!error) {
-            return NextResponse.redirect(`${origin}/`)
+            return NextResponse.redirect(`${safeOrigin}/`)
         }
 
         console.error('Auth callback failed after all retries:', error)
     }
 
-    return NextResponse.redirect(`${origin}/login?error=AuthError`)
+    return NextResponse.redirect(`${safeOrigin}/login?error=AuthError`)
 }

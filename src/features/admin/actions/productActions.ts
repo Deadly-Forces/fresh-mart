@@ -3,6 +3,55 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import type { Database } from "@/lib/supabase/types";
+import { rateLimit, isValidUUID, sanitizeString, stripHtml } from "@/lib/security";
+import { z } from "zod";
+
+// Validation schemas
+const productUpdateSchema = z.object({
+    name: z.string().min(1).max(200).optional(),
+    price: z.number().positive().max(100000).optional(),
+    compare_price: z.number().positive().max(100000).nullable().optional(),
+    stock: z.number().int().min(0).max(1000000).optional(),
+    is_active: z.boolean().optional(),
+    description: z.string().max(5000).optional(),
+    unit: z.string().max(50).optional(),
+});
+
+const categoryUpdateSchema = z.object({
+    name: z.string().min(1).max(100).optional(),
+    slug: z.string().min(1).max(100).regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens").optional(),
+    is_active: z.boolean().optional(),
+    image_url: z.string().url().max(500).nullable().optional(),
+});
+
+const orderStatusSchema = z.enum(['pending', 'confirmed', 'packed', 'processing', 'out_for_delivery', 'delivered', 'cancelled']);
+
+/** Verify that the current user is authenticated and has admin role */
+async function requireAdmin() {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        throw new Error("Authentication required.");
+    }
+
+    // Rate limit: 100 admin actions per minute per user
+    if (!rateLimit(`admin:${user.id}`, 100, 60_000)) {
+        throw new Error("Too many requests. Please slow down.");
+    }
+
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+    if (profile?.role !== "admin") {
+        throw new Error("Forbidden: Admin access required.");
+    }
+
+    return { supabase, user };
+}
 
 export async function updateProductAction(
     productId: string,
@@ -17,11 +66,30 @@ export async function updateProductAction(
     }
 ) {
     try {
-        const supabase = await createClient();
+        // Validate product ID
+        if (!isValidUUID(productId)) {
+            return { error: "Invalid product ID." };
+        }
+
+        // Validate input data
+        const validation = productUpdateSchema.safeParse(data);
+        if (!validation.success) {
+            return { error: validation.error.issues[0]?.message || "Invalid product data." };
+        }
+
+        const { supabase } = await requireAdmin();
+
+        // Sanitize text fields
+        const sanitizedData = {
+            ...validation.data,
+            name: validation.data.name ? sanitizeString(validation.data.name, 200) ?? undefined : undefined,
+            description: validation.data.description ? stripHtml(validation.data.description) : undefined,
+            unit: validation.data.unit ? sanitizeString(validation.data.unit, 50) ?? undefined : undefined,
+        };
 
         const { error } = await supabase
             .from("products")
-            .update(data)
+            .update(sanitizedData)
             .eq("id", productId);
 
         if (error) {
@@ -40,7 +108,12 @@ export async function updateProductAction(
 
 export async function deleteProductAction(productId: string) {
     try {
-        const supabase = await createClient();
+        // Validate product ID
+        if (!isValidUUID(productId)) {
+            return { error: "Invalid product ID." };
+        }
+
+        const { supabase } = await requireAdmin();
 
         const { error } = await supabase
             .from("products")
@@ -64,7 +137,17 @@ export async function deleteProductAction(productId: string) {
 
 export async function updateProductStockAction(productId: string, newStock: number) {
     try {
-        const supabase = await createClient();
+        // Validate product ID
+        if (!isValidUUID(productId)) {
+            return { error: "Invalid product ID." };
+        }
+
+        // Validate stock value
+        if (!Number.isInteger(newStock) || newStock < 0 || newStock > 1000000) {
+            return { error: "Invalid stock value." };
+        }
+
+        const { supabase } = await requireAdmin();
 
         const { error } = await supabase
             .from("products")
@@ -94,11 +177,29 @@ export async function updateCategoryAction(
     }
 ) {
     try {
-        const supabase = await createClient();
+        // Validate category ID
+        if (!isValidUUID(categoryId)) {
+            return { error: "Invalid category ID." };
+        }
+
+        // Validate input data
+        const validation = categoryUpdateSchema.safeParse(data);
+        if (!validation.success) {
+            return { error: validation.error.issues[0]?.message || "Invalid category data." };
+        }
+
+        const { supabase } = await requireAdmin();
+
+        // Sanitize text fields
+        const sanitizedData = {
+            ...validation.data,
+            name: validation.data.name ? sanitizeString(validation.data.name, 100) ?? undefined : undefined,
+            slug: validation.data.slug ? sanitizeString(validation.data.slug, 100)?.toLowerCase() ?? undefined : undefined,
+        };
 
         const { error } = await supabase
             .from("categories")
-            .update(data)
+            .update(sanitizedData)
             .eq("id", categoryId);
 
         if (error) {
@@ -117,7 +218,12 @@ export async function updateCategoryAction(
 
 export async function deleteCategoryAction(categoryId: string) {
     try {
-        const supabase = await createClient();
+        // Validate category ID
+        if (!isValidUUID(categoryId)) {
+            return { error: "Invalid category ID." };
+        }
+
+        const { supabase } = await requireAdmin();
 
         const { error } = await supabase
             .from("categories")
@@ -140,11 +246,22 @@ export async function deleteCategoryAction(categoryId: string) {
 
 export async function updateOrderStatusAction(orderId: string, status: Database["public"]["Enums"]["order_status"]) {
     try {
-        const supabase = await createClient();
+        // Validate order ID
+        if (!isValidUUID(orderId)) {
+            return { error: "Invalid order ID." };
+        }
+
+        // Validate status
+        const statusValidation = orderStatusSchema.safeParse(status);
+        if (!statusValidation.success) {
+            return { error: "Invalid order status." };
+        }
+
+        const { supabase } = await requireAdmin();
 
         const { error } = await supabase
             .from("orders")
-            .update({ status })
+            .update({ status: statusValidation.data })
             .eq("id", orderId);
 
         if (error) {
