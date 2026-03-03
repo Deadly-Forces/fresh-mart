@@ -10,7 +10,6 @@ import {
   stripHtml,
 } from "@/lib/security";
 import { z } from "zod";
-import { sendShippingUpdateEmail } from "@/lib/email";
 
 // Validation schemas
 const productUpdateSchema = z.object({
@@ -310,12 +309,6 @@ export async function updateOrderStatusAction(
       console.error("Error updating order status:", error);
       return { error: error.message };
     }
-
-    // Trigger email notification for status change
-    // Fire and forget (don't block UI)
-    sendShippingUpdateEmail(orderId, statusValidation.data).catch(
-      console.error,
-    );
 
     revalidatePath("/admin/orders");
     revalidatePath("/admin/dashboard");

@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { sendOrderConfirmationEmail } from "@/lib/email";
 import {
   rateLimit,
   isValidUUID,
@@ -209,13 +208,6 @@ export async function placeOrderAction(
     }
 
     const orderId = result.order_id;
-
-    // 3. Trigger Post-Order Integrations (Fire and forget)
-    // Ensure we send it to the logged in user's email
-    const customerEmail = user.email || "customer@example.com";
-    sendOrderConfirmationEmail(orderId, customerEmail).catch((e) => {
-      console.error("Non-fatal: Failed to send order confirmation email", e);
-    });
 
     return { success: true, orderId };
   } catch (err: any) {
