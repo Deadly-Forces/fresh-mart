@@ -2,6 +2,7 @@ import { Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
+import { ProgressBar } from "@/components/ui/ProgressBar";
 
 export const dynamic = "force-dynamic";
 
@@ -152,20 +153,16 @@ export default async function AdminAnalyticsPage() {
                 {d.day}
               </span>
               <div className="flex-1 bg-secondary/30 rounded-full h-6 overflow-hidden">
-                <div
+                <ProgressBar
+                  value={`${Math.max((d.revenue / maxDayRevenue) * 100, 2)}%`}
                   className="bg-primary h-full rounded-full flex items-center justify-end pr-2 transition-all duration-500"
-                  style={
-                    {
-                      width: `${Math.max((d.revenue / maxDayRevenue) * 100, 2)}%`,
-                    } as React.CSSProperties
-                  }
                 >
                   {d.revenue > 0 && (
                     <span className="text-[10px] font-bold text-primary-foreground">
                       ₹{d.revenue.toFixed(0)}
                     </span>
                   )}
-                </div>
+                </ProgressBar>
               </div>
             </div>
           ))}

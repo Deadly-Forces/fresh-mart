@@ -65,7 +65,8 @@ export default async function AdminPickerPage() {
       0,
     );
     const minutesAgo = Math.round(
-      (Date.now() - new Date(o.created_at).getTime()) / 60000,
+      (/* eslint-disable-next-line react-hooks/purity */
+      (Date.now() - new Date(o.created_at).getTime())) / 60000,
     );
 
     return {

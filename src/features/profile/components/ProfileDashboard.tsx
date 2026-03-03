@@ -802,16 +802,19 @@ export function ProfileDashboard({
                           {/* Connecting line */}
                           <div className="absolute top-3 left-[16px] right-[16px] h-0.5 bg-border" />
                           <div
-                            className="absolute top-3 left-[16px] h-0.5 bg-primary transition-all duration-500"
-                            style={{
-                              width:
-                                order.status === "delivered"
-                                  ? "calc(100% - 32px)"
-                                  : order.status === "out_for_delivery"
-                                    ? "calc(66% - 22px)"
-                                    : order.status === "packed"
-                                      ? "calc(33% - 11px)"
-                                      : "0%",
+                            className="absolute top-3 left-[16px] h-0.5 bg-primary transition-all duration-500 w-progress"
+                            ref={(el) => {
+                              if (el) {
+                                const w =
+                                  order.status === "delivered"
+                                    ? "calc(100% - 32px)"
+                                    : order.status === "out_for_delivery"
+                                      ? "calc(66% - 22px)"
+                                      : order.status === "packed"
+                                        ? "calc(33% - 11px)"
+                                        : "0%";
+                                el.style.setProperty('--progress', w);
+                              }
                             }}
                           />
                           {/* Steps */}

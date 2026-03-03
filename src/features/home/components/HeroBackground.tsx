@@ -276,63 +276,42 @@ function RingSvg({ size }: { size: number }) {
   );
 }
 
-function Particle({ p }: { p: (typeof PARTICLES)[number] }) {
-  const base: React.CSSProperties = {
-    position: "absolute",
-    left: `${p.x}%`,
-    top: `${p.y}%`,
-    animationDuration: `${p.dur}s`,
-    animationDelay: `${p.delay}s`,
-    ["--drift" as string]: `${p.drift}px`,
-    ["--rotation" as string]: `${p.rot}deg`,
-  };
+const ANIM_MAP: Record<string, string> = {
+  leaf: "animate-hero-float",
+  citrus: "animate-hero-drift",
+  ring: "animate-hero-float",
+  circle: "animate-hero-drift",
+  dot: "animate-hero-twinkle",
+};
 
-  if (p.type === "leaf") {
-    return (
-      <div
-        className="animate-hero-float text-emerald-400/40 dark:text-emerald-400/25"
-        style={base}
-      >
-        <LeafSvg size={p.size} />
-      </div>
-    );
-  }
-  if (p.type === "citrus") {
-    return (
-      <div
-        className="animate-hero-drift text-amber-400/35 dark:text-amber-400/25"
-        style={base}
-      >
-        <CitrusSvg size={p.size} />
-      </div>
-    );
-  }
-  if (p.type === "ring") {
-    return (
-      <div
-        className="animate-hero-float text-emerald-300/30 dark:text-emerald-400/20"
-        style={base}
-      >
-        <RingSvg size={p.size} />
-      </div>
-    );
-  }
-  if (p.type === "circle") {
-    return (
-      <div
-        className="animate-hero-drift rounded-full bg-primary/20 dark:bg-primary/15"
-        style={{ ...base, width: p.size, height: p.size }}
-      />
-    );
-  }
-  /* dot */
-  return (
-    <div
-      className="animate-hero-twinkle rounded-full bg-emerald-300/50 dark:bg-emerald-400/30"
-      style={{ ...base, width: p.size * 0.5, height: p.size * 0.5 }}
-    />
-  );
+const COLOR_MAP: Record<string, string> = {
+  leaf: "text-emerald-400/40 dark:text-emerald-400/25",
+  citrus: "text-amber-400/35 dark:text-amber-400/25",
+  ring: "text-emerald-300/30 dark:text-emerald-400/20",
+  circle: "rounded-full bg-primary/20 dark:bg-primary/15",
+  dot: "rounded-full bg-emerald-300/50 dark:bg-emerald-400/30",
+};
+
+const SVG_MAP: Record<string, React.FC<{ size: number }>> = {
+  leaf: LeafSvg,
+  citrus: CitrusSvg,
+  ring: RingSvg,
+};
+
+/** Generate a <style> block to avoid inline styles on each particle. */
+function buildParticleCSS(): string {
+  return PARTICLES.map((p) => {
+    const sizeCSS =
+      p.type === "circle"
+        ? `width:${p.size}px;height:${p.size}px;`
+        : p.type === "dot"
+          ? `width:${p.size * 0.5}px;height:${p.size * 0.5}px;`
+          : "";
+    return `.hp-${p.id}{--x:${p.x}%;--y:${p.y}%;--dur:${p.dur}s;--del:${p.delay}s;--drift:${p.drift}px;--rotation:${p.rot}deg;${sizeCSS}}`;
+  }).join("");
 }
+
+const particleCSS = buildParticleCSS();
 
 export function HeroBackground() {
   return (
@@ -340,27 +319,29 @@ export function HeroBackground() {
       className="absolute inset-0 overflow-hidden pointer-events-none z-[1]"
       aria-hidden="true"
     >
+      {/* Particle styles generated from static data */}
+      <style dangerouslySetInnerHTML={{ __html: particleCSS }} />
+
       {/* ── Slow gradient orbs ── */}
       <div className="absolute w-[600px] h-[600px] top-[-10%] left-[15%] rounded-full bg-gradient-to-br from-emerald-500/20 via-emerald-400/10 to-transparent blur-3xl animate-hero-orb-1" />
       <div className="absolute w-[500px] h-[500px] bottom-[-5%] right-[10%] rounded-full bg-gradient-to-tl from-teal-400/15 via-teal-300/8 to-transparent blur-3xl animate-hero-orb-2" />
       <div className="absolute w-[400px] h-[400px] top-[40%] right-[-3%] rounded-full bg-gradient-to-bl from-amber-400/12 to-transparent blur-3xl animate-hero-orb-3" />
 
       {/* ── Floating particles ── */}
-      {PARTICLES.map((p) => (
-        <Particle key={p.id} p={p} />
-      ))}
+      {PARTICLES.map((p) => {
+        const Svg = SVG_MAP[p.type];
+        return (
+          <div
+            key={p.id}
+            className={`hero-particle hp-${p.id} ${ANIM_MAP[p.type]} ${COLOR_MAP[p.type]}`}
+          >
+            {Svg && <Svg size={p.size} />}
+          </div>
+        );
+      })}
 
       {/* ── Subtle grid texture ── */}
-      <div
-        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
-        style={{
-          backgroundImage: `
-                        linear-gradient(hsl(var(--primary) / 0.4) 1px, transparent 1px),
-                        linear-gradient(90deg, hsl(var(--primary) / 0.4) 1px, transparent 1px)
-                    `,
-          backgroundSize: "60px 60px",
-        }}
-      />
+      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] hero-grid-texture" />
     </div>
   );
 }

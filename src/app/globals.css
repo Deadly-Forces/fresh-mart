@@ -119,7 +119,18 @@
   }
 
   .text-balance {
-    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  @supports (text-wrap: balance) {
+    .text-balance {
+      text-wrap: balance;
+    }
+  }
+
+  /* Dynamic width driven by --progress custom property */
+  .w-progress {
+    width: var(--progress);
   }
 }
 
@@ -500,6 +511,23 @@
     transform: translate(-20px, 30px) scale(1.15);
     opacity: 1;
   }
+}
+
+/* Hero particle base — positioned via CSS custom properties */
+.hero-particle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  animation-duration: var(--dur);
+  animation-delay: var(--del);
+}
+
+/* Hero grid texture background */
+.hero-grid-texture {
+  background-image:
+    linear-gradient(hsl(var(--primary) / 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / 0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
 .animate-hero-float {

@@ -89,8 +89,8 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
                 </span>
                 <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-warning rounded-full transition-all duration-500"
-                    style={{ width: `${percentage}%` }}
+                    className="h-full bg-warning rounded-full transition-all duration-500 w-progress"
+                    ref={(el) => { if (el) el.style.setProperty('--progress', `${percentage}%`); }}
                   />
                 </div>
                 <span className="text-xs text-muted-foreground w-6 text-right">

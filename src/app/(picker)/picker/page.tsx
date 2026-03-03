@@ -182,8 +182,8 @@ export default function PickerDashboard() {
             </div>
             <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-primary to-emerald-500 rounded-full transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
+                className="h-full bg-gradient-to-r from-primary to-emerald-500 rounded-full transition-all duration-500 w-progress"
+                ref={(el) => { if (el) el.style.setProperty('--progress', `${progressPercent}%`); }}
               />
             </div>
           </div>

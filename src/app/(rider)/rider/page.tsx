@@ -141,6 +141,7 @@ export default function RiderDashboard() {
         </div>
         <button
           onClick={() => setIsOnline(!isOnline)}
+          aria-label={isOnline ? "Go offline" : "Go online"}
           className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
             isOnline ? "bg-white/30" : "bg-slate-400"
           }`}
@@ -200,6 +201,7 @@ export default function RiderDashboard() {
               </span>
               <a
                 href={`tel:${activeDelivery.phone}`}
+                aria-label="Call customer"
                 className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5" />
