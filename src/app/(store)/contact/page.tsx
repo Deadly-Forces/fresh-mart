@@ -110,7 +110,7 @@ export default function ContactPage() {
                   <input
                     type="email"
                     className="w-full h-12 px-4 rounded-xl border border-border/60 bg-background/80 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all text-sm"
-                    placeholder="john@example.com"
+                    placeholder="rajesh@example.com"
                   />
                 </div>
                 <div className="space-y-2">

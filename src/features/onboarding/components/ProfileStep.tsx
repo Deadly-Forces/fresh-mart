@@ -156,7 +156,7 @@ export function ProfileStep({ state, onUpdate }: ProfileStepProps) {
           id="name"
           value={state.name}
           onChange={(e) => onUpdate({ name: e.target.value })}
-          placeholder="e.g. John Doe"
+          placeholder="e.g. Rajesh Kumar"
           className="h-12"
         />
       </div>

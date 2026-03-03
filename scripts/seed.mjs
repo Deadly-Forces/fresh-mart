@@ -17,6 +17,30 @@ if (!supabaseUrl || !supabaseServiceKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 async function seed() {
+  // 0. Delete ALL existing products first so old ones are removed
+  console.log("Deleting all existing products...");
+  const { error: delProdErr } = await supabase
+    .from("products")
+    .delete()
+    .neq("id", "00000000-0000-0000-0000-000000000000"); // delete all rows
+  if (delProdErr) {
+    console.error("Error deleting old products:", delProdErr);
+  } else {
+    console.log("Old products deleted.");
+  }
+
+  // Also delete old categories so they get recreated cleanly
+  console.log("Deleting all existing categories...");
+  const { error: delCatErr } = await supabase
+    .from("categories")
+    .delete()
+    .neq("id", "00000000-0000-0000-0000-000000000000");
+  if (delCatErr) {
+    console.error("Error deleting old categories:", delCatErr);
+  } else {
+    console.log("Old categories deleted.");
+  }
+
   console.log("Reading products.json...");
   const data = fs.readFileSync(
     path.resolve(process.cwd(), "src/features/products/utils/products.json"),

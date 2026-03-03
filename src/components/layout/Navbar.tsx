@@ -117,16 +117,17 @@ export async function Navbar() {
               </DropdownMenu>
             </div>
           ) : (
-            <Link href="/login" className="hidden sm:flex">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1.5 text-sm font-medium h-9 px-3"
-              >
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="hidden sm:flex gap-1.5 text-sm font-medium h-9 px-3"
+            >
+              <Link href="/login">
                 <User className="w-4 h-4" />
                 Sign In
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           )}
 
           <CartButton />

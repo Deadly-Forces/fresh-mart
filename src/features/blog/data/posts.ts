@@ -24,7 +24,7 @@ const blogPosts: BlogPost[] = [
     title: "5 Easy Weeknight Dinners Using Fresh Vegetables",
     excerpt:
       "Turn fresh produce into quick dinners with prep-light ideas you can make in under 30 minutes.",
-    author: "Chef Sarah",
+    author: "Chef Anjali",
     publishedAt: "2026-02-18",
     category: "Recipes",
     readTime: "6 min read",
@@ -98,8 +98,8 @@ const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "meet-the-farmer-greenfield-orchards",
-    title: "Meet the Farmer: Greenfield Orchards",
+    slug: "meet-the-farmer-sahyadri-orchards",
+    title: "Meet the Farmer: Sahyadri Orchards",
     excerpt:
       "A closer look at one of our local orchard partners and how they grow apples with quality and consistency.",
     author: "Community Reporter",
@@ -111,7 +111,7 @@ const blogPosts: BlogPost[] = [
       {
         heading: "A farm built on long-term soil care",
         paragraphs: [
-          "Greenfield Orchards rotates ground cover between rows to protect the soil and improve water retention. This helps trees remain productive with fewer chemical inputs.",
+          "Sahyadri Orchards rotates ground cover between rows to protect the soil and improve water retention. This helps trees remain productive with fewer chemical inputs.",
           "Their team tracks tree health by block, which allows precise pruning and better yield quality at harvest.",
         ],
       },
@@ -141,7 +141,7 @@ const blogPosts: BlogPost[] = [
     title: "Healthy Snacking Alternatives for Kids",
     excerpt:
       "Practical snack swaps that are easy to prep, kid-friendly, and balanced for energy after school.",
-    author: "Nutritionist Emma",
+    author: "Nutritionist Priya",
     publishedAt: "2026-01-16",
     category: "Health",
     readTime: "6 min read",
@@ -220,7 +220,7 @@ const blogPosts: BlogPost[] = [
     title: "Winter Citrus Buyers Guide",
     excerpt:
       "Choose better oranges, mandarins, and grapefruits with quick checks for flavor and juiciness.",
-    author: "Produce Specialist Leo",
+    author: "Produce Specialist Ravi",
     publishedAt: "2025-12-12",
     category: "Seasonal Picks",
     readTime: "4 min read",
@@ -298,7 +298,7 @@ const blogPosts: BlogPost[] = [
     title: "4 Smoothie Recipes with No Added Sugar",
     excerpt:
       "Balanced smoothies that rely on fruit, vegetables, and dairy or plant proteins for flavor and satiety.",
-    author: "Coach Maya",
+    author: "Coach Meera",
     publishedAt: "2025-11-08",
     category: "Wellness",
     readTime: "5 min read",

@@ -154,10 +154,11 @@ export default async function AdminDashboardPage() {
     status: o.status,
   }));
 
-  // 4. Fetch Low Stock Products
+  // 4. Fetch Low Stock Products (only active products)
   const { data: lowStockData } = await supabase
     .from("products")
     .select("name, stock")
+    .eq("is_active", true)
     .lte("stock", 20) // threshold of 20
     .order("stock", { ascending: true })
     .limit(5);

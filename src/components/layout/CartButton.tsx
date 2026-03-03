@@ -18,12 +18,13 @@ export function CartButton() {
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <Link href="/cart">
-      <Button
-        variant="default"
-        size="sm"
-        className="relative gap-1.5 h-9 px-3.5 text-sm font-semibold rounded-lg"
-      >
+    <Button
+      asChild
+      variant="default"
+      size="sm"
+      className="relative gap-1.5 h-9 px-3.5 text-sm font-semibold rounded-lg"
+    >
+      <Link href="/cart">
         <ShoppingCart className="w-4 h-4" />
         <span className="hidden sm:inline">Cart</span>
 
@@ -32,7 +33,7 @@ export function CartButton() {
             {itemCount > 99 ? "99+" : itemCount}
           </span>
         )}
-      </Button>
-    </Link>
+      </Link>
+    </Button>
   );
 }
