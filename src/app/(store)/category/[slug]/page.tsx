@@ -6,106 +6,118 @@ import { ProductGrid } from "@/features/products/components/ProductGrid";
 import { fetchProducts, fetchCategoryCounts } from "@/lib/supabase/products";
 
 export default async function CategoryPage({
-    params,
-    searchParams,
+  params,
+  searchParams,
 }: {
-    params: Promise<{ slug: string }>;
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-    const { slug } = await params;
-    const searchParamsObj = await searchParams;
+  const { slug } = await params;
+  const searchParamsObj = await searchParams;
 
-    function str(val: string | string[] | undefined): string | undefined {
-        return typeof val === "string" ? val : undefined;
-    }
+  function str(val: string | string[] | undefined): string | undefined {
+    return typeof val === "string" ? val : undefined;
+  }
 
-    function strArr(val: string | string[] | undefined): string[] {
-        if (!val) return [];
-        if (typeof val === "string") return val.split(",").filter(Boolean);
-        return val;
-    }
+  function strArr(val: string | string[] | undefined): string[] {
+    if (!val) return [];
+    if (typeof val === "string") return val.split(",").filter(Boolean);
+    return val;
+  }
 
-    const sort = str(searchParamsObj?.sort) || "relevance";
-    const categories = strArr(searchParamsObj?.category);
-    const dietary = strArr(searchParamsObj?.dietary);
-    const maxPriceRaw = str(searchParamsObj?.maxPrice);
-    const maxPrice = maxPriceRaw ? Number(maxPriceRaw) : undefined;
-    const ratingRaw = str(searchParamsObj?.rating);
-    const minRating = ratingRaw ? Math.min(...ratingRaw.split(",").map(Number)) : undefined;
+  const sort = str(searchParamsObj?.sort) || "relevance";
+  const categories = strArr(searchParamsObj?.category);
+  const dietary = strArr(searchParamsObj?.dietary);
+  const maxPriceRaw = str(searchParamsObj?.maxPrice);
+  const maxPrice = maxPriceRaw ? Number(maxPriceRaw) : undefined;
+  const ratingRaw = str(searchParamsObj?.rating);
+  const minRating = ratingRaw
+    ? Math.min(...ratingRaw.split(",").map(Number))
+    : undefined;
 
-    const pageRaw = str(searchParamsObj?.page);
-    const page = pageRaw ? parseInt(pageRaw, 10) : 1;
+  const pageRaw = str(searchParamsObj?.page);
+  const page = pageRaw ? parseInt(pageRaw, 10) : 1;
 
-    const categoryName = slug
-        .split("-")
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" ");
+  const categoryName = slug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 
-    /* Fetch products from Supabase, filtered by category when not "all" */
-    const allProducts = await fetchProducts({
-        categorySlug: slug !== "all" ? slug : undefined,
-    });
+  /* Fetch products from Supabase, filtered by category when not "all" */
+  const allProducts = await fetchProducts({
+    categorySlug: slug !== "all" ? slug : undefined,
+  });
 
-    /* Apply additional client-side filters for the display count */
-    let displayProducts = allProducts;
-    if (categories.length > 0) {
-        const catSet = new Set(categories);
-        displayProducts = displayProducts.filter((p) => p.categorySlug && catSet.has(p.categorySlug));
-    }
-    if (maxPrice !== undefined) {
-        displayProducts = displayProducts.filter((p) => p.price <= maxPrice);
-    }
-    if (dietary.length > 0) {
-        const dietSet = new Set(dietary);
-        displayProducts = displayProducts.filter((p) => p.badge && dietSet.has(p.badge));
-    }
-    if (minRating !== undefined) {
-        displayProducts = displayProducts.filter((p) => (p.rating ?? 0) >= minRating);
-    }
-    const totalProducts = displayProducts.length;
-    const categoryCounts = await fetchCategoryCounts();
-
-    return (
-        <div className="container mx-auto px-4 max-w-7xl py-6">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
-                <Link href="/" className="hover:text-primary transition-colors">
-                    Home
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5" />
-                <span className="text-foreground font-medium">{categoryName}</span>
-            </nav>
-
-
-
-            <div className="flex gap-8">
-                {/* Filter Sidebar */}
-                <FilterSidebar className="hidden lg:block" categoryCounts={categoryCounts} />
-
-                {/* Main Content */}
-                <div className="flex-1 min-w-0">
-                    {/* Top Bar */}
-                    <div className="flex items-center justify-between mb-6">
-                        <p className="text-sm text-muted-foreground">
-                            Showing <span className="font-semibold text-foreground">{totalProducts}</span>{" "}
-                            products
-                        </p>
-                        <SortDropdown />
-                    </div>
-
-                    {/* Product Grid */}
-                    <ProductGrid
-                        products={allProducts}
-                        sortBy={sort}
-                        categorySlug={slug}
-                        categories={categories}
-                        maxPrice={maxPrice}
-                        dietary={dietary}
-                        minRating={minRating}
-                        page={page}
-                    />
-                </div>
-            </div>
-        </div>
+  /* Apply additional client-side filters for the display count */
+  let displayProducts = allProducts;
+  if (categories.length > 0) {
+    const catSet = new Set(categories);
+    displayProducts = displayProducts.filter(
+      (p) => p.categorySlug && catSet.has(p.categorySlug),
     );
+  }
+  if (maxPrice !== undefined) {
+    displayProducts = displayProducts.filter((p) => p.price <= maxPrice);
+  }
+  if (dietary.length > 0) {
+    const dietSet = new Set(dietary);
+    displayProducts = displayProducts.filter(
+      (p) => p.badge && dietSet.has(p.badge),
+    );
+  }
+  if (minRating !== undefined) {
+    displayProducts = displayProducts.filter(
+      (p) => (p.rating ?? 0) >= minRating,
+    );
+  }
+  const totalProducts = displayProducts.length;
+  const categoryCounts = await fetchCategoryCounts();
+
+  return (
+    <div className="container mx-auto px-4 max-w-7xl py-6">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
+        <Link href="/" className="hover:text-primary transition-colors">
+          Home
+        </Link>
+        <ChevronRight className="w-3.5 h-3.5" />
+        <span className="text-foreground font-medium">{categoryName}</span>
+      </nav>
+
+      <div className="flex gap-8">
+        {/* Filter Sidebar */}
+        <FilterSidebar
+          className="hidden lg:block"
+          categoryCounts={categoryCounts}
+        />
+
+        {/* Main Content */}
+        <div className="flex-1 min-w-0">
+          {/* Top Bar */}
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-sm text-muted-foreground">
+              Showing{" "}
+              <span className="font-semibold text-foreground">
+                {totalProducts}
+              </span>{" "}
+              products
+            </p>
+            <SortDropdown />
+          </div>
+
+          {/* Product Grid */}
+          <ProductGrid
+            products={allProducts}
+            sortBy={sort}
+            categorySlug={slug}
+            categories={categories}
+            maxPrice={maxPrice}
+            dietary={dietary}
+            minRating={minRating}
+            page={page}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }

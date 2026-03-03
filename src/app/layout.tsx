@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "sonner";
@@ -10,9 +10,18 @@ const inter = Inter({
   variable: "--font-body",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#16a34a",
+};
+
 export const metadata: Metadata = {
   title: "FreshMart | Fresh Groceries, Delivered",
-  description: "Premium groceries delivered to your door. Farm-fresh produce, daily essentials, and more.",
+  description:
+    "Premium groceries delivered to your door. Farm-fresh produce, daily essentials, and more.",
+  manifest: "/manifest.json",
+  icons: {
+    apple: "/icons/icon-192x192.png",
+  },
 };
 
 export default function RootLayout({
@@ -22,9 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} font-body antialiased`}
-      >
+      <body className={`${inter.variable} font-body antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -48,4 +55,3 @@ export default function RootLayout({
     </html>
   );
 }
-

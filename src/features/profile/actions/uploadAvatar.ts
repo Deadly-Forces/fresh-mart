@@ -10,87 +10,94 @@ const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "webp", "gif"];
 const BUCKET_NAME = "avatars";
 
 export async function uploadAvatarAction(formData: FormData) {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-        return { error: "You must be logged in to update your avatar." };
-    }
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "You must be logged in to update your avatar." };
+  }
 
-    // Rate limit: 5 avatar uploads per minute per user
-    if (!rateLimit(`avatar:${user.id}`, 5, 60_000)) {
-        return { error: "Too many upload attempts. Please wait a moment." };
-    }
+  // Rate limit: 5 avatar uploads per minute per user
+  if (!rateLimit(`avatar:${user.id}`, 5, 60_000)) {
+    return { error: "Too many upload attempts. Please wait a moment." };
+  }
 
-    const file = formData.get("avatar") as File | null;
-    if (!file || file.size === 0) {
-        return { error: "No file provided." };
-    }
+  const file = formData.get("avatar") as File | null;
+  if (!file || file.size === 0) {
+    return { error: "No file provided." };
+  }
 
-    // Validate file type
-    if (!ALLOWED_TYPES.includes(file.type)) {
-        return { error: "Invalid file type. Please upload a JPEG, PNG, WebP, or GIF image." };
-    }
-
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
-        return { error: "File is too large. Maximum size is 2MB." };
-    }
-
-    // Determine file extension from MIME type (not user input) for security
-    const extensionMap: Record<string, string> = {
-        "image/jpeg": "jpg",
-        "image/png": "png",
-        "image/webp": "webp",
-        "image/gif": "gif",
+  // Validate file type
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    return {
+      error:
+        "Invalid file type. Please upload a JPEG, PNG, WebP, or GIF image.",
     };
-    const ext = extensionMap[file.type] || "jpg";
-    
-    // Double-check extension is allowed
-    if (!ALLOWED_EXTENSIONS.includes(ext)) {
-        return { error: "Invalid file type." };
-    }
+  }
 
-    const filePath = `${user.id}/avatar.${ext}`;
+  // Validate file size
+  if (file.size > MAX_FILE_SIZE) {
+    return { error: "File is too large. Maximum size is 2MB." };
+  }
 
-    // Convert File to ArrayBuffer for server-side upload
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+  // Determine file extension from MIME type (not user input) for security
+  const extensionMap: Record<string, string> = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/gif": "gif",
+  };
+  const ext = extensionMap[file.type] || "jpg";
 
-    // Upload to Supabase Storage (upsert to overwrite previous avatar)
-    const { error: uploadError } = await supabase.storage
-        .from(BUCKET_NAME)
-        .upload(filePath, buffer, {
-            cacheControl: "3600",
-            upsert: true,
-            contentType: file.type,
-        });
+  // Double-check extension is allowed
+  if (!ALLOWED_EXTENSIONS.includes(ext)) {
+    return { error: "Invalid file type." };
+  }
 
-    if (uploadError) {
-        console.error("Avatar upload error:", JSON.stringify(uploadError, null, 2));
-        return { error: `Failed to upload image: ${uploadError.message}` };
-    }
+  const filePath = `${user.id}/avatar.${ext}`;
 
-    // Get the public URL
-    const { data: urlData } = supabase.storage
-        .from(BUCKET_NAME)
-        .getPublicUrl(filePath);
+  // Convert File to ArrayBuffer for server-side upload
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
 
-    const avatarUrl = `${urlData.publicUrl}?t=${Date.now()}`; // Cache-bust
+  // Upload to Supabase Storage (upsert to overwrite previous avatar)
+  const { error: uploadError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .upload(filePath, buffer, {
+      cacheControl: "3600",
+      upsert: true,
+      contentType: file.type,
+    });
 
-    // Update the profile's avatar_url
-    const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ avatar_url: avatarUrl, updated_at: new Date().toISOString() })
-        .eq("id", user.id);
+  if (uploadError) {
+    console.error("Avatar upload error:", JSON.stringify(uploadError, null, 2));
+    return { error: `Failed to upload image: ${uploadError.message}` };
+  }
 
-    if (updateError) {
-        console.error("Profile avatar_url update error:", updateError);
-        return { error: "Image uploaded but failed to update profile. Please try again." };
-    }
+  // Get the public URL
+  const { data: urlData } = supabase.storage
+    .from(BUCKET_NAME)
+    .getPublicUrl(filePath);
 
-    revalidatePath("/profile");
-    revalidatePath("/");
+  const avatarUrl = `${urlData.publicUrl}?t=${Date.now()}`; // Cache-bust
 
-    return { success: true, avatarUrl };
+  // Update the profile's avatar_url
+  const { error: updateError } = await supabase
+    .from("profiles")
+    .update({ avatar_url: avatarUrl, updated_at: new Date().toISOString() })
+    .eq("id", user.id);
+
+  if (updateError) {
+    console.error("Profile avatar_url update error:", updateError);
+    return {
+      error: "Image uploaded but failed to update profile. Please try again.",
+    };
+  }
+
+  revalidatePath("/profile");
+  revalidatePath("/");
+
+  return { success: true, avatarUrl };
 }

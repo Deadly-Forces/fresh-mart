@@ -118,7 +118,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -157,7 +157,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "categories";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -223,7 +223,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "categories";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -259,7 +259,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "products";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -309,7 +309,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "product_variants";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -350,7 +350,14 @@ export type Database = {
           user_id: string | null;
           address_id: string | null;
           delivery_slot_id: string | null;
-          status: "pending" | "processing" | "confirmed" | "packed" | "out_for_delivery" | "delivered" | "cancelled";
+          status:
+            | "pending"
+            | "processing"
+            | "confirmed"
+            | "packed"
+            | "out_for_delivery"
+            | "delivered"
+            | "cancelled";
           subtotal: number | null;
           delivery_fee: number;
           discount: number;
@@ -371,7 +378,14 @@ export type Database = {
           user_id?: string | null;
           address_id?: string | null;
           delivery_slot_id?: string | null;
-          status?: "pending" | "processing" | "confirmed" | "packed" | "out_for_delivery" | "delivered" | "cancelled";
+          status?:
+            | "pending"
+            | "processing"
+            | "confirmed"
+            | "packed"
+            | "out_for_delivery"
+            | "delivered"
+            | "cancelled";
           subtotal?: number | null;
           delivery_fee?: number;
           discount?: number;
@@ -392,7 +406,14 @@ export type Database = {
           user_id?: string | null;
           address_id?: string | null;
           delivery_slot_id?: string | null;
-          status?: "pending" | "processing" | "confirmed" | "packed" | "out_for_delivery" | "delivered" | "cancelled";
+          status?:
+            | "pending"
+            | "processing"
+            | "confirmed"
+            | "packed"
+            | "out_for_delivery"
+            | "delivered"
+            | "cancelled";
           subtotal?: number | null;
           delivery_fee?: number;
           discount?: number;
@@ -429,7 +450,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "delivery_slots";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -485,7 +506,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "product_variants";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -544,7 +565,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "orders";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -670,7 +691,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "products";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -709,7 +730,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
 
@@ -749,6 +770,51 @@ export type Database = {
         };
         Relationships: [];
       };
+
+      push_subscriptions: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          endpoint: string;
+          p256dh: string;
+          auth: string;
+          user_agent: string | null;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          endpoint: string;
+          p256dh: string;
+          auth: string;
+          user_agent?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          endpoint?: string;
+          p256dh?: string;
+          auth?: string;
+          user_agent?: string | null;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "push_subscriptions_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
 
     Views: {};
@@ -763,7 +829,14 @@ export type Database = {
     Enums: {
       user_role: "customer" | "admin" | "delivery" | "picker";
       dietary_pref: "veg" | "non-veg" | "vegan";
-      order_status: "pending" | "processing" | "confirmed" | "packed" | "out_for_delivery" | "delivered" | "cancelled";
+      order_status:
+        | "pending"
+        | "processing"
+        | "confirmed"
+        | "packed"
+        | "out_for_delivery"
+        | "delivered"
+        | "cancelled";
       payment_method: "card" | "upi" | "wallet" | "cod";
       notification_type: "order_update" | "promo" | "system";
       coupon_type: "flat" | "percentage";

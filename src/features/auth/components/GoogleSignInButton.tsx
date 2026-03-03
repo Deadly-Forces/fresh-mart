@@ -6,81 +6,116 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, Loader2 } from "lucide-react";
 
 interface GoogleSignInButtonProps {
-    errorParam: string | null;
+  errorParam: string | null;
 }
 
 export function GoogleSignInButton({ errorParam }: GoogleSignInButtonProps) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const supabase = createClient();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const supabase = createClient();
 
-    const handleGoogleSignIn = async () => {
-        setError(null);
-        setIsLoading(true);
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setIsLoading(true);
 
-        try {
-            const { error: oauthError } = await supabase.auth.signInWithOAuth({
-                provider: "google",
-                options: {
-                    redirectTo: `${window.location.origin}/api/auth/callback`,
-                },
-            });
-            if (oauthError) throw oauthError;
-        } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : "Failed to sign in with Google. Please try again.";
-            setError(errorMessage);
-            setIsLoading(false);
-        }
-    };
+    try {
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/api/auth/callback`,
+        },
+      });
+      if (oauthError) throw oauthError;
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to sign in with Google. Please try again.";
+      setError(errorMessage);
+      setIsLoading(false);
+    }
+  };
 
-    return (
-        <>
-            <div className="text-center mb-8">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>
-                </div>
-                <h1 className="font-heading text-4xl text-foreground mb-2">
-                    Welcome to FreshMart
-                </h1>
-                <p className="font-body text-muted-foreground">
-                    Sign in with your Google account to get started
-                </p>
-            </div>
+  return (
+    <>
+      <div className="text-center mb-8">
+        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-primary"
+          >
+            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+            <path d="M9 18c-4.51 2-5-2-7-2" />
+          </svg>
+        </div>
+        <h1 className="font-heading text-4xl text-foreground mb-2">
+          Welcome to FreshMart
+        </h1>
+        <p className="font-body text-muted-foreground">
+          Sign in with your Google account to get started
+        </p>
+      </div>
 
-            {(error || errorParam) && (
-                <div className="flex items-center gap-2 p-3 mb-6 rounded-button bg-destructive/10 border border-destructive/20 text-destructive text-sm">
-                    <AlertCircle className="w-4 h-4 shrink-0" />
-                    <span>
-                        {error ||
-                            (errorParam === "AuthError"
-                                ? "Authentication failed. Please try again."
-                                : "An error occurred. Please try again.")}
-                    </span>
-                </div>
-            )}
+      {(error || errorParam) && (
+        <div className="flex items-center gap-2 p-3 mb-6 rounded-button bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>
+            {error ||
+              (errorParam === "AuthError"
+                ? "Authentication failed. Please try again."
+                : "An error occurred. Please try again.")}
+          </span>
+        </div>
+      )}
 
-            <Button
-                className="w-full h-12 text-base font-semibold gap-3"
-                onClick={handleGoogleSignIn}
-                disabled={isLoading}
+      <Button
+        className="w-full h-12 text-base font-semibold gap-3"
+        onClick={handleGoogleSignIn}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Redirecting...
+          </>
+        ) : (
+          <>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-                {isLoading ? (
-                    <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Redirecting...
-                    </>
-                ) : (
-                    <>
-                        <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z" fill="#FFC107" />
-                            <path d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z" fill="#FF3D00" />
-                            <path d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z" fill="#4CAF50" />
-                            <path d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z" fill="#1976D2" />
-                        </svg>
-                        Continue with Google
-                    </>
-                )}
-            </Button>
-        </>
-    );
+              <path
+                d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
+                fill="#FFC107"
+              />
+              <path
+                d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"
+                fill="#FF3D00"
+              />
+              <path
+                d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"
+                fill="#4CAF50"
+              />
+              <path
+                d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"
+                fill="#1976D2"
+              />
+            </svg>
+            Continue with Google
+          </>
+        )}
+      </Button>
+    </>
+  );
 }

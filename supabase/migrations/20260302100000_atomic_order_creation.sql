@@ -78,7 +78,7 @@ BEGIN
             product_snapshot
         ) VALUES (
             v_order_id,
-            (v_item->>'product_id'),
+            (v_item->>'product_id')::UUID,
             (v_item->>'quantity')::INTEGER,
             (v_item->>'price')::NUMERIC,
             v_item->'product_snapshot'

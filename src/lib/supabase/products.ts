@@ -50,7 +50,7 @@ function mapRow(p: any): MappedProduct {
 
 /** Fetch a single product by slug */
 export async function fetchProductBySlug(
-  slug: string
+  slug: string,
 ): Promise<MappedProduct | null> {
   const supabase = await createClient();
   const { data } = await supabase
@@ -78,10 +78,7 @@ export async function fetchProducts(opts?: {
   const needsCategoryFilter = opts?.categorySlug && opts.categorySlug !== "all";
   const columns = needsCategoryFilter ? PRODUCT_COLUMNS_INNER : PRODUCT_COLUMNS;
 
-  let query = supabase
-    .from("products")
-    .select(columns)
-    .eq("is_active", true);
+  let query = supabase.from("products").select(columns).eq("is_active", true);
 
   if (needsCategoryFilter) {
     query = query.eq("categories.slug", opts!.categorySlug!);
@@ -126,4 +123,22 @@ export async function fetchCategoryCounts(): Promise<Record<string, number>> {
     counts[cat] = (counts[cat] || 0) + 1;
   }
   return counts;
+}
+
+/** Fetch related products in the same category, excluding the given product */
+export async function fetchRelatedProducts(
+  categorySlug: string,
+  excludeId: string,
+  limit = 8,
+): Promise<MappedProduct[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("products")
+    .select(PRODUCT_COLUMNS_INNER)
+    .eq("is_active", true)
+    .eq("categories.slug", categorySlug)
+    .neq("id", excludeId)
+    .limit(limit);
+
+  return (data || []).map(mapRow);
 }
