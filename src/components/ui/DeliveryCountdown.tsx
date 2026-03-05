@@ -12,7 +12,7 @@ interface DeliveryCountdownProps {
 export function DeliveryCountdown({
   createdAt,
   status,
-  deliveryMinutes = 13,
+  deliveryMinutes = 15,
 }: DeliveryCountdownProps) {
   const [timeLeft, setTimeLeft] = useState("");
   // Optimistically show "Delivered" once the countdown reaches zero.

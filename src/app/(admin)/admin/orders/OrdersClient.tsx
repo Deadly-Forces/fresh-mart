@@ -1,31 +1,23 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { DeliveryCountdown } from "@/components/ui/DeliveryCountdown";
-import { updateOrderStatusAction } from "@/features/admin/actions/productActions";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const ORDER_STATUSES = [
     "processing",
+    "confirmed",
     "packed",
     "out_for_delivery",
     "delivered",
     "cancelled",
 ] as const;
 
-type OrderStatus = (typeof ORDER_STATUSES)[number];
-
-const orderStatusTabs = [
-    "all",
-    ...ORDER_STATUSES,
-] as const;
-
-type FilterTab = (typeof orderStatusTabs)[number];
+type FilterTab = "all" | (typeof ORDER_STATUSES)[number];
 
 interface OrderRow {
     id: string;
@@ -38,15 +30,13 @@ interface OrderRow {
     discountAmount: number;
     appliedPromocode: string | null;
     status: string;
+    paymentStatus: string;
     createdAt: string;
 }
 
-export function OrdersClient({ orders: initialOrders }: { orders: OrderRow[] }) {
-    const [orders, setOrders] = useState(initialOrders);
+export function OrdersClient({ orders }: { orders: OrderRow[] }) {
     const [filter, setFilter] = useState<FilterTab>("all");
     const [search, setSearch] = useState("");
-    const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
-    const [isPending, startTransition] = useTransition();
 
     const filteredOrders = orders.filter((o) => {
         if (filter !== "all" && o.status !== filter) return false;
@@ -61,33 +51,11 @@ export function OrdersClient({ orders: initialOrders }: { orders: OrderRow[] }) 
         return true;
     });
 
-    const handleStatusChange = (orderId: string, fullId: string, newStatus: OrderStatus) => {
-        setPendingIds((prev) => new Set(prev).add(fullId));
-        startTransition(async () => {
-            const result = await updateOrderStatusAction(fullId, newStatus);
-            if (result.error) {
-                toast.error(result.error);
-            } else {
-                setOrders((prev) =>
-                    prev.map((o) =>
-                        o.fullId === fullId ? { ...o, status: newStatus } : o,
-                    ),
-                );
-                toast.success(`Order #${orderId} → ${newStatus.replace(/_/g, " ")}`);
-            }
-            setPendingIds((prev) => {
-                const next = new Set(prev);
-                next.delete(fullId);
-                return next;
-            });
-        });
-    };
-
     return (
         <div className="space-y-6">
             {/* Filter Tabs */}
             <div className="flex flex-wrap gap-2">
-                {orderStatusTabs.map((tab) => {
+                {(["all", ...ORDER_STATUSES] as FilterTab[]).map((tab) => {
                     const count =
                         tab === "all"
                             ? orders.length
@@ -145,7 +113,7 @@ export function OrdersClient({ orders: initialOrders }: { orders: OrderRow[] }) 
                                     Status
                                 </th>
                                 <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
-                                    Change Status
+                                    Payment
                                 </th>
                                 <th className="px-4 py-3 text-right font-semibold text-muted-foreground text-xs">
                                     Actions
@@ -205,29 +173,14 @@ export function OrdersClient({ orders: initialOrders }: { orders: OrderRow[] }) 
                                             </div>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <select
-                                                value={o.status}
-                                                disabled={pendingIds.has(o.fullId)}
-                                                aria-label={`Change status for order #${o.id}`}
-                                                onChange={(e) =>
-                                                    handleStatusChange(
-                                                        o.id,
-                                                        o.fullId,
-                                                        e.target.value as OrderStatus,
-                                                    )
-                                                }
-                                                className={cn(
-                                                    "h-8 px-2 rounded-lg border border-border bg-background text-xs font-medium",
-                                                    "focus:outline-none focus:ring-2 focus:ring-primary/30",
-                                                    pendingIds.has(o.fullId) && "opacity-50 cursor-not-allowed",
-                                                )}
+                                            <span
+                                                className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${o.paymentStatus === "paid"
+                                                    ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                                                    : "bg-amber-100 text-amber-700 border border-amber-200"
+                                                    }`}
                                             >
-                                                {ORDER_STATUSES.map((s) => (
-                                                    <option key={s} value={s}>
-                                                        {s.replace(/_/g, " ")}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                                {o.paymentStatus === "paid" ? "Paid" : "Pending"}
+                                            </span>
                                         </td>
                                         <td className="px-4 py-3 text-right">
                                             <Link
@@ -245,7 +198,7 @@ export function OrdersClient({ orders: initialOrders }: { orders: OrderRow[] }) 
                 </div>
                 <div className="px-4 py-3 border-t border-border bg-secondary/30 text-xs text-muted-foreground">
                     Showing {filteredOrders.length} of {orders.length} order
-                    {orders.length !== 1 ? "s" : ""}
+                    {orders.length !== 1 ? "s" : ""} • Status updates automatically
                 </div>
             </div>
         </div>

@@ -75,6 +75,19 @@ export async function validatePromoCodeAction(code: string, cartTotal: number) {
       }
     }
 
+    // 5b. WELCOME coupons are for first-time users only (zero delivered orders)
+    if (coupon.code.startsWith("WELCOME") && user) {
+      const { count: orderCount } = await supabase
+        .from("orders")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id)
+        .eq("status", "delivered");
+
+      if ((orderCount ?? 0) > 0) {
+        return { error: "This coupon is only valid for your first order." };
+      }
+    }
+
     // 6. Check min order value
     if (coupon.min_order && cartTotal < Number(coupon.min_order)) {
       return {

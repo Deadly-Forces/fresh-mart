@@ -12,11 +12,15 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { RevenueChart } from "@/components/admin/RevenueChart";
+import { syncOrderStatuses } from "@/lib/orders/simulateProgress";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
+
+  // Auto-advance order statuses in the database
+  await syncOrderStatuses();
 
   // 1. Fetch Orders for KPIs (paginated to handle >1000)
   const ORDER_PAGE_SIZE = 1000;

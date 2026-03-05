@@ -867,8 +867,8 @@ export function ProfileDashboard({
                   {/* Calculate continuous percentage correctly handling Next.js hydration */}
                   {(() => {
                     const createdMs = new Date(order.created_at).getTime();
-                    // 13 minutes matching DeliveryCountdown
-                    const deliveryWindowMs = 13 * 60 * 1000;
+                    // 15 minutes matching DeliveryCountdown
+                    const deliveryWindowMs = 15 * 60 * 1000;
 
                     let progressPercent = 0;
                     if (now === null) {

@@ -4,10 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 
 /**
  * Automatic discount tiers:
- * - Variable discount: 10% off the cart subtotal (₹100 off every ₹1000)
- *   e.g. ₹1000 → ₹100 off, ₹1500 → ₹150 off, ₹2000 → ₹200 off, etc.
- * - First-time user bonus: ₹200 extra off on first order only
- * - First-time users get BOTH discounts stacked
+ * - Variable discount: 10% off the cart subtotal on orders ₹500+
+ *   e.g. ₹500 → ₹50 off, ₹1000 → ₹100 off, ₹1500 → ₹150 off, ₹2000 → ₹200 off
+ * - First-time user bonus: extra 20% off on first order (total 30%)
+ * - After first order, regular 10% applies
  */
 
 export interface AutoDiscount {
@@ -46,33 +46,47 @@ export async function getAutoDiscountsAction(
             const { count } = await supabase
                 .from("orders")
                 .select("*", { count: "exact", head: true })
-                .eq("user_id", user.id);
+                .eq("user_id", user.id)
+                .eq("status", "delivered");
 
             isFirstOrder = (count ?? 0) === 0;
         }
 
-        // 1. Variable discount: 10% off (₹100 per ₹1000)
-        //    Only applies if cart is ₹1000 or more
-        if (cartSubtotal >= 1000) {
-            const variableDiscount = Math.floor(cartSubtotal / 1000) * 100;
-            // Also handles ₹1500 → ₹150 (floor(1500/500)*50 = 150)
-            // Actually the pattern is: ₹1000→₹100, ₹1500→₹150, ₹2000→₹200
-            // That's exactly 10% of the cart value
-            const tenPercent = Math.floor(cartSubtotal * 0.1);
-            // Use the 10% calculation since it matches the user's pattern exactly
+        // Check how many orders the user has placed today (limit: 2 per day)
+        let todayOrderCount = 0;
+        if (user) {
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
+
+            const { count: todayCount } = await supabase
+                .from("orders")
+                .select("*", { count: "exact", head: true })
+                .eq("user_id", user.id)
+                .gte("created_at", todayStart.toISOString());
+
+            todayOrderCount = todayCount ?? 0;
+        }
+
+        // 1. First-time user bonus: 20% off (always, regardless of cart amount)
+        if (isFirstOrder) {
+            const extraDiscount = Math.floor(cartSubtotal * 0.2);
             discounts.push({
-                key: "variable",
-                label: `Save 10% on orders ₹1000+`,
-                amount: tenPercent,
+                key: "first_order",
+                label: "First order bonus — 20% off!",
+                amount: extraDiscount,
             });
         }
 
-        // 2. First-time user bonus: ₹200 off
-        if (isFirstOrder) {
+        // 2. Regular 10% discount on orders ₹500+ (max 2 per day)
+        //    First-time users also get this ON TOP if they meet ₹500 threshold
+        if (cartSubtotal >= 500 && todayOrderCount < 2) {
+            const regularDiscount = Math.floor(cartSubtotal * 0.1);
             discounts.push({
-                key: "first_order",
-                label: "Welcome bonus — ₹200 off your first order!",
-                amount: 200,
+                key: "variable",
+                label: isFirstOrder
+                    ? `Plus 10% regular discount on ₹500+`
+                    : `Save 10% on orders ₹500+ (${2 - todayOrderCount} left today)`,
+                amount: regularDiscount,
             });
         }
 
