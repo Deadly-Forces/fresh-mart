@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -35,8 +35,13 @@ interface OrderRow {
 }
 
 export function OrdersClient({ orders }: { orders: OrderRow[] }) {
+    const [mounted, setMounted] = useState(false);
     const [filter, setFilter] = useState<FilterTab>("all");
     const [search, setSearch] = useState("");
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const filteredOrders = orders.filter((o) => {
         if (filter !== "all" && o.status !== filter) return false;
@@ -50,6 +55,8 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
         }
         return true;
     });
+
+    if (!mounted) return null;
 
     return (
         <div className="space-y-6">
@@ -163,7 +170,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
                                                 <span className="text-muted-foreground text-xs">—</span>
                                             )}
                                         </td>
-                                        <td className="px-4 py-3">
+                                        <td className="px-4 py-3" suppressHydrationWarning>
                                             <div className="flex items-center gap-2">
                                                 <StatusBadge status={o.status} />
                                                 <DeliveryCountdown

@@ -10,11 +10,18 @@ export default async function AdminOrdersPage() {
 
   // Auto-advance order statuses in the database
   await syncOrderStatuses();
-  // Fetch orders
-  const { data: ordersData } = await supabase
-    .from("orders")
-    .select("id, total, subtotal, discount_amount, applied_promocode, status, payment_status, created_at, user_id, order_items(id)")
-    .order("created_at", { ascending: false });
+  let ordersData: any[] | null = null;
+  try {
+    const { data, error } = await supabase
+      .from("orders")
+      .select("id, total, subtotal, discount_amount, applied_promocode, status, payment_status, created_at, user_id, order_items(id)")
+      .order("created_at", { ascending: false });
+    if (!error) {
+      ordersData = data;
+    }
+  } catch (err) {
+    console.warn("Orders fetch failed:", err);
+  }
 
   const rawOrders = simulateOrderList(ordersData || []);
 
@@ -24,16 +31,23 @@ export default async function AdminOrdersPage() {
   ];
   let profileMap: Record<string, { name: string; phone: string }> = {};
   if (userIds.length > 0) {
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("id, name, phone")
-      .in("id", userIds);
-    profileMap = Object.fromEntries(
-      (profiles || []).map((p: any) => [
-        p.id,
-        { name: p.name || "Unknown", phone: p.phone || "N/A" },
-      ]),
-    );
+    try {
+      const { data: profiles, error } = await supabase
+        .from("profiles")
+        .select("id, name, phone")
+        .in("id", userIds);
+
+      if (!error && profiles) {
+        profileMap = Object.fromEntries(
+          profiles.map((p: any) => [
+            p.id,
+            { name: p.name || "Unknown", phone: p.phone || "N/A" },
+          ]),
+        );
+      }
+    } catch (err) {
+      console.warn("Profiles fetch failed:", err);
+    }
   }
 
   const orders = rawOrders.map((o: any) => ({

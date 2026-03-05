@@ -14,21 +14,22 @@ export function DeliveryCountdown({
   status,
   deliveryMinutes = 15,
 }: DeliveryCountdownProps) {
+  const [mounted, setMounted] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
-  // Optimistically show "Delivered" once the countdown reaches zero.
-  // The real DB status is shown via the `status` prop on next page load.
   const [countdownDone, setCountdownDone] = useState(false);
 
-  const isEffectivelyDelivered = status === "delivered" || countdownDone;
+  // Only render after mount to avoid hydration mismatch (Date.now() differs server/client)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    // Already delivered / cancelled — nothing to do
+    if (!mounted) return;
     if (status === "delivered" || status === "cancelled") return;
 
     const created = new Date(createdAt).getTime();
     const deadline = created + deliveryMinutes * 60 * 1000;
 
-    // If already past deadline on mount, mark done immediately (no interval)
     if (Date.now() >= deadline) {
       setCountdownDone(true);
       return;
@@ -50,9 +51,14 @@ export function DeliveryCountdown({
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [createdAt, status, deliveryMinutes]);
+  }, [createdAt, status, deliveryMinutes, mounted]);
+
+  // Return nothing during SSR to avoid hydration mismatch
+  if (!mounted) return null;
 
   if (status === "cancelled") return null;
+
+  const isEffectivelyDelivered = status === "delivered" || countdownDone;
 
   if (isEffectivelyDelivered) {
     return (

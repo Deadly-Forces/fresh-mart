@@ -77,32 +77,36 @@ export function simulateOrderList(orders: any[]) {
  * Only advances orders that are behind their expected status.
  */
 export async function syncOrderStatuses() {
-  const supabase = await createClient();
+  try {
+    const supabase = await createClient();
 
-  // Fetch all non-cancelled, non-delivered orders
-  const { data: activeOrders } = await supabase
-    .from("orders")
-    .select("id, status, payment_status, created_at")
-    .not("status", "in", '("cancelled","delivered")');
+    // Fetch all non-cancelled, non-delivered orders
+    const { data: activeOrders, error } = await supabase
+      .from("orders")
+      .select("id, status, payment_status, created_at")
+      .not("status", "in", '("cancelled","delivered")');
 
-  if (!activeOrders || activeOrders.length === 0) return;
+    if (error || !activeOrders || activeOrders.length === 0) return;
 
-  for (const order of activeOrders) {
-    const { status: expectedStatus, paymentStatus: expectedPayment } =
-      getExpectedStatus(order.created_at);
+    for (const order of activeOrders) {
+      const { status: expectedStatus, paymentStatus: expectedPayment } =
+        getExpectedStatus(order.created_at);
 
-    const currentIdx = STATUS_ORDER.indexOf(order.status as any);
-    const expectedIdx = STATUS_ORDER.indexOf(expectedStatus as any);
+      const currentIdx = STATUS_ORDER.indexOf(order.status as any);
+      const expectedIdx = STATUS_ORDER.indexOf(expectedStatus as any);
 
-    // Only advance, never go backwards
-    if (expectedIdx > currentIdx) {
-      await supabase
-        .from("orders")
-        .update({
-          status: expectedStatus as any,
-          payment_status: expectedPayment,
-        })
-        .eq("id", order.id);
+      // Only advance, never go backwards
+      if (expectedIdx > currentIdx) {
+        await supabase
+          .from("orders")
+          .update({
+            status: expectedStatus as any,
+            payment_status: expectedPayment,
+          })
+          .eq("id", order.id);
+      }
     }
+  } catch (err) {
+    console.warn("Failed to sync order statuses (maybe timeout):", err);
   }
 }

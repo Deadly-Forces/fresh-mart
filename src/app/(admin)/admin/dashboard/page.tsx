@@ -11,8 +11,8 @@ import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
-import { RevenueChart } from "@/components/admin/RevenueChart";
 import { syncOrderStatuses } from "@/lib/orders/simulateProgress";
+import { RevenueChart } from "@/components/admin/RevenueChart";
 
 export const dynamic = "force-dynamic";
 
@@ -28,20 +28,29 @@ export default async function AdminDashboardPage() {
   let orderFrom = 0;
   let hasMoreOrders = true;
 
-  while (hasMoreOrders) {
-    const { data: batch } = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .range(orderFrom, orderFrom + ORDER_PAGE_SIZE - 1);
+  try {
+    while (hasMoreOrders) {
+      const { data: batch, error } = await supabase
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(orderFrom, orderFrom + ORDER_PAGE_SIZE - 1);
 
-    if (batch && batch.length > 0) {
-      allOrders = allOrders.concat(batch);
-      orderFrom += ORDER_PAGE_SIZE;
-      hasMoreOrders = batch.length === ORDER_PAGE_SIZE;
-    } else {
-      hasMoreOrders = false;
+      if (error) {
+        console.warn("Error fetching dashboard orders batch:", error);
+        break;
+      }
+
+      if (batch && batch.length > 0) {
+        allOrders = allOrders.concat(batch);
+        orderFrom += ORDER_PAGE_SIZE;
+        hasMoreOrders = batch.length === ORDER_PAGE_SIZE;
+      } else {
+        hasMoreOrders = false;
+      }
     }
+  } catch (err) {
+    console.warn("Dashboard Orders fetch failed (maybe timeout):", err);
   }
 
   const orders = allOrders;
@@ -59,9 +68,17 @@ export default async function AdminDashboardPage() {
   ).length;
 
   // 2. Fetch Customers Count
-  const { count: customersCount } = await supabase
-    .from("profiles")
-    .select("*", { count: "exact", head: true });
+  let customersCount = 0;
+  try {
+    const { count, error } = await supabase
+      .from("profiles")
+      .select("*", { count: "exact", head: true });
+    if (!error) {
+      customersCount = count || 0;
+    }
+  } catch (err) {
+    console.warn("Customers count fetch failed:", err);
+  }
 
   // Compute period-over-period changes (last 7 days vs previous 7 days)
   const now = new Date();
@@ -142,14 +159,20 @@ export default async function AdminDashboardPage() {
 
   let profileMap: Record<string, string> = {};
   if (userIds.length > 0) {
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("id, name")
-      .in("id", userIds);
+    try {
+      const { data: profiles, error } = await supabase
+        .from("profiles")
+        .select("id, name")
+        .in("id", userIds);
 
-    profileMap = Object.fromEntries(
-      (profiles || []).map((p: any) => [p.id, p.name]),
-    );
+      if (!error && profiles) {
+        profileMap = Object.fromEntries(
+          profiles.map((p: any) => [p.id, p.name]),
+        );
+      }
+    } catch (err) {
+      console.warn("Recent order profiles fetch failed:", err);
+    }
   }
 
   const recentOrders = recent.map((o: any) => ({
@@ -160,13 +183,22 @@ export default async function AdminDashboardPage() {
   }));
 
   // 4. Fetch Low Stock Products (only active products)
-  const { data: lowStockData } = await supabase
-    .from("products")
-    .select("name, stock")
-    .eq("is_active", true)
-    .lte("stock", 20) // threshold of 20
-    .order("stock", { ascending: true })
-    .limit(5);
+  let lowStockData: any[] | null = [];
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("name, stock")
+      .eq("is_active", true)
+      .lte("stock", 20) // threshold of 20
+      .order("stock", { ascending: true })
+      .limit(5);
+
+    if (!error) {
+      lowStockData = data;
+    }
+  } catch (err) {
+    console.warn("Low stock fetch failed:", err);
+  }
 
   const lowStock = (lowStockData || []).map((p: any) => ({
     name: p.name,
