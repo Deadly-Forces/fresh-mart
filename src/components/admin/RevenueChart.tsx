@@ -64,15 +64,6 @@ export function RevenueChart({
     monthlyData,
 }: RevenueChartProps) {
     const [activePeriod, setActivePeriod] = useState<Period>("Weekly");
-    const [isMounted, setIsMounted] = useState(false);
-
-    // Recharts ResponsiveContainer often has SSR hydration mismatches
-    // because it can't know the container size on the server.
-    // The standard fix in Next.js App Router is to only render it on the client.
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
 
     const dataMap: Record<Period, ChartDataPoint[]> = {
         Daily: dailyData,
@@ -106,11 +97,7 @@ export function RevenueChart({
             </div>
 
             <div className="h-[280px]">
-                {!isMounted ? (
-                    <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
-                        Loading chart...
-                    </div>
-                ) : data.length === 0 ? (
+                {data.length === 0 ? (
                     <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
                         No revenue data available for this period.
                     </div>

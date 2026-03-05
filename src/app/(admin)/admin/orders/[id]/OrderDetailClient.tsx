@@ -3,7 +3,6 @@
 import { ChevronLeft, Package, User, MapPin, CreditCard, Clock, ReceiptText } from "lucide-react";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { format } from "date-fns";
 import Image from "next/image";
 
 interface OrderItem {
@@ -39,7 +38,14 @@ interface OrderDetail {
 }
 
 export function OrderDetailClient({ order }: { order: OrderDetail }) {
-    const formattedDate = format(new Date(order.createdAt), "PPP 'at' p");
+    const formattedDate = new Date(order.createdAt).toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+    });
 
     return (
         <div className="space-y-6">
@@ -119,8 +125,8 @@ export function OrderDetailClient({ order }: { order: OrderDetail }) {
                             <div className="flex justify-between items-center">
                                 <span className="text-muted-foreground">Status</span>
                                 <span className={`text-xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${order.paymentStatus === 'paid'
-                                        ? 'bg-emerald-100/50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800'
-                                        : 'bg-amber-100/50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800'
+                                    ? 'bg-emerald-100/50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800'
+                                    : 'bg-amber-100/50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800'
                                     }`}>
                                     {order.paymentStatus}
                                 </span>

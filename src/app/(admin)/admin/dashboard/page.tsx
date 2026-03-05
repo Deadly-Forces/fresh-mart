@@ -12,7 +12,7 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { syncOrderStatuses } from "@/lib/orders/simulateProgress";
-import { RevenueChart } from "@/components/admin/RevenueChart";
+import { RevenueChartClient } from "@/components/admin/RevenueChartClient";
 
 export const dynamic = "force-dynamic";
 
@@ -335,7 +335,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Revenue Chart */}
-      <RevenueChart
+      <RevenueChartClient
         dailyData={dailyData}
         weeklyData={weeklyData}
         monthlyData={monthlyData}
