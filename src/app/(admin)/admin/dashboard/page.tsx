@@ -11,6 +11,7 @@ import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
+import { RevenueChart } from "@/components/admin/RevenueChart";
 
 export const dynamic = "force-dynamic";
 
@@ -84,18 +85,18 @@ export default async function AdminDashboardPage() {
   const revenueChange =
     lastWeekRevenue > 0
       ? (((thisWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100).toFixed(
-          1,
-        )
+        1,
+      )
       : thisWeekRevenue > 0
         ? "+100"
         : "0";
   const ordersChange =
     lastWeekOrders.length > 0
       ? (
-          ((thisWeekOrders.length - lastWeekOrders.length) /
-            lastWeekOrders.length) *
-          100
-        ).toFixed(1)
+        ((thisWeekOrders.length - lastWeekOrders.length) /
+          lastWeekOrders.length) *
+        100
+      ).toFixed(1)
       : thisWeekOrders.length > 0
         ? "+100"
         : "0";
@@ -169,6 +170,94 @@ export default async function AdminDashboardPage() {
     threshold: 20,
   }));
 
+  // 5. Aggregate revenue data for the chart
+  const deliveredOrders = orders.filter((o: any) => o.status === "delivered");
+
+  // Helper: local YYYY-MM-DD key from a Date
+  const toLocalDateKey = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+  // --- Daily: last 7 days ---
+  const dailyMap = new Map<string, { date: Date; revenue: number; orders: number }>();
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+    const key = toLocalDateKey(d);
+    dailyMap.set(key, { date: d, revenue: 0, orders: 0 });
+  }
+  for (const o of deliveredOrders) {
+    const d = new Date(o.created_at);
+    const key = toLocalDateKey(d);
+    if (dailyMap.has(key)) {
+      const entry = dailyMap.get(key)!;
+      entry.revenue += Number(o.total || 0);
+      entry.orders += 1;
+    }
+  }
+  const dailyData = [...dailyMap.entries()].map(([, v]) => ({
+    label: v.date.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+    }),
+    revenue: Math.round(v.revenue * 100) / 100,
+    orders: v.orders,
+  }));
+
+  // --- Weekly: last 12 weeks (each ending on today's weekday) ---
+  const weeklyMap = new Map<number, { start: Date; end: Date; revenue: number; orders: number }>();
+  for (let i = 11; i >= 0; i--) {
+    const weekEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i * 7);
+    const weekStart = new Date(weekEnd.getFullYear(), weekEnd.getMonth(), weekEnd.getDate() - 6);
+    weeklyMap.set(i, { start: weekStart, end: weekEnd, revenue: 0, orders: 0 });
+  }
+  for (const o of deliveredOrders) {
+    const orderDate = new Date(o.created_at);
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const orderDayStart = new Date(orderDate.getFullYear(), orderDate.getMonth(), orderDate.getDate());
+    const diffDays = Math.floor((todayStart.getTime() - orderDayStart.getTime()) / (24 * 60 * 60 * 1000));
+    const weekIdx = Math.floor(diffDays / 7);
+    if (weekIdx >= 0 && weekIdx <= 11 && weeklyMap.has(weekIdx)) {
+      const entry = weeklyMap.get(weekIdx)!;
+      entry.revenue += Number(o.total || 0);
+      entry.orders += 1;
+    }
+  }
+  const weeklyData = [...weeklyMap.entries()]
+    .sort(([a], [b]) => b - a)
+    .map(([, v]) => ({
+      label: v.end.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+      }),
+      revenue: Math.round(v.revenue * 100) / 100,
+      orders: v.orders,
+    }));
+
+  // --- Monthly: last 12 months ---
+  const monthlyMap = new Map<string, { revenue: number; orders: number }>();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    monthlyMap.set(key, { revenue: 0, orders: 0 });
+  }
+  for (const o of deliveredOrders) {
+    const d = new Date(o.created_at);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    if (monthlyMap.has(key)) {
+      const entry = monthlyMap.get(key)!;
+      entry.revenue += Number(o.total || 0);
+      entry.orders += 1;
+    }
+  }
+  const monthlyData = [...monthlyMap.entries()].map(([key, v]) => {
+    const [year, month] = key.split("-");
+    const d = new Date(Number(year), Number(month) - 1, 1);
+    return {
+      label: d.toLocaleDateString("en-IN", { month: "short", year: "2-digit" }),
+      revenue: Math.round(v.revenue * 100) / 100,
+      orders: v.orders,
+    };
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex justify-end mb-2">
@@ -209,29 +298,12 @@ export default async function AdminDashboardPage() {
         })}
       </div>
 
-      {/* Revenue Chart placeholder */}
-      <div className="bg-card border border-border rounded-card p-6 shadow-sm">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-heading text-lg">Revenue Overview</h3>
-          <div className="flex gap-1">
-            {["Daily", "Weekly", "Monthly"].map((tab, i) => (
-              <button
-                key={tab}
-                className={`px-3 py-1 rounded-button text-xs font-medium ${
-                  i === 1
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-secondary"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="h-[280px] bg-secondary/30 rounded-button flex items-center justify-center text-muted-foreground text-sm border focus:outline-none">
-          📊 Revenue Chart (Recharts Dynamic Data Planned Here)
-        </div>
-      </div>
+      {/* Revenue Chart */}
+      <RevenueChart
+        dailyData={dailyData}
+        weeklyData={weeklyData}
+        monthlyData={monthlyData}
+      />
 
       {/* Two columns */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
