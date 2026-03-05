@@ -2,20 +2,92 @@ import Link from "next/link";
 import { FilterSidebar } from "@/features/filters/components/FilterSidebar";
 import { SortDropdown } from "@/features/filters/components/SortDropdown";
 import { ProductGrid } from "@/features/products/components/ProductGrid";
-import { Search as SearchIcon, Sparkles } from "lucide-react";
+import { Search as SearchIcon, Sparkles, Filter } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { fetchProducts } from "@/lib/supabase/products";
+
+function str(val: string | string[] | undefined): string | undefined {
+  return typeof val === "string" ? val : undefined;
+}
+
+function strArr(val: string | string[] | undefined): string[] {
+  if (!val) return [];
+  if (typeof val === "string") return val.split(",").filter(Boolean);
+  return val;
+}
 
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const params = await searchParams;
-  const query = params.q || "";
-  const page = params.page ? parseInt(params.page, 10) : 1;
+  const query = str(params?.q) || "";
+  const sort = str(params?.sort) || "relevance";
+  const categories = strArr(params?.category);
+  const dietary = strArr(params?.dietary);
+  const brands = strArr(params?.brand);
+  const maxPriceRaw = str(params?.maxPrice);
+  const maxPrice = maxPriceRaw ? Number(maxPriceRaw) : undefined;
+  const ratingRaw = str(params?.rating);
+  const minRating = ratingRaw
+    ? Math.min(...ratingRaw.split(",").map(Number))
+    : undefined;
+  const inStock = str(params?.inStock) === "1";
+  const page = params?.page ? parseInt(str(params.page) || "1", 10) : 1;
 
   // Fetch products from DB so ProductGrid doesn't need the 570KB mock import
   const products = query ? await fetchProducts() : [];
+
+  // Calculate result count after applying filters (mirrors ProductGrid logic)
+  let displayProducts = [...products];
+  if (query) {
+    let ql = query.toLowerCase().trim();
+    if (ql.endsWith("s") && ql.length > 3) ql = ql.slice(0, -1);
+    displayProducts = displayProducts.filter((p) => {
+      const nameMatch = p.name.toLowerCase().includes(ql);
+      const catMatch = p.categorySlug?.toLowerCase().includes(ql);
+      const brandMatch = p.brand?.toLowerCase().includes(ql);
+      return nameMatch || catMatch || brandMatch;
+    });
+  }
+  if (categories.length > 0) {
+    const catSet = new Set(categories);
+    displayProducts = displayProducts.filter(
+      (p) => p.categorySlug && catSet.has(p.categorySlug),
+    );
+  }
+  if (maxPrice !== undefined) {
+    displayProducts = displayProducts.filter((p) => p.price <= maxPrice);
+  }
+  if (dietary.length > 0) {
+    const dietSet = new Set(dietary);
+    displayProducts = displayProducts.filter(
+      (p) => p.badge && dietSet.has(p.badge),
+    );
+  }
+  if (brands.length > 0) {
+    const brandSet = new Set(brands);
+    displayProducts = displayProducts.filter(
+      (p) => p.brand && brandSet.has(p.brand),
+    );
+  }
+  if (minRating !== undefined) {
+    displayProducts = displayProducts.filter(
+      (p) => (p.rating ?? 0) >= minRating,
+    );
+  }
+  if (inStock) {
+    displayProducts = displayProducts.filter((p) => (p.stock ?? 1) > 0);
+  }
+  const totalResults = displayProducts.length;
 
   return (
     <div>
@@ -68,13 +140,40 @@ export default async function SearchPage({
           <div className="flex-1 min-w-0">
             {query && (
               <div className="flex items-center justify-between mb-6 bg-background/70 backdrop-blur-sm rounded-xl border border-border/50 px-4 py-3">
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mr-auto">
                   <span className="font-semibold bg-gradient-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
-                    12
+                    {totalResults}
                   </span>{" "}
                   results
                 </p>
-                <SortDropdown />
+                <div className="flex items-center gap-3">
+                  <Sheet>
+                    <SheetTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="lg:hidden gap-1.5 rounded-lg border-border/50"
+                      >
+                        <Filter className="w-4 h-4" />
+                        Filters
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent
+                      side="right"
+                      className="w-[300px] p-0 flex flex-col sm:max-w-md"
+                    >
+                      <SheetHeader className="px-5 py-4 border-b border-border/50 text-left">
+                        <SheetTitle className="text-lg font-bold">
+                          Filters
+                        </SheetTitle>
+                      </SheetHeader>
+                      <div className="flex-1 overflow-y-auto px-5 py-2">
+                        <FilterSidebar className="w-full border-none shadow-none bg-transparent" />
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                  <SortDropdown />
+                </div>
               </div>
             )}
 
@@ -82,6 +181,13 @@ export default async function SearchPage({
               <ProductGrid
                 products={products}
                 searchQuery={query}
+                sortBy={sort}
+                categories={categories}
+                maxPrice={maxPrice}
+                dietary={dietary}
+                minRating={minRating}
+                brands={brands}
+                inStock={inStock}
                 page={page}
               />
             ) : (

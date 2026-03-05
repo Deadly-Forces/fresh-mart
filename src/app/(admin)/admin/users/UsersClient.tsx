@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Search, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { updateUserRoleAction } from "@/features/admin/actions/productActions";
 
 interface UserRow {
     id: string;
@@ -18,6 +20,10 @@ interface UserRow {
 
 export function UsersClient({ users }: { users: UserRow[] }) {
     const [search, setSearch] = useState("");
+    const [isPending, startTransition] = useTransition();
+    const [updatingId, setUpdatingId] = useState<string | null>(null);
+    const [roleMsg, setRoleMsg] = useState("");
+    const router = useRouter();
 
     const filtered = users.filter((u) => {
         if (!search) return true;
@@ -46,6 +52,21 @@ export function UsersClient({ users }: { users: UserRow[] }) {
         URL.revokeObjectURL(url);
     };
 
+    const handleRoleChange = (userId: string, newRole: string) => {
+        setUpdatingId(userId);
+        setRoleMsg("");
+        startTransition(async () => {
+            const result = await updateUserRoleAction(userId, newRole as "customer" | "admin" | "delivery");
+            setUpdatingId(null);
+            if (result.error) {
+                setRoleMsg(result.error);
+                setTimeout(() => setRoleMsg(""), 3000);
+            } else {
+                router.refresh();
+            }
+        });
+    };
+
     return (
         <>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -67,6 +88,12 @@ export function UsersClient({ users }: { users: UserRow[] }) {
                     <Download className="w-4 h-4" /> Export CSV
                 </Button>
             </div>
+
+            {roleMsg && (
+                <div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+                    {roleMsg}
+                </div>
+            )}
 
             <div className="bg-card border border-border rounded-card overflow-hidden">
                 <div className="overflow-x-auto">
@@ -135,11 +162,18 @@ export function UsersClient({ users }: { users: UserRow[] }) {
                                             {u.joined}
                                         </td>
                                         <td className="px-4 py-3">
-                                            <span
-                                                className={`px-2 py-0.5 text-xs rounded-pill font-medium capitalize ${u.role === "admin" ? "bg-primary/10 text-primary" : "bg-success/10 text-success"}`}
+                                            <select
+                                                value={u.role}
+                                                onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                                                disabled={isPending && updatingId === u.id}
+                                                title={`Role for ${u.name}`}
+                                                className={`px-2 py-1 text-xs rounded-md border border-border bg-background capitalize cursor-pointer ${isPending && updatingId === u.id ? "opacity-50" : ""
+                                                    }`}
                                             >
-                                                {u.role}
-                                            </span>
+                                                <option value="customer">Customer</option>
+                                                <option value="admin">Admin</option>
+                                                <option value="delivery">Delivery</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 ))

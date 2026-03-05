@@ -198,6 +198,150 @@ export async function updateProductStockAction(
   }
 }
 
+// Validation schema for creating a product
+const productCreateSchema = z.object({
+  name: z.string().min(1, "Name is required").max(200),
+  slug: z
+    .string()
+    .min(1)
+    .max(200)
+    .regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
+  description: z.string().max(5000).optional(),
+  price: z.number().positive("Price must be positive").max(100000),
+  compare_price: z.number().positive().max(100000).nullable().optional(),
+  stock: z.number().int().min(0).max(1000000),
+  unit: z.string().max(50).optional(),
+  category_id: z.string().uuid().nullable().optional(),
+  is_active: z.boolean(),
+  images: z.array(z.string().url().max(1000)).max(10).optional(),
+});
+
+export async function createProductAction(data: {
+  name: string;
+  slug: string;
+  description?: string;
+  price: number;
+  compare_price?: number | null;
+  stock: number;
+  unit?: string;
+  category_id?: string | null;
+  is_active: boolean;
+  images?: string[];
+}) {
+  try {
+    const validation = productCreateSchema.safeParse(data);
+    if (!validation.success) {
+      return {
+        error: validation.error.issues[0]?.message || "Invalid product data.",
+      };
+    }
+
+    const { supabase } = await requireAdmin();
+
+    const sanitizedData = {
+      name: sanitizeString(validation.data.name, 200)!,
+      slug: validation.data.slug,
+      description: validation.data.description
+        ? stripHtml(validation.data.description)
+        : null,
+      price: validation.data.price,
+      compare_price: validation.data.compare_price ?? null,
+      stock: validation.data.stock,
+      unit: validation.data.unit
+        ? (sanitizeString(validation.data.unit, 50) ?? null)
+        : null,
+      category_id: validation.data.category_id ?? null,
+      is_active: validation.data.is_active,
+      images: validation.data.images ?? [],
+    };
+
+    const { error } = await supabase.from("products").insert(sanitizedData);
+
+    if (error) {
+      console.error("Error creating product:", error);
+      return { error: error.message };
+    }
+
+    revalidatePath("/admin/products");
+    revalidatePath("/admin/categories");
+    revalidatePath("/admin/dashboard");
+    revalidatePath("/shop");
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "An unexpected error occurred." };
+  }
+}
+
+export async function updateProductImagesAction(
+  productId: string,
+  images: string[],
+) {
+  try {
+    if (!isValidUUID(productId)) {
+      return { error: "Invalid product ID." };
+    }
+
+    // Validate each URL
+    const urlSchema = z.array(z.string().url().max(1000)).max(10);
+    const validation = urlSchema.safeParse(images);
+    if (!validation.success) {
+      return { error: "Invalid image URLs." };
+    }
+
+    const { supabase } = await requireAdmin();
+
+    const { error } = await supabase
+      .from("products")
+      .update({ images: validation.data })
+      .eq("id", productId);
+
+    if (error) {
+      console.error("Error updating product images:", error);
+      return { error: error.message };
+    }
+
+    revalidatePath("/admin/products");
+    revalidatePath("/shop");
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "An unexpected error occurred." };
+  }
+}
+
+export async function updateUserRoleAction(
+  userId: string,
+  role: "customer" | "admin" | "delivery",
+) {
+  try {
+    if (!isValidUUID(userId)) {
+      return { error: "Invalid user ID." };
+    }
+
+    const roleSchema = z.enum(["customer", "admin", "delivery"]);
+    const validation = roleSchema.safeParse(role);
+    if (!validation.success) {
+      return { error: "Invalid role." };
+    }
+
+    const { supabase } = await requireAdmin();
+
+    const { error } = await supabase
+      .from("profiles")
+      .update({ role: validation.data })
+      .eq("id", userId);
+
+    if (error) {
+      console.error("Error updating user role:", error);
+      return { error: error.message };
+    }
+
+    revalidatePath("/admin/users");
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "An unexpected error occurred." };
+  }
+}
+
 export async function updateCategoryAction(
   categoryId: string,
   data: {

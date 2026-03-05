@@ -1,8 +1,7 @@
-import { Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { ExportButton } from "./ExportButton";
 
 export const dynamic = "force-dynamic";
 
@@ -124,9 +123,12 @@ export default async function AdminAnalyticsPage() {
       <section className="bg-card border border-border rounded-card p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-heading text-lg">Revenue Analytics</h3>
-          <Button variant="outline" size="sm" className="gap-1">
-            <Download className="w-4 h-4" /> Export
-          </Button>
+          <ExportButton
+            label="Export"
+            fileName="revenue-analytics.csv"
+            headers={["Day", "Revenue"]}
+            rows={revenueByDay.map((d) => [d.day, d.revenue.toFixed(2)])}
+          />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           <div className="bg-secondary/50 rounded-button p-4 text-center">
@@ -173,9 +175,17 @@ export default async function AdminAnalyticsPage() {
       <section className="bg-card border border-border rounded-card p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-heading text-lg">Top Selling Products</h3>
-          <Button variant="outline" size="sm" className="gap-1">
-            <Download className="w-4 h-4" /> Export
-          </Button>
+          <ExportButton
+            label="Export"
+            fileName="top-products.csv"
+            headers={["#", "Product", "Units Sold", "Revenue"]}
+            rows={topProducts.map((p, i) => [
+              String(i + 1),
+              p.name,
+              String(p.sold),
+              p.revenue.toFixed(2),
+            ])}
+          />
         </div>
         <table className="w-full text-sm">
           <thead>
@@ -222,9 +232,16 @@ export default async function AdminAnalyticsPage() {
       <section className="bg-card border border-border rounded-card p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-heading text-lg">Customer Analytics</h3>
-          <Button variant="outline" size="sm" className="gap-1">
-            <Download className="w-4 h-4" /> Export
-          </Button>
+          <ExportButton
+            label="Export"
+            fileName="customer-analytics.csv"
+            headers={["Customer", "Orders", "Total Spent"]}
+            rows={customerStats.map((c) => [
+              c.name,
+              String(c.orderCount),
+              c.spent.toFixed(2),
+            ])}
+          />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Order status breakdown */}

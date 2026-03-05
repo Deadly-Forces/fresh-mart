@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { deleteOrderAction } from "@/features/profile/actions/deleteOrder";
-import { ShoppingBag, CalendarDays, Package, RefreshCw, ChevronRight, Trash2, Loader2 } from "lucide-react";
+import { cancelOrderAction } from "@/features/profile/actions/cancelOrder";
+import { ShoppingBag, CalendarDays, Package, RefreshCw, ChevronRight, Trash2, Loader2, XCircle, FileDown, MapPin, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,11 @@ import dynamic from "next/dynamic";
 
 const DeliveryCountdown = dynamic(
     () => import("@/components/ui/DeliveryCountdown").then((m) => m.DeliveryCountdown),
+    { ssr: false }
+);
+
+const OrderTrackingMap = dynamic(
+    () => import("@/features/profile/components/OrderTrackingMap").then((m) => m.OrderTrackingMap),
     { ssr: false }
 );
 
@@ -27,6 +33,9 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
     const [localOrders, setLocalOrders] = useState<UserOrder[]>(orders);
     const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [orderToCancel, setOrderToCancel] = useState<string | null>(null);
+    const [isCancelling, setIsCancelling] = useState(false);
+    const [trackingOrderId, setTrackingOrderId] = useState<string | null>(null);
     const [now, setNow] = useState<number | null>(null);
 
     useEffect(() => {
@@ -55,6 +64,42 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
         } finally {
             setIsDeleting(false);
             setOrderToDelete(null);
+        }
+    };
+
+    const handleCancelOrder = async () => {
+        if (!orderToCancel) return;
+        setIsCancelling(true);
+        try {
+            const result = await cancelOrderAction(orderToCancel);
+            if (result.error) {
+                toast.error(result.error);
+            } else {
+                setLocalOrders((prev) =>
+                    prev.map((o) =>
+                        o.id === orderToCancel ? { ...o, status: "cancelled" as const } : o
+                    )
+                );
+                toast.success("Order cancelled successfully. Stock has been restored.");
+            }
+        } catch {
+            toast.error("Failed to cancel order.");
+        } finally {
+            setIsCancelling(false);
+            setOrderToCancel(null);
+        }
+    };
+
+    const isTrackable = (status: string) =>
+        ["pending", "processing", "confirmed", "packed", "out_for_delivery"].includes(status);
+
+    const handleDownloadInvoice = async (order: UserOrder) => {
+        try {
+            const { generateInvoice } = await import("@/lib/generateInvoice");
+            generateInvoice(order);
+            toast.success("Invoice downloaded!");
+        } catch {
+            toast.error("Failed to generate invoice.");
         }
     };
 
@@ -141,6 +186,15 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                 if (order.status === "packed") progressPercent = Math.max(progressPercent, 50);
                                 if (order.status === "out_for_delivery") progressPercent = Math.max(progressPercent, 75);
                             }
+
+                            const isSimulatedDelivered = progressPercent >= 100 || order.status === "delivered";
+                            const actualDeliveryMs = createdMs + deliveryWindowMs;
+                            const oneHourMs = 60 * 60 * 1000;
+                            const twoHoursMs = 2 * 60 * 60 * 1000;
+
+                            const canCancel = !isSimulatedDelivered && ["pending", "processing", "confirmed"].includes(order.status) && order.status !== "cancelled";
+                            const canReturn = isSimulatedDelivered && order.status !== "cancelled" && (now ? (now - actualDeliveryMs) < oneHourMs : false);
+                            const canReplaceOnly = isSimulatedDelivered && order.status !== "cancelled" && !canReturn && (now ? (now - actualDeliveryMs) < twoHoursMs : false);
 
                             return (
                                 <>
@@ -326,8 +380,82 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                             </div>
                                         )}
 
-                                        {/* Delete order button — always visible */}
-                                        <div className="pt-4 border-t border-border/50 mt-4 flex justify-end">
+                                        {/* Order actions */}
+                                        <div className="pt-4 border-t border-border/50 mt-4 flex justify-end gap-2 flex-wrap">
+                                            {isTrackable(order.status) && (
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className={`gap-1.5 h-8 text-xs font-semibold rounded-full active:scale-95 transition-all ${trackingOrderId === order.id
+                                                        ? "bg-primary text-primary-foreground border-primary"
+                                                        : "text-blue-600 hover:bg-blue-50 border-blue-300"
+                                                        }`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setTrackingOrderId(
+                                                            trackingOrderId === order.id ? null : order.id
+                                                        );
+                                                    }}
+                                                >
+                                                    <MapPin className="w-3.5 h-3.5" />
+                                                    {trackingOrderId === order.id ? "Hide Map" : "Track Order"}
+                                                </Button>
+                                            )}
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                className="gap-1.5 h-8 text-xs font-semibold rounded-full active:scale-95 transition-transform"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleDownloadInvoice(order);
+                                                }}
+                                            >
+                                                <FileDown className="w-3.5 h-3.5" /> Invoice
+                                            </Button>
+                                            {canReturn && (
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="gap-1.5 h-8 text-xs font-semibold rounded-full text-rose-600 hover:bg-rose-50 hover:text-rose-700 border-rose-300 active:scale-95 transition-all"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        router.push(`/profile/returns/${order.id}`);
+                                                    }}
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" /> Return / Replace
+                                                </Button>
+                                            )}
+                                            {canReplaceOnly && (
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="gap-1.5 h-8 text-xs font-semibold rounded-full text-amber-600 hover:bg-amber-50 hover:text-amber-700 border-amber-300 active:scale-95 transition-all"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        router.push(`/profile/returns/${order.id}?type=replace`);
+                                                    }}
+                                                >
+                                                    <RotateCcw className="w-3.5 h-3.5" /> Replace Only
+                                                </Button>
+                                            )}
+                                            {canCancel && (
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="gap-1.5 h-8 text-xs font-semibold rounded-full text-amber-600 hover:bg-amber-50 hover:text-amber-700 border-amber-300 active:scale-95 transition-all"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setOrderToCancel(order.id);
+                                                    }}
+                                                >
+                                                    <XCircle className="w-3.5 h-3.5" /> Cancel Order
+                                                </Button>
+                                            )}
                                             <Button
                                                 type="button"
                                                 variant="outline"
@@ -341,6 +469,16 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                                 <Trash2 className="w-3.5 h-3.5" /> Delete Order
                                             </Button>
                                         </div>
+
+                                        {/* Inline tracking map */}
+                                        {trackingOrderId === order.id && (
+                                            <OrderTrackingMap
+                                                createdAt={order.created_at}
+                                                status={order.status}
+                                                orderId={order.id}
+                                                progressPercent={progressPercent}
+                                            />
+                                        )}
                                     </div>
                                 </>
                             );
@@ -376,6 +514,39 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                 <><Loader2 className="w-4 h-4 animate-spin" /> Deleting...</>
                             ) : (
                                 <><Trash2 className="w-4 h-4" /> Delete Order</>
+                            )}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* ═══════ CANCEL ORDER CONFIRMATION DIALOG ═══════ */}
+            <Dialog open={!!orderToCancel} onOpenChange={(open) => { if (!open) setOrderToCancel(null); }}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Cancel Order</DialogTitle>
+                        <DialogDescription>
+                            Are you sure you want to cancel this order? Stock will be restored and this action cannot be undone.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="gap-2 sm:gap-0">
+                        <Button
+                            variant="outline"
+                            onClick={() => setOrderToCancel(null)}
+                            disabled={isCancelling}
+                        >
+                            Keep Order
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={handleCancelOrder}
+                            disabled={isCancelling}
+                            className="gap-2 bg-amber-600 hover:bg-amber-700"
+                        >
+                            {isCancelling ? (
+                                <><Loader2 className="w-4 h-4 animate-spin" /> Cancelling...</>
+                            ) : (
+                                <><XCircle className="w-4 h-4" /> Cancel Order</>
                             )}
                         </Button>
                     </DialogFooter>

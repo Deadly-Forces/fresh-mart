@@ -28,6 +28,7 @@ export type Database = {
           dietary_preference: "veg" | "non-veg" | "vegan" | null;
           country_code: string | null;
           delivery_slot: string | null;
+          loyalty_points: number;
           created_at: string;
           updated_at: string | null;
         };
@@ -42,6 +43,7 @@ export type Database = {
           dietary_preference?: "veg" | "non-veg" | "vegan" | null;
           country_code?: string | null;
           delivery_slot?: string | null;
+          loyalty_points?: number;
           created_at?: string;
           updated_at?: string | null;
         };
@@ -56,6 +58,7 @@ export type Database = {
           dietary_preference?: "veg" | "non-veg" | "vegan" | null;
           country_code?: string | null;
           delivery_slot?: string | null;
+          loyalty_points?: number;
           created_at?: string;
           updated_at?: string | null;
         };
@@ -863,6 +866,224 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+
+      newsletter_subscribers: {
+        Row: {
+          id: string;
+          email: string;
+          subscribed_at: string | null;
+          is_active: boolean | null;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          subscribed_at?: string | null;
+          is_active?: boolean | null;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          subscribed_at?: string | null;
+          is_active?: boolean | null;
+        };
+        Relationships: [];
+      };
+
+      return_requests: {
+        Row: {
+          id: string;
+          order_id: string;
+          user_id: string;
+          reason: string;
+          description: string | null;
+          images: string[] | null;
+          status: string;
+          refund_amount: number | null;
+          admin_notes: string | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          order_id: string;
+          user_id: string;
+          reason: string;
+          description?: string | null;
+          images?: string[] | null;
+          status?: string;
+          refund_amount?: number | null;
+          admin_notes?: string | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          order_id?: string;
+          user_id?: string;
+          reason?: string;
+          description?: string | null;
+          images?: string[] | null;
+          status?: string;
+          refund_amount?: number | null;
+          admin_notes?: string | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "return_requests_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "return_requests_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+
+      referrals: {
+        Row: {
+          id: string;
+          referrer_id: string;
+          referred_id: string;
+          status: string;
+          reward_points: number | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          referrer_id: string;
+          referred_id: string;
+          status?: string;
+          reward_points?: number | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          referrer_id?: string;
+          referred_id?: string;
+          status?: string;
+          reward_points?: number | null;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "referrals_referrer_id_fkey";
+            columns: ["referrer_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "referrals_referred_id_fkey";
+            columns: ["referred_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+
+      loyalty_transactions: {
+        Row: {
+          id: string;
+          user_id: string;
+          order_id: string | null;
+          type: string;
+          points: number;
+          description: string;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          order_id?: string | null;
+          type: string;
+          points: number;
+          description: string;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          order_id?: string | null;
+          type?: string;
+          points?: number;
+          description?: string;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_transactions_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "loyalty_transactions_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+
+      user_addresses: {
+        Row: {
+          id: string;
+          user_id: string;
+          label: string;
+          building: string | null;
+          street: string | null;
+          area: string | null;
+          landmark: string | null;
+          city: string;
+          state: string;
+          pincode: string;
+          is_default: boolean | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          label: string;
+          building?: string | null;
+          street?: string | null;
+          area?: string | null;
+          landmark?: string | null;
+          city: string;
+          state: string;
+          pincode: string;
+          is_default?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          label?: string;
+          building?: string | null;
+          street?: string | null;
+          area?: string | null;
+          landmark?: string | null;
+          city?: string;
+          state?: string;
+          pincode?: string;
+          is_default?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
       };
     };
 

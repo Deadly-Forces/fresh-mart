@@ -6,40 +6,45 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Save, Plus, X, GripVertical } from "lucide-react";
+import { ArrowLeft, Save, Plus, X } from "lucide-react";
 import Link from "next/link";
-import { updateProductAction, updateProductImagesAction } from "@/features/admin/actions/productActions";
+import { createProductAction } from "@/features/admin/actions/productActions";
 
-interface ProductEditFormProps {
-  product: {
-    id: string;
-    name: string;
-    description: string | null;
-    price: number;
-    compare_price: number | null;
-    stock: number;
-    unit: string | null;
-    is_active: boolean;
-    images: string[];
-    category_name: string | null;
-  };
+interface AddProductFormProps {
+  categories: { id: string; name: string }[];
 }
 
-export function ProductEditForm({ product }: ProductEditFormProps) {
-  const [name, setName] = useState(product.name);
-  const [description, setDescription] = useState(product.description || "");
-  const [price, setPrice] = useState(product.price);
-  const [comparePrice, setComparePrice] = useState(product.compare_price || 0);
-  const [stock, setStock] = useState(product.stock);
-  const [unit, setUnit] = useState(product.unit || "each");
-  const [isActive, setIsActive] = useState(product.is_active);
-  const [images, setImages] = useState<string[]>(product.images || []);
+export function AddProductForm({ categories }: AddProductFormProps) {
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState<number>(0);
+  const [comparePrice, setComparePrice] = useState<number>(0);
+  const [stock, setStock] = useState<number>(0);
+  const [unit, setUnit] = useState("each");
+  const [categoryId, setCategoryId] = useState("");
+  const [isActive, setIsActive] = useState(true);
+  const [images, setImages] = useState<string[]>([]);
   const [newImageUrl, setNewImageUrl] = useState("");
   const [isPending, startTransition] = useTransition();
-  const [isImagesPending, startImagesTransition] = useTransition();
-  const [saved, setSaved] = useState(false);
-  const [imageError, setImageError] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
+
+  const generateSlug = (value: string) => {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 200);
+  };
+
+  const handleNameChange = (value: string) => {
+    setName(value);
+    if (!slug || slug === generateSlug(name)) {
+      setSlug(generateSlug(value));
+    }
+  };
 
   const addImage = () => {
     const trimmed = newImageUrl.trim();
@@ -47,62 +52,52 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
     try {
       new URL(trimmed);
     } catch {
-      setImageError("Please enter a valid URL.");
+      setError("Please enter a valid image URL.");
       return;
     }
     if (images.length >= 10) {
-      setImageError("Maximum 10 images allowed.");
+      setError("Maximum 10 images allowed.");
       return;
     }
     setImages([...images, trimmed]);
     setNewImageUrl("");
-    setImageError("");
+    setError("");
   };
 
   const removeImage = (index: number) => {
     setImages(images.filter((_, i) => i !== index));
   };
 
-  const moveImage = (from: number, to: number) => {
-    if (to < 0 || to >= images.length) return;
-    const updated = [...images];
-    const [moved] = updated.splice(from, 1);
-    updated.splice(to, 0, moved);
-    setImages(updated);
-  };
-
-  const saveImages = () => {
-    setImageError("");
-    startImagesTransition(async () => {
-      const result = await updateProductImagesAction(product.id, images);
-      if (result.error) {
-        setImageError(result.error);
-      } else {
-        setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
-        router.refresh();
-      }
-    });
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
+    if (!name.trim()) {
+      setError("Product name is required.");
+      return;
+    }
+    if (price <= 0) {
+      setError("Price must be greater than 0.");
+      return;
+    }
+
     startTransition(async () => {
-      const result = await updateProductAction(product.id, {
-        name,
-        description,
+      const result = await createProductAction({
+        name: name.trim(),
+        slug: slug || generateSlug(name),
+        description: description.trim() || undefined,
         price,
         compare_price: comparePrice || null,
         stock,
-        unit,
+        unit: unit.trim() || undefined,
+        category_id: categoryId || null,
         is_active: isActive,
+        images,
       });
       if (result.error) {
-        alert(`Error: ${result.error}`);
+        setError(result.error);
       } else {
-        setSaved(true);
-        setTimeout(() => setSaved(false), 2000);
-        router.refresh();
+        router.push("/admin/products");
       }
     });
   };
@@ -116,43 +111,68 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
         >
           <ArrowLeft className="w-4 h-4" /> Back to Products
         </Link>
-        {saved && (
-          <span className="text-sm text-success font-medium">
-            Saved successfully!
-          </span>
-        )}
       </div>
 
       <div className="bg-card border border-border rounded-card p-6">
-        <h2 className="font-heading text-lg mb-6">Edit Product</h2>
+        <h2 className="font-heading text-lg mb-6">Add New Product</h2>
+
+        {error && (
+          <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label htmlFor="name">Product Name</Label>
+              <Label htmlFor="name">Product Name *</Label>
               <Input
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => handleNameChange(e.target.value)}
+                placeholder="e.g. Fresh Organic Tomatoes"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label>Category</Label>
+              <Label htmlFor="slug">Slug</Label>
               <Input
-                value={product.category_name || "Uncategorized"}
-                disabled
-                className="bg-secondary/50"
+                id="slug"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                placeholder="fresh-organic-tomatoes"
               />
+              <p className="text-xs text-muted-foreground">
+                Auto-generated from name. Edit if needed.
+              </p>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <select
+              id="category"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              title="Product category"
+              className="w-full h-10 px-3 rounded-md border border-border bg-background text-sm"
+            >
+              <option value="">No Category</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
             <textarea
               id="description"
-              placeholder="Enter product description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter product description"
               rows={3}
               className="w-full px-3 py-2 border border-border rounded-md bg-background text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
@@ -160,30 +180,30 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
             <div className="space-y-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="price">Price (₹) *</Label>
               <Input
                 id="price"
                 type="number"
                 step="0.01"
                 min={0}
-                value={price}
+                value={price || ""}
                 onChange={(e) => setPrice(Number(e.target.value))}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="comparePrice">Compare Price ($)</Label>
+              <Label htmlFor="comparePrice">Compare Price (₹)</Label>
               <Input
                 id="comparePrice"
                 type="number"
                 step="0.01"
                 min={0}
-                value={comparePrice}
+                value={comparePrice || ""}
                 onChange={(e) => setComparePrice(Number(e.target.value))}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="stock">Stock</Label>
+              <Label htmlFor="stock">Stock *</Label>
               <Input
                 id="stock"
                 type="number"
@@ -199,6 +219,7 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
                 id="unit"
                 value={unit}
                 onChange={(e) => setUnit(e.target.value)}
+                placeholder="each, kg, pack"
               />
             </div>
           </div>
@@ -214,12 +235,9 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
             </Label>
           </div>
 
-          {/* Image Management */}
+          {/* Image URLs */}
           <div className="space-y-3">
             <Label>Product Images</Label>
-            {imageError && (
-              <p className="text-sm text-destructive">{imageError}</p>
-            )}
             <div className="flex gap-2">
               <Input
                 value={newImageUrl}
@@ -239,67 +257,33 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
             {images.length > 0 && (
               <div className="flex flex-wrap gap-3">
                 {images.map((url, i) => (
-                  <div key={`${url}-${i}`} className="relative group border rounded-md p-1">
+                  <div key={i} className="relative group">
                     <img
                       src={url}
                       alt={`Product image ${i + 1}`}
-                      className="w-20 h-20 object-cover rounded"
+                      className="w-20 h-20 object-cover rounded-md border"
                     />
-                    <div className="absolute -top-2 -right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button
-                        type="button"
-                        onClick={() => removeImage(i)}
-                        title="Remove image"
-                        className="w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                    <div className="flex justify-center gap-1 mt-1">
-                      <button
-                        type="button"
-                        onClick={() => moveImage(i, i - 1)}
-                        disabled={i === 0}
-                        title="Move left"
-                        className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-30"
-                      >
-                        ←
-                      </button>
-                      <span className="text-[10px] text-muted-foreground">{i + 1}</span>
-                      <button
-                        type="button"
-                        onClick={() => moveImage(i, i + 1)}
-                        disabled={i === images.length - 1}
-                        title="Move right"
-                        className="text-xs text-muted-foreground hover:text-foreground disabled:opacity-30"
-                      >
-                        →
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeImage(i)}
+                      title="Remove image"
+                      className="absolute -top-2 -right-2 w-5 h-5 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
                   </div>
                 ))}
               </div>
             )}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={saveImages}
-              disabled={isImagesPending}
-              className="gap-2"
-            >
-              <Save className="w-4 h-4" />
-              {isImagesPending ? "Saving Images..." : "Save Images"}
-            </Button>
             <p className="text-xs text-muted-foreground">
-              Add image URLs and reorder with arrows. Up to 10 images. Save images separately.
+              Add image URLs. Up to 10 images.
             </p>
           </div>
 
           <div className="flex gap-3 pt-2">
             <Button type="submit" disabled={isPending} className="gap-2">
               <Save className="w-4 h-4" />
-              {isPending ? "Saving..." : "Save Changes"}
+              {isPending ? "Creating..." : "Create Product"}
             </Button>
             <Link href="/admin/products">
               <Button type="button" variant="outline">

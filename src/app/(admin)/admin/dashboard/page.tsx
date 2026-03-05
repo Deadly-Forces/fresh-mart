@@ -6,6 +6,9 @@ import {
   ShoppingCart,
   Users,
   AlertTriangle,
+  RotateCcw,
+  Star,
+  UserPlus,
 } from "lucide-react";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -80,6 +83,41 @@ export default async function AdminDashboardPage() {
     console.warn("Customers count fetch failed:", err);
   }
 
+  // Fetch new feature stats
+  let pendingReturns = 0;
+  let totalLoyaltyPoints = 0;
+  let totalReferrals = 0;
+
+  try {
+    const { count } = await supabase
+      .from("return_requests" as any)
+      .select("*", { count: "exact", head: true })
+      .eq("status", "pending") as { count: number | null };
+    pendingReturns = count || 0;
+  } catch (err) {
+    console.warn("Return requests count fetch failed:", err);
+  }
+
+  try {
+    const { data: ltData } = await supabase
+      .from("loyalty_transactions" as any)
+      .select("points") as { data: any[] | null };
+    totalLoyaltyPoints = (ltData || [])
+      .filter((t: any) => t.points > 0)
+      .reduce((s: number, t: any) => s + Number(t.points), 0);
+  } catch (err) {
+    console.warn("Loyalty points fetch failed:", err);
+  }
+
+  try {
+    const { count } = await supabase
+      .from("referrals" as any)
+      .select("*", { count: "exact", head: true }) as { count: number | null };
+    totalReferrals = count || 0;
+  } catch (err) {
+    console.warn("Referrals count fetch failed:", err);
+  }
+
   // Compute period-over-period changes (last 7 days vs previous 7 days)
   const now = new Date();
   const sevenDaysAgo = new Date(
@@ -150,6 +188,27 @@ export default async function AdminDashboardPage() {
       change: pendingOrdersCount > 0 ? "Needs Action" : "All Clear",
       up: pendingOrdersCount === 0,
       icon: AlertTriangle,
+    },
+    {
+      label: "Pending Returns",
+      value: pendingReturns.toString(),
+      change: pendingReturns > 0 ? "Needs Review" : "All Clear",
+      up: pendingReturns === 0,
+      icon: RotateCcw,
+    },
+    {
+      label: "Loyalty Points",
+      value: totalLoyaltyPoints.toLocaleString(),
+      change: `${totalLoyaltyPoints.toLocaleString()} earned`,
+      up: true,
+      icon: Star,
+    },
+    {
+      label: "Total Referrals",
+      value: totalReferrals.toString(),
+      change: `${totalReferrals} referrals`,
+      up: totalReferrals > 0,
+      icon: UserPlus,
     },
   ];
 
@@ -304,7 +363,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {kpis.map((kpi) => {
           const Icon = kpi.icon;
           return (

@@ -1,9 +1,12 @@
 "use client";
 
-import { ChevronLeft, Package, User, MapPin, CreditCard, Clock, ReceiptText } from "lucide-react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { ChevronLeft, Package, User, MapPin, CreditCard, Clock, ReceiptText, Save } from "lucide-react";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import Image from "next/image";
+import { updateOrderStatusAction } from "@/features/admin/actions/productActions";
 
 interface OrderItem {
     id: string;
@@ -38,6 +41,36 @@ interface OrderDetail {
 }
 
 export function OrderDetailClient({ order }: { order: OrderDetail }) {
+    const [status, setStatus] = useState(order.status);
+    const [isPending, startTransition] = useTransition();
+    const [statusMsg, setStatusMsg] = useState("");
+    const router = useRouter();
+
+    const statuses = [
+        "pending",
+        "confirmed",
+        "packed",
+        "processing",
+        "out_for_delivery",
+        "delivered",
+        "cancelled",
+    ];
+
+    const handleStatusChange = () => {
+        if (status === order.status) return;
+        setStatusMsg("");
+        startTransition(async () => {
+            const result = await updateOrderStatusAction(order.id, status as "pending" | "processing" | "confirmed" | "packed" | "out_for_delivery" | "delivered" | "cancelled");
+            if (result.error) {
+                setStatusMsg(result.error);
+            } else {
+                setStatusMsg("Status updated!");
+                setTimeout(() => setStatusMsg(""), 2000);
+                router.refresh();
+            }
+        });
+    };
+
     const formattedDate = new Date(order.createdAt).toLocaleString("en-US", {
         month: "long",
         day: "numeric",
@@ -66,6 +99,36 @@ export function OrderDetailClient({ order }: { order: OrderDetail }) {
                         Placed on {formattedDate}
                     </p>
                 </div>
+            </div>
+
+            {/* Status Change Section */}
+            <div className="bg-card border border-border rounded-card p-4 flex flex-wrap items-center gap-3">
+                <label className="text-sm font-medium">Update Status:</label>
+                <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    title="Order status"
+                    className="h-9 px-3 rounded-md border border-border bg-background text-sm capitalize"
+                >
+                    {statuses.map((s) => (
+                        <option key={s} value={s}>
+                            {s.replace(/_/g, " ")}
+                        </option>
+                    ))}
+                </select>
+                <button
+                    onClick={handleStatusChange}
+                    disabled={isPending || status === order.status}
+                    className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+                >
+                    <Save className="w-3.5 h-3.5" />
+                    {isPending ? "Updating..." : "Save"}
+                </button>
+                {statusMsg && (
+                    <span className={`text-sm ${statusMsg.includes("error") || statusMsg.includes("Error") ? "text-destructive" : "text-success"}`}>
+                        {statusMsg}
+                    </span>
+                )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -118,7 +181,7 @@ export function OrderDetailClient({ order }: { order: OrderDetail }) {
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between items-center">
                                 <span className="text-muted-foreground">Method</span>
-                                <span className="font-medium uppercase uppercase text-xs px-2 py-0.5 rounded-full bg-secondary text-foreground border border-border">
+                                <span className="font-medium uppercase text-xs px-2 py-0.5 rounded-full bg-secondary text-foreground border border-border">
                                     {order.paymentMethod}
                                 </span>
                             </div>

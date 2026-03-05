@@ -10,6 +10,9 @@ import {
   MessageSquare,
   Navigation2,
   ListChecks,
+  RotateCcw,
+  Star,
+  UserPlus,
 } from "lucide-react";
 import type { NavItem } from "@/types";
 
@@ -19,8 +22,11 @@ export const adminNavItems: NavItem[] = [
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+  { href: "/admin/returns", label: "Returns", icon: RotateCcw },
   { href: "/admin/picker", label: "Picker", icon: ListChecks },
   { href: "/admin/rider", label: "Rider", icon: Navigation2 },
+  { href: "/admin/loyalty", label: "Loyalty", icon: Star },
+  { href: "/admin/referrals", label: "Referrals", icon: UserPlus },
   { href: "/admin/reviews", label: "Reviews", icon: MessageSquare },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/coupons", label: "Coupons", icon: Ticket },

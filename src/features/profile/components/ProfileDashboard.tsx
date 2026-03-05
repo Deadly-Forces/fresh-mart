@@ -18,6 +18,9 @@ import {
   Save,
   Loader2,
   Package,
+  Star,
+  Users,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,6 +60,21 @@ const DeliveryCountdown = dynamic(
 
 const DynamicProfileOrdersTab = dynamic(
   () => import("./ProfileOrdersTab").then((m) => m.ProfileOrdersTab),
+  { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
+);
+
+const DynamicLoyaltyRewardsTab = dynamic(
+  () => import("./LoyaltyRewardsTab").then((m) => m.LoyaltyRewardsTab),
+  { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
+);
+
+const DynamicReferralTab = dynamic(
+  () => import("./ReferralTab").then((m) => m.ReferralTab),
+  { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
+);
+
+const DynamicReturnRefundTab = dynamic(
+  () => import("./ReturnRefundTab").then((m) => m.ReturnRefundTab),
   { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
 );
 
@@ -472,6 +490,27 @@ export function ProfileDashboard({
           >
             <ShoppingBag className="w-4 h-4" /> Order History
           </TabsTrigger>
+          <TabsTrigger
+            value="rewards"
+            className="flex-1 min-w-[150px] shrink-0 snap-start rounded-lg font-semibold text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 gap-2"
+            disabled={isEditing}
+          >
+            <Star className="w-4 h-4" /> Rewards
+          </TabsTrigger>
+          <TabsTrigger
+            value="referrals"
+            className="flex-1 min-w-[150px] shrink-0 snap-start rounded-lg font-semibold text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 gap-2"
+            disabled={isEditing}
+          >
+            <Users className="w-4 h-4" /> Referrals
+          </TabsTrigger>
+          <TabsTrigger
+            value="returns"
+            className="flex-1 min-w-[150px] shrink-0 snap-start rounded-lg font-semibold text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all duration-300 gap-2"
+            disabled={isEditing}
+          >
+            <RotateCcw className="w-4 h-4" /> Returns
+          </TabsTrigger>
         </TabsList>
 
         {/* ═══════ PROFILE DETAILS TAB ═══════ */}
@@ -776,6 +815,30 @@ export function ProfileDashboard({
           className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
           {activeTab === "orders" && <DynamicProfileOrdersTab orders={orders} />}
+        </TabsContent>
+
+        {/* ═══════ REWARDS TAB ═══════ */}
+        <TabsContent
+          value="rewards"
+          className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
+        >
+          {activeTab === "rewards" && <DynamicLoyaltyRewardsTab />}
+        </TabsContent>
+
+        {/* ═══════ REFERRALS TAB ═══════ */}
+        <TabsContent
+          value="referrals"
+          className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
+        >
+          {activeTab === "referrals" && <DynamicReferralTab />}
+        </TabsContent>
+
+        {/* ═══════ RETURNS TAB ═══════ */}
+        <TabsContent
+          value="returns"
+          className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
+        >
+          {activeTab === "returns" && <DynamicReturnRefundTab orders={orders} />}
         </TabsContent>
       </Tabs>
     </div>
