@@ -22,12 +22,12 @@ export async function validatePromoCodeAction(code: string, cartTotal: number) {
   try {
     const supabase = await createClient();
 
-    // Get user for rate limiting (allow unauthenticated but with stricter limits)
+    // Get user for rate limiting
     const {
       data: { user },
     } = await supabase.auth.getUser();
     const rateLimitKey = user ? `promo:${user.id}` : `promo:anon`;
-    const rateLimitMax = user ? 10 : 3; // Authenticated users get more attempts
+    const rateLimitMax = user ? 10 : 3;
 
     // Rate limit: prevent brute-force code guessing
     if (!rateLimit(rateLimitKey, rateLimitMax, 60_000)) {
@@ -36,55 +36,64 @@ export async function validatePromoCodeAction(code: string, cartTotal: number) {
       };
     }
 
-    // 1. Find the promo code
-    const { data: promo, error } = await supabase
-      .from("promocodes")
+    // 1. Find the coupon in the unified coupons table
+    const { data: coupon, error } = await supabase
+      .from("coupons")
       .select("*")
       .eq("code", sanitizedCode.trim().toUpperCase())
       .single();
 
-    if (error || !promo) {
+    if (error || !coupon) {
       return { error: "Invalid promo code." };
     }
 
     // 2. Check if active
-    if (!promo.is_active) {
+    if (!coupon.is_active) {
       return { error: "This promo code is no longer active." };
     }
 
-    // 3. Check dates
-    const now = new Date();
-    if (promo.valid_from && new Date(promo.valid_from) > now) {
-      return { error: "This promo code is not valid yet." };
-    }
-    if (promo.valid_until && new Date(promo.valid_until) < now) {
+    // 3. Check expiry date
+    if (coupon.expires_at && new Date(coupon.expires_at) < new Date()) {
       return { error: "This promo code has expired." };
     }
 
-    // 4. Check usage limits
-    if (promo.usage_limit && promo.times_used >= promo.usage_limit) {
+    // 4. Check global usage limits
+    if (coupon.max_uses && (coupon.used_count ?? 0) >= coupon.max_uses) {
       return { error: "This promo code has reached its usage limit." };
     }
 
-    // 5. Check min order value
-    if (promo.min_order_value && cartTotal < promo.min_order_value) {
+    // 5. Check per-user usage limit
+    if (user && coupon.per_user_limit) {
+      const { count } = await supabase
+        .from("coupon_usage")
+        .select("*", { count: "exact", head: true })
+        .eq("coupon_id", coupon.id)
+        .eq("user_id", user.id);
+
+      if ((count ?? 0) >= coupon.per_user_limit) {
+        return { error: "You've already used this promo code." };
+      }
+    }
+
+    // 6. Check min order value
+    if (coupon.min_order && cartTotal < Number(coupon.min_order)) {
       return {
-        error: `Minimum order value of $${promo.min_order_value} required for this code.`,
+        error: `Minimum order value of ₹${Number(coupon.min_order)} required for this code.`,
       };
     }
 
-    // 6. Calculate discount
+    // 7. Calculate discount
     let discountAmount = 0;
-    if (promo.discount_type === "percentage") {
-      discountAmount = cartTotal * (promo.discount_value / 100);
-      if (promo.max_discount && discountAmount > promo.max_discount) {
-        discountAmount = promo.max_discount;
+    if (coupon.type === "percentage") {
+      discountAmount = cartTotal * (Number(coupon.value) / 100);
+      if (coupon.max_discount && discountAmount > Number(coupon.max_discount)) {
+        discountAmount = Number(coupon.max_discount);
       }
-    } else if (promo.discount_type === "fixed") {
-      discountAmount = promo.discount_value;
+    } else if (coupon.type === "flat") {
+      discountAmount = Number(coupon.value);
     }
 
-    // Just to be safe, don't discount more than the subtotal
+    // Don't discount more than the subtotal
     if (discountAmount > cartTotal) {
       discountAmount = cartTotal;
     }
@@ -92,8 +101,8 @@ export async function validatePromoCodeAction(code: string, cartTotal: number) {
     return {
       success: true,
       promo: {
-        id: promo.id,
-        code: promo.code,
+        id: coupon.id,
+        code: coupon.code,
         discountAmount: Number(discountAmount.toFixed(2)),
       },
     };

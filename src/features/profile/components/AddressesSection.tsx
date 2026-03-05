@@ -47,19 +47,19 @@ export function AddressesSection() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchAddresses = async () => {
+      setIsLoading(true);
+      const res = await getProfileAddressesAction();
+      if (res.error) {
+        toast.error(res.error);
+      } else if (res.addresses) {
+        setAddresses(res.addresses);
+      }
+      setIsLoading(false);
+    };
+
     fetchAddresses();
   }, []);
-
-  const fetchAddresses = async () => {
-    setIsLoading(true);
-    const res = await getProfileAddressesAction();
-    if (res.error) {
-      toast.error(res.error);
-    } else if (res.addresses) {
-      setAddresses(res.addresses);
-    }
-    setIsLoading(false);
-  };
 
   const handleAddAddress = async (formData: FormData) => {
     setIsSubmitting(true);
@@ -239,11 +239,10 @@ function AddressCard({
 }: AddressCardProps) {
   return (
     <div
-      className={`p-5 rounded-xl border transition-all duration-300 ${
-        address.is_default
+      className={`p-5 rounded-xl border transition-all duration-300 ${address.is_default
           ? "bg-primary/5 border-primary/30"
           : "bg-secondary/30 border-border/50 hover:bg-secondary/50"
-      }`}
+        }`}
     >
       <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
         <div className="flex-1 min-w-0">

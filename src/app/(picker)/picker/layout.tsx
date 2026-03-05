@@ -17,7 +17,16 @@ export default async function PickerLayout({
     redirect("/login");
   }
 
-  // In a real app, verify `role === 'picker'` here
+  // Verify the user has the picker role
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role !== "picker") {
+    redirect("/");
+  }
 
   return (
     <div className="min-h-screen bg-secondary/20 flex flex-col">

@@ -5,11 +5,12 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { rateLimit } from "@/lib/security";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { subscription, userId } = body;
+    const { subscription } = body;
 
     if (!subscription || !subscription.endpoint) {
       return NextResponse.json(
@@ -20,13 +21,24 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createClient();
 
-    // Get the current user if userId not provided
-    let subscriberId = userId;
-    if (!subscriberId) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      subscriberId = user?.id;
+    // Always use server-side auth — never trust userId from the client
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
+    // Rate limit: 10 subscription requests per minute per user
+    if (!rateLimit(`push-subscribe:${user.id}`, 10, 60_000)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait." },
+        { status: 429 },
+      );
     }
 
     // Extract subscription details
@@ -49,7 +61,7 @@ export async function POST(request: NextRequest) {
           endpoint,
           p256dh,
           auth,
-          user_id: subscriberId || null,
+          user_id: user.id,
           user_agent: request.headers.get("user-agent") || null,
           updated_at: new Date().toISOString(),
         },

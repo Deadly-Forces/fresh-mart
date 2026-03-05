@@ -12,7 +12,14 @@ export async function createCoupon(formData: FormData) {
   const maxUses = formData.get("max_uses")
     ? Number(formData.get("max_uses"))
     : null;
+  const maxDiscount = formData.get("max_discount")
+    ? Number(formData.get("max_discount"))
+    : null;
+  const perUserLimit = formData.get("per_user_limit")
+    ? Number(formData.get("per_user_limit"))
+    : null;
   const expiresAt = (formData.get("expires_at") as string) || null;
+  const description = (formData.get("description") as string) || null;
 
   const { error } = await supabase.from("coupons").insert({
     code: code.toUpperCase(),
@@ -20,8 +27,11 @@ export async function createCoupon(formData: FormData) {
     value,
     min_order: minOrder,
     max_uses: maxUses,
+    max_discount: maxDiscount,
+    per_user_limit: perUserLimit,
     expires_at: expiresAt || null,
     is_active: true,
+    description,
   });
 
   if (error) return { error: error.message };
@@ -38,8 +48,15 @@ export async function updateCoupon(id: string, formData: FormData) {
   const maxUses = formData.get("max_uses")
     ? Number(formData.get("max_uses"))
     : null;
+  const maxDiscount = formData.get("max_discount")
+    ? Number(formData.get("max_discount"))
+    : null;
+  const perUserLimit = formData.get("per_user_limit")
+    ? Number(formData.get("per_user_limit"))
+    : null;
   const expiresAt = (formData.get("expires_at") as string) || null;
   const isActive = formData.get("is_active") === "true";
+  const description = (formData.get("description") as string) || null;
 
   const { error } = await supabase
     .from("coupons")
@@ -49,8 +66,11 @@ export async function updateCoupon(id: string, formData: FormData) {
       value,
       min_order: minOrder,
       max_uses: maxUses,
+      max_discount: maxDiscount,
+      per_user_limit: perUserLimit,
       expires_at: expiresAt || null,
       is_active: isActive,
+      description,
     })
     .eq("id", id);
 

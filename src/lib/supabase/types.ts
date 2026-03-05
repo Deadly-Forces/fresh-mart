@@ -351,13 +351,13 @@ export type Database = {
           address_id: string | null;
           delivery_slot_id: string | null;
           status:
-            | "pending"
-            | "processing"
-            | "confirmed"
-            | "packed"
-            | "out_for_delivery"
-            | "delivered"
-            | "cancelled";
+          | "pending"
+          | "processing"
+          | "confirmed"
+          | "packed"
+          | "out_for_delivery"
+          | "delivered"
+          | "cancelled";
           subtotal: number | null;
           delivery_fee: number;
           discount: number;
@@ -379,13 +379,13 @@ export type Database = {
           address_id?: string | null;
           delivery_slot_id?: string | null;
           status?:
-            | "pending"
-            | "processing"
-            | "confirmed"
-            | "packed"
-            | "out_for_delivery"
-            | "delivered"
-            | "cancelled";
+          | "pending"
+          | "processing"
+          | "confirmed"
+          | "packed"
+          | "out_for_delivery"
+          | "delivered"
+          | "cancelled";
           subtotal?: number | null;
           delivery_fee?: number;
           discount?: number;
@@ -407,13 +407,13 @@ export type Database = {
           address_id?: string | null;
           delivery_slot_id?: string | null;
           status?:
-            | "pending"
-            | "processing"
-            | "confirmed"
-            | "packed"
-            | "out_for_delivery"
-            | "delivered"
-            | "cancelled";
+          | "pending"
+          | "processing"
+          | "confirmed"
+          | "packed"
+          | "out_for_delivery"
+          | "delivered"
+          | "cancelled";
           subtotal?: number | null;
           delivery_fee?: number;
           discount?: number;
@@ -569,6 +569,46 @@ export type Database = {
         ];
       };
 
+      coupon_usage: {
+        Row: {
+          id: string;
+          coupon_id: string;
+          user_id: string;
+          order_id: string | null;
+          used_at: string;
+        };
+        Insert: {
+          id?: string;
+          coupon_id: string;
+          user_id: string;
+          order_id?: string | null;
+          used_at?: string;
+        };
+        Update: {
+          id?: string;
+          coupon_id?: string;
+          user_id?: string;
+          order_id?: string | null;
+          used_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "coupon_usage_coupon_id_fkey";
+            columns: ["coupon_id"];
+            isOneToOne: false;
+            referencedRelation: "coupons";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "coupon_usage_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+
       coupons: {
         Row: {
           id: string;
@@ -580,6 +620,9 @@ export type Database = {
           used_count: number;
           expires_at: string | null;
           is_active: boolean;
+          max_discount: number | null;
+          per_user_limit: number | null;
+          description: string | null;
           created_at: string;
         };
         Insert: {
@@ -592,6 +635,9 @@ export type Database = {
           used_count?: number;
           expires_at?: string | null;
           is_active?: boolean;
+          max_discount?: number | null;
+          per_user_limit?: number | null;
+          description?: string | null;
           created_at?: string;
         };
         Update: {
@@ -604,6 +650,9 @@ export type Database = {
           used_count?: number;
           expires_at?: string | null;
           is_active?: boolean;
+          max_discount?: number | null;
+          per_user_limit?: number | null;
+          description?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -824,19 +873,23 @@ export type Database = {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
+      increment_coupon_usage: {
+        Args: { p_coupon_id: string };
+        Returns: undefined;
+      };
     };
 
     Enums: {
       user_role: "customer" | "admin" | "delivery" | "picker";
       dietary_pref: "veg" | "non-veg" | "vegan";
       order_status:
-        | "pending"
-        | "processing"
-        | "confirmed"
-        | "packed"
-        | "out_for_delivery"
-        | "delivered"
-        | "cancelled";
+      | "pending"
+      | "processing"
+      | "confirmed"
+      | "packed"
+      | "out_for_delivery"
+      | "delivered"
+      | "cancelled";
       payment_method: "card" | "upi" | "wallet" | "cod";
       notification_type: "order_update" | "promo" | "system";
       coupon_type: "flat" | "percentage";

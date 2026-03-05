@@ -33,8 +33,11 @@ export function Footer() {
             </div>
             <div className="flex w-full md:w-auto max-w-md gap-2">
               <input
+                id="newsletter-email"
+                name="email"
                 type="email"
                 placeholder="Enter your email"
+                autoComplete="email"
                 className="flex-1 h-12 px-5 rounded-xl border border-border/60 bg-background/80 backdrop-blur-sm text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
               />
               <button className="h-12 px-6 rounded-xl bg-gradient-to-r from-primary to-emerald-500 text-white text-sm font-semibold hover:shadow-glow transition-all duration-300 shrink-0">

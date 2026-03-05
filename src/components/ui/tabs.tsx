@@ -33,6 +33,7 @@ const TabsTrigger = React.forwardRef<
       className,
     )}
     {...props}
+    type="button"
   />
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;

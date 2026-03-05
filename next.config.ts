@@ -1,4 +1,9 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const securityHeaders = [
   {
@@ -34,8 +39,8 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // Note: 'unsafe-inline' needed for Next.js styled-jsx; remove if using CSS modules exclusively
-      // 'unsafe-eval' removed to prevent XSS via eval(); may require code changes if dynamic code evaluation is used
-      "script-src 'self' 'unsafe-inline' https://js.stripe.com",
+      // 'unsafe-eval' is typically required by Webpack/Turbopack during development
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://lh3.googleusercontent.com",
       "font-src 'self' data:",
@@ -86,6 +91,26 @@ const nextConfig: NextConfig = {
         source: "/(.*)",
         headers: securityHeaders,
       },
+      {
+        // Cache static assets aggressively
+        source: "/_next/static/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Cache images
+        source: "/_next/image/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   images: {
@@ -110,4 +135,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

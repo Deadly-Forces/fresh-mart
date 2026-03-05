@@ -1,7 +1,6 @@
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
+import { BannerManager } from "./BannerManager";
 
 export const dynamic = "force-dynamic";
 
@@ -23,76 +22,31 @@ export default async function AdminBannersPage() {
       [
         b.starts_at
           ? new Date(b.starts_at).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
           : null,
         b.ends_at
           ? new Date(b.ends_at).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
           : null,
       ]
         .filter(Boolean)
         .join(" – ") || "Always active",
+    rawSortOrder: b.sort_order || 0,
+    rawStartsAt: b.starts_at ?? null,
+    rawEndsAt: b.ends_at ?? null,
   }));
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <AutoRefresh intervalMs={30000} tables={["banners"]} />
-        <Button size="sm" className="gap-1">
-          <Plus className="w-4 h-4" /> Add Banner
-        </Button>
-      </div>
-
-      {banners.length === 0 ? (
-        <div className="bg-card border border-border rounded-card p-8 text-center text-muted-foreground">
-          <p className="text-sm">
-            No banners found. Add your first banner to get started.
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {banners.map((b) => (
-            <div
-              key={b.id}
-              className="flex items-center gap-4 bg-card border border-border rounded-card p-4"
-            >
-              <span className="text-muted-foreground cursor-grab">⠿</span>
-              {b.image_url ? (
-                <img
-                  src={b.image_url}
-                  alt={b.title}
-                  className="w-24 h-14 object-cover rounded-md shrink-0 border"
-                />
-              ) : (
-                <div className="w-24 h-14 bg-secondary rounded-md shrink-0 flex items-center justify-center text-xs text-muted-foreground">
-                  Preview
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm">{b.title}</p>
-                <p className="text-xs text-muted-foreground">
-                  {b.link} • {b.dates}
-                </p>
-              </div>
-              <span
-                className={`w-2 h-2 rounded-full ${b.active ? "bg-success" : "bg-muted"}`}
-              />
-              <button className="text-xs text-primary hover:underline">
-                Edit
-              </button>
-              <button className="text-xs text-muted-foreground hover:text-destructive">
-                Delete
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+      <AutoRefresh intervalMs={30000} tables={["banners"]} />
+      <BannerManager banners={banners} />
     </div>
   );
 }
+

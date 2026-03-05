@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { stripHtml, sanitizeString, isValidUUID, rateLimit } from "@/lib/security";
 
 export interface ReviewWithProfile {
   id: string;
@@ -22,6 +23,10 @@ export async function fetchProductReviews(productId: string): Promise<{
   totalCount: number;
   ratingBreakdown: Record<number, number>;
 }> {
+  if (!isValidUUID(productId)) {
+    return { reviews: [], averageRating: 0, totalCount: 0, ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
+  }
+
   const supabase = await createClient();
 
   // RLS already filters: approved reviews visible to everyone, own reviews visible to author
@@ -105,7 +110,17 @@ export async function submitReview(data: {
     };
   }
 
-  if (data.rating < 1 || data.rating > 5) {
+  // Rate limit: 5 reviews per minute per user
+  if (!rateLimit(`review:${user.id}`, 5, 60_000)) {
+    return { success: false, error: "Too many reviews submitted. Please wait." };
+  }
+
+  // Validate product ID format
+  if (!isValidUUID(data.productId)) {
+    return { success: false, error: "Invalid product." };
+  }
+
+  if (!Number.isInteger(data.rating) || data.rating < 1 || data.rating > 5) {
     return { success: false, error: "Rating must be between 1 and 5." };
   }
 
@@ -113,6 +128,15 @@ export async function submitReview(data: {
     return {
       success: false,
       error: "Review comment must be at least 10 characters.",
+    };
+  }
+
+  // Sanitize the comment: strip HTML tags and limit length
+  const sanitizedComment = sanitizeString(stripHtml(data.comment), 2000);
+  if (!sanitizedComment || sanitizedComment.length < 10) {
+    return {
+      success: false,
+      error: "Review comment must be at least 10 characters after sanitization.",
     };
   }
 
@@ -132,7 +156,7 @@ export async function submitReview(data: {
     user_id: user.id,
     product_id: data.productId,
     rating: data.rating,
-    comment: data.comment.trim(),
+    comment: sanitizedComment,
     is_approved: false,
   });
 
@@ -145,6 +169,33 @@ export async function submitReview(data: {
   }
 
   return { success: true };
+}
+
+/** Helper: verify the current user is an admin */
+async function requireAdmin(): Promise<{
+  supabase: Awaited<ReturnType<typeof createClient>>;
+  error?: string;
+}> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { supabase, error: "Unauthorized" };
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role !== "admin") {
+    return { supabase, error: "Admin access required" };
+  }
+
+  return { supabase };
 }
 
 /** Admin: Fetch all reviews with product + user info */
@@ -164,7 +215,11 @@ export async function fetchAllReviews(
     user_id: string;
   }>
 > {
-  const supabase = await createClient();
+  const { supabase, error: authError } = await requireAdmin();
+  if (authError) {
+    console.error("Admin auth failed for fetchAllReviews:", authError);
+    return [];
+  }
 
   let query = supabase
     .from("reviews")
@@ -227,7 +282,15 @@ export async function fetchAllReviews(
 export async function approveReview(
   reviewId: string,
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createClient();
+  const { supabase, error: authError } = await requireAdmin();
+  if (authError) {
+    return { success: false, error: authError };
+  }
+
+  if (!isValidUUID(reviewId)) {
+    return { success: false, error: "Invalid review ID." };
+  }
+
   const { error } = await supabase
     .from("reviews")
     .update({ is_approved: true })
@@ -243,7 +306,15 @@ export async function approveReview(
 export async function deleteReview(
   reviewId: string,
 ): Promise<{ success: boolean; error?: string }> {
-  const supabase = await createClient();
+  const { supabase, error: authError } = await requireAdmin();
+  if (authError) {
+    return { success: false, error: authError };
+  }
+
+  if (!isValidUUID(reviewId)) {
+    return { success: false, error: "Invalid review ID." };
+  }
+
   const { error } = await supabase.from("reviews").delete().eq("id", reviewId);
 
   if (error) {

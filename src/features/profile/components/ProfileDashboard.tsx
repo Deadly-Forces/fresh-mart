@@ -21,6 +21,7 @@ import {
   ChevronRight,
   Heart,
   RefreshCw,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,15 +34,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { updateProfileAction } from "@/features/profile/actions/updateProfile";
+import { deleteOrderAction } from "@/features/profile/actions/deleteOrder";
 import { uploadAvatarAction } from "@/features/profile/actions/uploadAvatar";
 import { AddressesSection } from "@/features/profile/components/AddressesSection";
 import { getProfileAddressesAction } from "@/features/profile/actions/addressActions";
 import { UserOrder } from "@/types";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
+import dynamic from "next/dynamic";
+
+const DeliveryCountdown = dynamic(
+  () => import("@/components/ui/DeliveryCountdown").then((m) => m.DeliveryCountdown),
+  { ssr: false }
+);
 
 interface ProfileData {
   id: string;
@@ -69,6 +85,7 @@ interface ProfileDashboardProps {
   email: string;
   orders?: UserOrder[];
   initialEditing?: boolean;
+  initialTab?: string;
 }
 
 interface DefaultAddress {
@@ -84,27 +101,18 @@ interface DefaultAddress {
   is_default: boolean | null;
 }
 
-import { simulateOrderList } from "@/lib/orders/simulateProgress";
-import { DeliveryCountdown } from "@/components/ui/DeliveryCountdown";
+
 
 export function ProfileDashboard({
   profile,
   email,
   orders = [],
   initialEditing = false,
+  initialTab = "details",
 }: ProfileDashboardProps) {
   const [isEditing, setIsEditing] = useState(initialEditing);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState("details");
-  // Sort orders by newest first and simulate their real-time progressing backend effect
-  const sortedOrders = simulateOrderList(
-    Array.isArray(orders)
-      ? [...orders].sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        )
-      : [],
-  );
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(profile.avatar_url);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [defaultAddress, setDefaultAddress] = useState<DefaultAddress | null>(
@@ -113,7 +121,33 @@ export function ProfileDashboard({
   const [isLoadingAddress, setIsLoadingAddress] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const addItem = useCartStore((state) => state.addItem);
+  const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [localOrders, setLocalOrders] = useState<UserOrder[]>(orders);
+
+  // Sync activeTab from server prop (survives router.refresh)
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+
+  // Update URL when tab changes without triggering a server re-render.
+  // router.replace() in Next.js App Router causes a full server fetch —
+  // window.history.replaceState() only updates the browser URL bar, no fetch.
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    const params = new URLSearchParams(searchParams.toString());
+    if (tab === "details") {
+      params.delete("tab");
+    } else {
+      params.set("tab", tab);
+    }
+    const query = params.toString();
+    const newUrl = `${pathname}${query ? `?${query}` : ""}`;
+    window.history.replaceState(null, "", newUrl);
+  };
 
   // Fetch default address on mount
   useEffect(() => {
@@ -130,7 +164,8 @@ export function ProfileDashboard({
       setIsLoadingAddress(false);
     };
     fetchDefaultAddress();
-  }, [activeTab]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (initialEditing) {
@@ -138,6 +173,15 @@ export function ProfileDashboard({
       setActiveTab("details");
     }
   }, [initialEditing]);
+
+  // Track current time strictly on the client to smoothly animate order progress
+  // without risking hydration mismatches
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -162,19 +206,20 @@ export function ProfileDashboard({
     }
   };
 
-  const formattedDate = new Date(profile.created_at).toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    },
-  );
+  // Use UTC methods for deterministic server/client output (avoids timezone hydration mismatch)
+  const _d = new Date(profile.created_at);
+  const _months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const formattedDate = `${_months[_d.getUTCMonth()]} ${_d.getUTCDate()}, ${_d.getUTCFullYear()}`;
 
-  const memberDays = Math.floor(
-    (Date.now() - new Date(profile.created_at).getTime()) /
-      (1000 * 60 * 60 * 24),
-  );
+  const [memberDays, setMemberDays] = useState<number | null>(null);
+  useEffect(() => {
+    setMemberDays(
+      Math.floor(
+        (Date.now() - new Date(profile.created_at).getTime()) /
+        (1000 * 60 * 60 * 24),
+      ),
+    );
+  }, [profile.created_at]);
 
   const handleSave = async (formData: FormData) => {
     setIsSaving(true);
@@ -193,8 +238,32 @@ export function ProfileDashboard({
     }
   };
 
-  const totalSpent = orders.reduce((acc, o) => acc + o.total, 0);
-  const deliveredOrders = orders.filter((o) => o.status === "delivered").length;
+  // Keep local orders in sync if server props change
+  useEffect(() => {
+    setLocalOrders(orders);
+  }, [orders]);
+
+  const handleDeleteOrder = async () => {
+    if (!orderToDelete) return;
+    setIsDeleting(true);
+    try {
+      const result = await deleteOrderAction(orderToDelete);
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        setLocalOrders((prev) => prev.filter((o) => o.id !== orderToDelete));
+        toast.success("Order deleted from history.");
+      }
+    } catch {
+      toast.error("Failed to delete order.");
+    } finally {
+      setIsDeleting(false);
+      setOrderToDelete(null);
+    }
+  };
+
+  const totalSpent = localOrders.reduce((acc, o) => acc + o.total, 0);
+  const deliveredOrders = localOrders.filter((o) => o.status === "delivered").length;
 
   const handleReorder = (order: UserOrder) => {
     if (!order.items || order.items.length === 0) return;
@@ -223,8 +292,7 @@ export function ProfileDashboard({
   };
 
   return (
-    <form
-      action={handleSave}
+    <div
       className="animate-in fade-in slide-in-from-bottom-4 duration-500"
     >
       {/* ═══════════════════════════════════════════════ */}
@@ -318,6 +386,7 @@ export function ProfileDashboard({
                     </Label>
                     <Input
                       id="name"
+                      form="profile-details-form"
                       name="name"
                       defaultValue={profile.name || ""}
                       className="font-heading font-semibold text-xl h-10 bg-background border-2 focus:border-primary transition-colors max-w-[320px] w-full"
@@ -366,6 +435,7 @@ export function ProfileDashboard({
                     </Button>
                     <Button
                       type="submit"
+                      form="profile-details-form"
                       className="gap-2 px-6 h-10 rounded-full font-semibold shadow-sm active:scale-95 transition-transform shrink-0 min-w-[140px]"
                       disabled={isSaving}
                     >
@@ -426,7 +496,7 @@ export function ProfileDashboard({
             <CalendarDays className="w-4.5 h-4.5 text-blue-600" />
           </div>
           <p className="text-xl font-heading font-bold text-blue-600">
-            {memberDays}
+            {memberDays ?? "—"}
           </p>
           <p className="text-[11px] text-muted-foreground font-medium">
             Days as Member
@@ -439,7 +509,7 @@ export function ProfileDashboard({
       {/* ═══════════════════════════════════════ */}
       <Tabs
         value={activeTab}
-        onValueChange={setActiveTab}
+        onValueChange={handleTabChange}
         className="w-full max-w-full overflow-hidden"
       >
         <TabsList className="flex w-full overflow-x-auto scrollbar-hide snap-x snap-mandatory mb-6 bg-secondary/50 h-14 p-1.5 rounded-xl border border-border/50 backdrop-blur-sm">
@@ -471,7 +541,19 @@ export function ProfileDashboard({
           value="details"
           className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <form
+            id="profile-details-form"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const nameInput = document.getElementById("name") as HTMLInputElement;
+              if (nameInput) {
+                formData.set("name", nameInput.value);
+              }
+              await handleSave(formData);
+            }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
             {/* Contact Card */}
             <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group">
               <div className="h-1 bg-gradient-to-r from-primary via-emerald-400 to-primary/50" />
@@ -681,15 +763,14 @@ export function ProfileDashboard({
                     ) : (
                       <div className="flex items-center gap-3">
                         <span
-                          className={`w-3 h-3 rounded-full shadow-lg ${
-                            profile.dietary_pref === "veg"
-                              ? "bg-green-500 shadow-green-500/40"
-                              : profile.dietary_pref === "non-veg"
-                                ? "bg-red-500 shadow-red-500/40"
-                                : profile.dietary_pref === "vegan"
-                                  ? "bg-emerald-500 shadow-emerald-500/40"
-                                  : "bg-blue-500 shadow-blue-500/40"
-                          }`}
+                          className={`w-3 h-3 rounded-full shadow-lg ${profile.dietary_pref === "veg"
+                            ? "bg-green-500 shadow-green-500/40"
+                            : profile.dietary_pref === "non-veg"
+                              ? "bg-red-500 shadow-red-500/40"
+                              : profile.dietary_pref === "vegan"
+                                ? "bg-emerald-500 shadow-emerald-500/40"
+                                : "bg-blue-500 shadow-blue-500/40"
+                            }`}
                         />
                         <p className="font-bold capitalize text-xl">
                           {profile.dietary_pref || "Not specified"}
@@ -740,7 +821,7 @@ export function ProfileDashboard({
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </TabsContent>
 
         {/* ═══════ ADDRESSES TAB ═══════ */}
@@ -756,7 +837,7 @@ export function ProfileDashboard({
           value="orders"
           className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
-          {orders.length === 0 ? (
+          {localOrders.length === 0 ? (
             <div className="bg-card border border-border rounded-2xl p-16 text-center shadow-sm">
               <div className="w-20 h-20 rounded-full bg-primary/5 flex items-center justify-center mx-auto mb-6">
                 <ShoppingBag className="w-10 h-10 text-primary/30" />
@@ -778,218 +859,277 @@ export function ProfileDashboard({
             </div>
           ) : (
             <div className="space-y-4">
-              {orders.map((order) => (
+              {localOrders.map((order) => (
                 <div
                   key={order.id}
                   className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 group"
                 >
-                  {/* Order status strip */}
-                  <div
-                    className={`h-1 ${
-                      order.status === "delivered"
-                        ? "bg-gradient-to-r from-green-400 to-emerald-500"
-                        : order.status === "cancelled"
-                          ? "bg-gradient-to-r from-red-400 to-red-500"
-                          : "bg-gradient-to-r from-blue-400 to-primary"
-                    }`}
-                  />
+                  {/* Calculate continuous percentage correctly handling Next.js hydration */}
+                  {(() => {
+                    const createdMs = new Date(order.created_at).getTime();
+                    // 13 minutes matching DeliveryCountdown
+                    const deliveryWindowMs = 13 * 60 * 1000;
 
-                  <div className="p-6">
-                    {/* Order status step tracker */}
-                    {order.status !== "cancelled" && (
-                      <div className="mb-5">
-                        <div className="flex items-center justify-between relative">
-                          {/* Connecting line */}
-                          <div className="absolute top-3 left-[16px] right-[16px] h-0.5 bg-border" />
-                          <div
-                            className="absolute top-3 left-[16px] h-0.5 bg-primary transition-all duration-500 w-progress"
-                            ref={(el) => {
-                              if (el) {
-                                const w =
-                                  order.status === "delivered"
-                                    ? "calc(100% - 32px)"
-                                    : order.status === "out_for_delivery"
-                                      ? "calc(66% - 22px)"
-                                      : order.status === "packed"
-                                        ? "calc(33% - 11px)"
-                                        : "0%";
-                                el.style.setProperty('--progress', w);
-                              }
-                            }}
-                          />
-                          {/* Steps */}
-                          {[
-                            { key: "confirmed", label: "Confirmed" },
-                            { key: "packed", label: "Packed" },
-                            { key: "out_for_delivery", label: "Shipping" },
-                            { key: "delivered", label: "Delivered" },
-                          ].map((step) => {
-                            const statusOrder = [
-                              "pending",
-                              "processing",
-                              "confirmed",
-                              "packed",
-                              "out_for_delivery",
-                              "delivered",
-                            ];
-                            const currentIdx = statusOrder.indexOf(
-                              order.status,
-                            );
-                            const stepIdx = statusOrder.indexOf(step.key);
-                            const isComplete = currentIdx >= stepIdx;
-                            const isActive =
-                              order.status === step.key ||
-                              (step.key === "confirmed" &&
-                                (order.status === "pending" ||
-                                  order.status === "processing"));
-                            return (
-                              <div
-                                key={step.key}
-                                className="flex flex-col items-center gap-1.5 relative z-10"
-                              >
-                                <div
-                                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${
-                                    isComplete
-                                      ? "bg-primary text-primary-foreground shadow-sm"
-                                      : "bg-background border-2 border-border text-muted-foreground"
-                                  }`}
-                                >
-                                  {isComplete ? "✓" : ""}
-                                  {isActive && !isComplete && (
-                                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                                  )}
-                                </div>
-                                <span
-                                  className={`text-[10px] font-medium ${isComplete ? "text-primary" : "text-muted-foreground"}`}
-                                >
-                                  {step.label}
-                                </span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                    <div className="flex flex-col sm:flex-row justify-between gap-4 w-full">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1.5">
-                          <h4 className="font-heading font-bold text-lg">
-                            Order #{order.id.slice(0, 8).toUpperCase()}
-                          </h4>
-                          <span
-                            className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                              order.status === "delivered"
-                                ? "bg-green-100 text-green-700 border border-green-200"
-                                : order.status === "cancelled"
-                                  ? "bg-red-100 text-red-700 border border-red-200"
-                                  : "bg-blue-100 text-blue-700 border border-blue-200"
+                    let progressPercent = 0;
+                    if (now === null) {
+                      // Initial hydration: show stable server state depending on status
+                      progressPercent = order.status === "delivered" || order.status === "cancelled" ? 100
+                        : order.status === "out_for_delivery" ? 75
+                          : order.status === "packed" ? 50
+                            : 25;
+                    } else if (order.status === "delivered" || order.status === "cancelled") {
+                      progressPercent = 100;
+                    } else {
+                      const elapsed = now - createdMs;
+                      const rawPercent = (elapsed / deliveryWindowMs) * 100;
+                      progressPercent = Math.min(100, Math.max(0, rawPercent));
+
+                      // Add minimum widths for intermediate steps so the visual tracker stays logical
+                      if (order.status === "confirmed") progressPercent = Math.max(progressPercent, 10);
+                      if (order.status === "packed") progressPercent = Math.max(progressPercent, 50);
+                      if (order.status === "out_for_delivery") progressPercent = Math.max(progressPercent, 75);
+                    }
+
+                    return (
+                      <>
+                        {/* Order status strip */}
+                        <div
+                          className={`h-1 transition-all duration-1000 ease-linear rounded-tl-2xl w-[${progressPercent}%] ${order.status === "delivered"
+                            ? "bg-gradient-to-r from-green-400 to-emerald-500 rounded-tr-2xl"
+                            : order.status === "cancelled"
+                              ? "bg-gradient-to-r from-red-400 to-red-500 rounded-tr-2xl"
+                              : "bg-gradient-to-r from-blue-400 to-primary"
                             }`}
-                          >
-                            {order.status.replace("_", " ")}
-                          </span>
-                          <DeliveryCountdown createdAt={order.created_at} status={order.status} />
-                        </div>
-                        <div className="flex flex-col gap-2 mt-2">
-                          <p className="text-sm text-muted-foreground font-body flex items-center gap-1.5">
-                            <CalendarDays className="w-3.5 h-3.5" />
-                            {new Date(order.created_at).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              },
-                            )}
-                          </p>
-                          {order.payment_method === "cod" && (
-                            <p className="text-xs font-medium flex items-center gap-1.5">
-                              {order.payment_status === "pending" ? (
-                                <span className="text-amber-600 bg-amber-100/50 px-2 py-0.5 rounded-sm">
-                                  💵 Payment Due on Delivery
-                                </span>
-                              ) : (
-                                <span className="text-green-600 bg-green-100/50 px-2 py-0.5 rounded-sm">
-                                  ✅ Paid via COD
-                                </span>
-                              )}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-left sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
-                        <p className="text-xs text-muted-foreground">Total</p>
-                        <p className="text-2xl font-heading font-bold text-primary">
-                          ₹
-                          {order.total.toLocaleString("en-IN", {
-                            minimumFractionDigits: 2,
-                          })}
-                        </p>
-                      </div>
-                    </div>
+                        />
 
-                    {order.items && order.items.length > 0 && (
-                      <div className="pt-4 border-t border-border/50 mt-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <p className="text-sm font-semibold text-foreground flex items-center gap-2">
-                            <Package className="w-4 h-4 text-muted-foreground" />
-                            {order.items.length} Item
-                            {order.items.length !== 1 ? "s" : ""}
-                          </p>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            className="gap-1.5 h-8 text-xs font-semibold rounded-full active:scale-95 transition-transform"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleReorder(order);
-                            }}
-                          >
-                            <RefreshCw className="w-3.5 h-3.5" /> Reorder
-                          </Button>
-                        </div>
-                        <div className="space-y-2">
-                          {order.items.slice(0, 3).map((item, idx) => (
-                            <div
-                              key={idx}
-                              className="flex justify-between items-center text-sm bg-secondary/30 rounded-lg px-3 py-2"
-                            >
-                              <span className="text-foreground">
-                                <span className="font-semibold text-primary">
-                                  {item.quantity}x
-                                </span>{" "}
-                                {String(
-                                  item.product_snapshot?.name ||
-                                    "Unknown Product",
-                                )}
-                              </span>
-                              <span className="font-semibold">
-                                ₹
-                                {(item.price * item.quantity).toLocaleString(
-                                  "en-IN",
-                                  { minimumFractionDigits: 2 },
-                                )}
-                              </span>
+                        <div className="p-6">
+                          {/* Order status step tracker */}
+                          {order.status !== "cancelled" && (
+                            <div className="mb-5">
+                              <div className="flex items-center justify-between relative">
+                                {/* Connecting line */}
+                                <div className="absolute top-3 left-[16px] right-[16px] h-0.5 bg-border" />
+                                <div
+                                  className={`absolute top-3 left-[16px] h-0.5 bg-primary transition-all duration-1000 ease-linear w-[calc(${progressPercent}%-32px)] max-w-[calc(100%-32px)]`}
+                                />
+                                {/* Steps */}
+                                {[
+                                  { key: "confirmed", label: "Confirmed", threshold: 10 },
+                                  { key: "packed", label: "Packed", threshold: 45 },
+                                  { key: "out_for_delivery", label: "Shipping", threshold: 75 },
+                                  { key: "delivered", label: "Delivered", threshold: 100 },
+                                ].map((step, index, arr) => {
+                                  // Determine visual state entirely from the interpolated progress line
+                                  const isComplete = progressPercent >= step.threshold || progressPercent === 100;
+
+                                  // Find the active index by finding the last step whose threshold is met
+                                  let activeIndex = 0;
+                                  if (progressPercent >= 100) activeIndex = 3;
+                                  else if (progressPercent >= 75) activeIndex = 2;
+                                  else if (progressPercent >= 45) activeIndex = 1;
+                                  else activeIndex = 0;
+
+                                  const isActive = index === activeIndex;
+
+                                  return (
+                                    <div
+                                      key={step.key}
+                                      className="flex flex-col items-center gap-1.5 relative z-10"
+                                    >
+                                      <div
+                                        className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${isComplete || isActive
+                                          ? "bg-primary text-primary-foreground shadow-sm"
+                                          : "bg-background border-2 border-border text-muted-foreground"
+                                          }`}
+                                      >
+                                        {isComplete ? (
+                                          <span>✓</span>
+                                        ) : isActive ? (
+                                          <span className="w-2 h-2 rounded-full bg-primary-foreground animate-pulse" />
+                                        ) : (
+                                          <span />
+                                        )}
+                                      </div>
+                                      <span
+                                        className={`text-[10px] font-medium ${isComplete ? "text-primary" : "text-muted-foreground"}`}
+                                      >
+                                        {step.label}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
                             </div>
-                          ))}
-                          {order.items.length > 3 && (
-                            <p className="text-xs text-muted-foreground flex items-center gap-1 pt-1">
-                              <ChevronRight className="w-3 h-3" />{" "}
-                              {order.items.length - 3} more items
-                            </p>
                           )}
+                          <div className="flex flex-col sm:flex-row justify-between gap-4 w-full">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-1.5">
+                                <h4 className="font-heading font-bold text-lg">
+                                  Order #{order.id.slice(0, 8).toUpperCase()}
+                                </h4>
+                                <span
+                                  className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${order.status === "delivered"
+                                    ? "bg-green-100 text-green-700 border border-green-200"
+                                    : order.status === "cancelled"
+                                      ? "bg-red-100 text-red-700 border border-red-200"
+                                      : "bg-blue-100 text-blue-700 border border-blue-200"
+                                    }`}
+                                >
+                                  {order.status.replace("_", " ")}
+                                </span>
+                                <DeliveryCountdown createdAt={order.created_at} status={order.status} />
+                              </div>
+                              <div className="flex flex-col gap-2 mt-2">
+                                <p className="text-sm text-muted-foreground font-body flex items-center gap-1.5">
+                                  <CalendarDays className="w-3.5 h-3.5" />
+                                  {(() => {
+                                    const d = new Date(order.created_at);
+                                    const mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                                    const h = d.getUTCHours();
+                                    const ampm = h >= 12 ? "PM" : "AM";
+                                    const h12 = h % 12 || 12;
+                                    return `${mo[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}, ${String(h12).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")} ${ampm}`;
+                                  })()}
+                                </p>
+                                {order.payment_method === "cod" && (
+                                  <p className="text-xs font-medium flex items-center gap-1.5">
+                                    {order.payment_status === "pending" ? (
+                                      <span className="text-amber-600 bg-amber-100/50 px-2 py-0.5 rounded-sm">
+                                        💵 Payment Due on Delivery
+                                      </span>
+                                    ) : (
+                                      <span className="text-green-600 bg-green-100/50 px-2 py-0.5 rounded-sm">
+                                        ✅ Paid via COD
+                                      </span>
+                                    )}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="text-left sm:text-right flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0">
+                              <p className="text-xs text-muted-foreground">Total</p>
+                              <p className="text-2xl font-heading font-bold text-primary" suppressHydrationWarning>
+                                ₹
+                                {order.total.toLocaleString("en-IN", {
+                                  minimumFractionDigits: 2,
+                                })}
+                              </p>
+                            </div>
+                          </div>
+
+                          {order.items && order.items.length > 0 && (
+                            <div className="pt-4 border-t border-border/50 mt-4">
+                              <div className="flex items-center justify-between mb-3">
+                                <div className="text-sm font-semibold text-foreground flex items-center gap-2">
+                                  <Package className="w-4 h-4 text-muted-foreground" />
+                                  {order.items.length} Item
+                                  {order.items.length !== 1 ? "s" : ""}
+                                </div>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  className="gap-1.5 h-8 text-xs font-semibold rounded-full active:scale-95 transition-transform"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleReorder(order);
+                                  }}
+                                >
+                                  <RefreshCw className="w-3.5 h-3.5" /> Reorder
+                                </Button>
+                              </div>
+                              <div className="space-y-2">
+                                {order.items.slice(0, 3).map((item, idx) => (
+                                  <div
+                                    key={idx}
+                                    className="flex justify-between items-center text-sm bg-secondary/30 rounded-lg px-3 py-2"
+                                  >
+                                    <span className="text-foreground">
+                                      <span className="font-semibold text-primary">
+                                        {item.quantity}x
+                                      </span>{" "}
+                                      {String(
+                                        item.product_snapshot?.name ||
+                                        "Unknown Product",
+                                      )}
+                                    </span>
+                                    <span className="font-semibold" suppressHydrationWarning>
+                                      ₹
+                                      {(item.price * item.quantity).toLocaleString(
+                                        "en-IN",
+                                        { minimumFractionDigits: 2 },
+                                      )}
+                                    </span>
+                                  </div>
+                                ))}
+                                {order.items.length > 3 && (
+                                  <p className="text-xs text-muted-foreground flex items-center gap-1 pt-1">
+                                    <ChevronRight className="w-3 h-3" />{" "}
+                                    {order.items.length - 3} more items
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Delete order button — always visible */}
+                          <div className="pt-4 border-t border-border/50 mt-4 flex justify-end">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              className="gap-1.5 h-8 text-xs font-semibold rounded-full text-destructive hover:bg-destructive hover:text-destructive-foreground border-destructive/30 active:scale-95 transition-all"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setOrderToDelete(order.id);
+                              }}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" /> Delete Order
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      </>
+                    );
+                  })()}
                 </div>
               ))}
             </div>
           )}
         </TabsContent>
       </Tabs>
-    </form>
+
+      {/* ═══════ DELETE ORDER CONFIRMATION DIALOG ═══════ */}
+      <Dialog open={!!orderToDelete} onOpenChange={(open) => { if (!open) setOrderToDelete(null); }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete Order</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this order from your history? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              variant="outline"
+              onClick={() => setOrderToDelete(null)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteOrder}
+              disabled={isDeleting}
+              className="gap-2"
+            >
+              {isDeleting ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Deleting...</>
+              ) : (
+                <><Trash2 className="w-4 h-4" /> Delete Order</>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

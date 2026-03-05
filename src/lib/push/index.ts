@@ -155,7 +155,6 @@ export async function unsubscribeFromPush(): Promise<boolean> {
  */
 export async function saveSubscriptionToServer(
   subscription: PushSubscription,
-  userId?: string,
 ): Promise<boolean> {
   try {
     const response = await fetch("/api/push/subscribe", {
@@ -163,7 +162,6 @@ export async function saveSubscriptionToServer(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         subscription: subscription.toJSON(),
-        userId,
       }),
     });
 
@@ -203,7 +201,7 @@ export async function getCurrentSubscription(): Promise<PushSubscription | null>
  * 3. Subscribe to push
  * 4. Save to server
  */
-export async function setupPushNotifications(userId?: string): Promise<{
+export async function setupPushNotifications(): Promise<{
   success: boolean;
   permission?: NotificationPermission;
   subscription?: PushSubscription;
@@ -229,7 +227,7 @@ export async function setupPushNotifications(userId?: string): Promise<{
     }
 
     // Step 4: Save to server
-    const saved = await saveSubscriptionToServer(subscription, userId);
+    const saved = await saveSubscriptionToServer(subscription);
     if (!saved) {
       return {
         success: false,

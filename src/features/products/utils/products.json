@@ -92,7 +92,7 @@
     "comparePrice": 62,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 619,
     "categorySlug": "vegetables"
   },
@@ -128,7 +128,7 @@
     "comparePrice": 75,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 739,
     "categorySlug": "vegetables"
   },
@@ -201,7 +201,7 @@
     "comparePrice": 24,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 192,
     "categorySlug": "vegetables"
   },
@@ -444,7 +444,7 @@
     "comparePrice": 25,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 914,
     "categorySlug": "vegetables"
   },
@@ -1266,7 +1266,7 @@
     "comparePrice": 155,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1162,
     "categorySlug": "vegetables"
   },
@@ -1486,7 +1486,7 @@
     "comparePrice": 55,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 561,
     "categorySlug": "vegetables"
   },
@@ -1562,7 +1562,7 @@
     "comparePrice": 55,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 271,
     "categorySlug": "vegetables",
     "badge": "Bestseller"
@@ -1587,7 +1587,7 @@
     "comparePrice": 28,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 992,
     "categorySlug": "vegetables",
     "badge": "New"
@@ -1677,7 +1677,7 @@
     "comparePrice": 38,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 593,
     "categorySlug": "vegetables"
   },
@@ -1839,7 +1839,7 @@
     "comparePrice": 62,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 826,
     "categorySlug": "vegetables"
   },
@@ -1888,7 +1888,7 @@
     "comparePrice": 48,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 709,
     "categorySlug": "vegetables",
     "badge": "Organic"
@@ -2234,7 +2234,7 @@
     "comparePrice": 48,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 899,
     "categorySlug": "vegetables",
     "badge": "Bestseller"
@@ -2359,7 +2359,7 @@
     "comparePrice": 148,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1007,
     "categorySlug": "vegetables"
   },
@@ -2408,7 +2408,7 @@
     "comparePrice": 58,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 582,
     "categorySlug": "vegetables",
     "badge": "Bestseller"
@@ -2485,7 +2485,7 @@
     "comparePrice": 220,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 190,
     "categorySlug": "fruits"
   },
@@ -2509,7 +2509,7 @@
     "comparePrice": 240,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 91,
     "categorySlug": "fruits"
   },
@@ -2521,7 +2521,7 @@
     "comparePrice": 210,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 308,
     "categorySlug": "fruits",
     "badge": "Organic"
@@ -2728,7 +2728,7 @@
     "comparePrice": 72,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 410,
     "categorySlug": "fruits"
   },
@@ -2917,7 +2917,7 @@
     "comparePrice": 99,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 548,
     "categorySlug": "fruits",
     "badge": "Sale"
@@ -3018,7 +3018,7 @@
     "comparePrice": 50,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1041,
     "categorySlug": "fruits",
     "badge": "Sale"
@@ -3178,7 +3178,7 @@
     "comparePrice": 130,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 672,
     "categorySlug": "fruits"
   },
@@ -3374,7 +3374,7 @@
     "comparePrice": 115,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 594,
     "categorySlug": "fruits"
   },
@@ -3509,7 +3509,7 @@
     "comparePrice": 270,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 942,
     "categorySlug": "fruits"
   },
@@ -3710,7 +3710,7 @@
     "comparePrice": 540,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1178,
     "categorySlug": "fruits"
   },
@@ -4169,7 +4169,7 @@
     "comparePrice": 68,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 663,
     "categorySlug": "fruits"
   },
@@ -4230,7 +4230,7 @@
     "comparePrice": 175,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 833,
     "categorySlug": "fruits"
   },
@@ -4254,7 +4254,7 @@
     "comparePrice": 175,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 994,
     "categorySlug": "fruits"
   },
@@ -4704,7 +4704,7 @@
     "comparePrice": 60,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 126,
     "categorySlug": "fruits",
     "badge": "Sale"
@@ -5061,7 +5061,7 @@
     "comparePrice": 62,
     "image": "/placeholder.svg",
     "unit": "L",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 138,
     "categorySlug": "dairy-eggs"
   },
@@ -5444,7 +5444,7 @@
     "comparePrice": 125,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 682,
     "categorySlug": "dairy-eggs",
     "badge": "New"
@@ -5481,7 +5481,7 @@
     "comparePrice": 100,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 112,
     "categorySlug": "dairy-eggs"
   },
@@ -5542,7 +5542,7 @@
     "comparePrice": 118,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 151,
     "categorySlug": "dairy-eggs"
   },
@@ -5640,7 +5640,7 @@
     "comparePrice": 140,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 482,
     "categorySlug": "dairy-eggs"
   },
@@ -5899,7 +5899,7 @@
     "comparePrice": 195,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 363,
     "categorySlug": "dairy-eggs"
   },
@@ -6297,7 +6297,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "L",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 488,
     "categorySlug": "dairy-eggs",
     "badge": "New"
@@ -6322,7 +6322,7 @@
     "comparePrice": 290,
     "image": "/placeholder.svg",
     "unit": "L",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 331,
     "categorySlug": "dairy-eggs"
   },
@@ -6644,7 +6644,7 @@
     "comparePrice": 30,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 637,
     "categorySlug": "dairy-eggs",
     "badge": "Organic"
@@ -6938,7 +6938,7 @@
     "comparePrice": 95,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 326,
     "categorySlug": "dairy-eggs"
   },
@@ -7223,7 +7223,7 @@
     "comparePrice": 200,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 947,
     "categorySlug": "dairy-eggs"
   },
@@ -7296,7 +7296,7 @@
     "comparePrice": 110,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 801,
     "categorySlug": "dairy-eggs",
     "badge": "Bestseller"
@@ -7333,7 +7333,7 @@
     "comparePrice": 115,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1110,
     "categorySlug": "dairy-eggs",
     "badge": "Bestseller"
@@ -7408,7 +7408,7 @@
     "comparePrice": 42,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 961,
     "categorySlug": "bakery"
   },
@@ -7626,7 +7626,7 @@
     "comparePrice": 38,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 511,
     "categorySlug": "bakery",
     "badge": "New"
@@ -7701,7 +7701,7 @@
     "comparePrice": 75,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 365,
     "categorySlug": "bakery"
   },
@@ -7749,7 +7749,7 @@
     "comparePrice": 48,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 903,
     "categorySlug": "bakery"
   },
@@ -7824,7 +7824,7 @@
     "comparePrice": 72,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 344,
     "categorySlug": "bakery",
     "badge": "New"
@@ -8365,7 +8365,7 @@
     "comparePrice": 140,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 467,
     "categorySlug": "bakery",
     "badge": "Bestseller"
@@ -8402,7 +8402,7 @@
     "comparePrice": 110,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 715,
     "categorySlug": "bakery"
   },
@@ -8775,7 +8775,7 @@
     "comparePrice": 90,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 642,
     "categorySlug": "bakery"
   },
@@ -8998,7 +8998,7 @@
     "comparePrice": 72,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1079,
     "categorySlug": "bakery"
   },
@@ -9368,7 +9368,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1150,
     "categorySlug": "bakery",
     "badge": "Bestseller"
@@ -9444,7 +9444,7 @@
     "comparePrice": 25,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 281,
     "categorySlug": "bakery"
   },
@@ -9480,7 +9480,7 @@
     "comparePrice": 50,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 256,
     "categorySlug": "bakery"
   },
@@ -9529,7 +9529,7 @@
     "comparePrice": 38,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 642,
     "categorySlug": "bakery"
   },
@@ -9778,7 +9778,7 @@
     "comparePrice": 78,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1194,
     "categorySlug": "bakery"
   },
@@ -9942,7 +9942,7 @@
     "comparePrice": 210,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 584,
     "categorySlug": "meat-seafood"
   },
@@ -9967,7 +9967,7 @@
     "comparePrice": 350,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 725,
     "categorySlug": "meat-seafood"
   },
@@ -10030,7 +10030,7 @@
     "comparePrice": 245,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 771,
     "categorySlug": "meat-seafood"
   },
@@ -10042,7 +10042,7 @@
     "comparePrice": 345,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1169,
     "categorySlug": "meat-seafood",
     "badge": "Organic"
@@ -10055,7 +10055,7 @@
     "comparePrice": 190,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1160,
     "categorySlug": "meat-seafood"
   },
@@ -10104,7 +10104,7 @@
     "comparePrice": 195,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 523,
     "categorySlug": "meat-seafood"
   },
@@ -10224,7 +10224,7 @@
     "comparePrice": 199,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 443,
     "categorySlug": "meat-seafood"
   },
@@ -10335,7 +10335,7 @@
     "comparePrice": 580,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1073,
     "categorySlug": "meat-seafood",
     "badge": "Bestseller"
@@ -10446,7 +10446,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 865,
     "categorySlug": "meat-seafood"
   },
@@ -10631,7 +10631,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 365,
     "categorySlug": "meat-seafood"
   },
@@ -11054,7 +11054,7 @@
     "comparePrice": 395,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 916,
     "categorySlug": "meat-seafood",
     "badge": "Bestseller"
@@ -11362,7 +11362,7 @@
     "comparePrice": 360,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1196,
     "categorySlug": "meat-seafood",
     "badge": "Bestseller"
@@ -11573,7 +11573,7 @@
     "comparePrice": 85,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 339,
     "categorySlug": "meat-seafood"
   },
@@ -11622,7 +11622,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 641,
     "categorySlug": "meat-seafood"
   },
@@ -11634,7 +11634,7 @@
     "comparePrice": 240,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 973,
     "categorySlug": "meat-seafood"
   },
@@ -11709,7 +11709,7 @@
     "comparePrice": 585,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 113,
     "categorySlug": "meat-seafood"
   },
@@ -11859,7 +11859,7 @@
     "comparePrice": 225,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 768,
     "categorySlug": "meat-seafood"
   },
@@ -11981,7 +11981,7 @@
     "comparePrice": 225,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 709,
     "categorySlug": "meat-seafood"
   },
@@ -12006,7 +12006,7 @@
     "comparePrice": 290,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 600,
     "categorySlug": "meat-seafood"
   },
@@ -12300,7 +12300,7 @@
     "comparePrice": 365,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 209,
     "categorySlug": "meat-seafood"
   },
@@ -12684,7 +12684,7 @@
     "comparePrice": 135,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 173,
     "categorySlug": "snacks",
     "badge": "Bestseller"
@@ -12734,7 +12734,7 @@
     "comparePrice": 148,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 221,
     "categorySlug": "snacks",
     "badge": "Sale"
@@ -12945,7 +12945,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 260,
     "categorySlug": "snacks"
   },
@@ -13178,7 +13178,7 @@
     "comparePrice": 125,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 889,
     "categorySlug": "snacks"
   },
@@ -13596,7 +13596,7 @@
     "comparePrice": 130,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 870,
     "categorySlug": "snacks",
     "badge": "New"
@@ -13681,7 +13681,7 @@
     "comparePrice": 120,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 937,
     "categorySlug": "snacks"
   },
@@ -13719,7 +13719,7 @@
     "comparePrice": 38,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 433,
     "categorySlug": "snacks",
     "badge": "Sale"
@@ -14038,7 +14038,7 @@
     "comparePrice": 185,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1128,
     "categorySlug": "snacks",
     "badge": "Organic"
@@ -14137,7 +14137,7 @@
     "comparePrice": 85,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 372,
     "categorySlug": "snacks"
   },
@@ -14210,7 +14210,7 @@
     "comparePrice": 72,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 53,
     "categorySlug": "snacks"
   },
@@ -14246,7 +14246,7 @@
     "comparePrice": 300,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 263,
     "categorySlug": "snacks",
     "badge": "Organic"
@@ -14259,7 +14259,7 @@
     "comparePrice": 45,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 209,
     "categorySlug": "snacks"
   },
@@ -14432,7 +14432,7 @@
     "comparePrice": 155,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 203,
     "categorySlug": "snacks"
   },
@@ -14666,7 +14666,7 @@
     "comparePrice": 88,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 141,
     "categorySlug": "snacks",
     "badge": "Sale"
@@ -15157,7 +15157,7 @@
     "comparePrice": 545,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 883,
     "categorySlug": "beverages"
   },
@@ -15255,7 +15255,7 @@
     "comparePrice": 695,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 804,
     "categorySlug": "beverages",
     "badge": "Organic"
@@ -15319,7 +15319,7 @@
     "comparePrice": 40,
     "image": "/placeholder.svg",
     "unit": "L",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 579,
     "categorySlug": "beverages"
   },
@@ -15580,7 +15580,7 @@
     "comparePrice": 45,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 542,
     "categorySlug": "beverages"
   },
@@ -15863,7 +15863,7 @@
     "comparePrice": 38,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 460,
     "categorySlug": "beverages",
     "badge": "New"
@@ -15987,7 +15987,7 @@
     "comparePrice": 520,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 814,
     "categorySlug": "beverages"
   },
@@ -16335,7 +16335,7 @@
     "comparePrice": 72,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 459,
     "categorySlug": "beverages",
     "badge": "Sale"
@@ -16882,11 +16882,11 @@
     "categorySlug": "beverages"
   },
   {
-    "id": "prod-beverages-168",
-    "name": "Real Activ Coconut Water 200ml",
-    "slug": "beverages-real-activ-coconut-water-168",
+    "id": "prod-beverages-amulkool",
+    "name": "Amul Kool Kesar Milk 200ml",
+    "slug": "beverages-amul-kool-kesar-milk-200ml",
     "price": 35,
-    "comparePrice": 45,
+    "comparePrice": 40,
     "image": "/placeholder.svg",
     "unit": "ml",
     "rating": 4.7,
@@ -17318,7 +17318,7 @@
     "comparePrice": 310,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 479,
     "categorySlug": "personal-care"
   },
@@ -17428,7 +17428,7 @@
     "comparePrice": 350,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 165,
     "categorySlug": "personal-care"
   },
@@ -17625,7 +17625,7 @@
     "comparePrice": 45,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 202,
     "categorySlug": "personal-care"
   },
@@ -17698,7 +17698,7 @@
     "comparePrice": 42,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 710,
     "categorySlug": "personal-care"
   },
@@ -17748,7 +17748,7 @@
     "comparePrice": 225,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 426,
     "categorySlug": "personal-care"
   },
@@ -18182,7 +18182,7 @@
     "comparePrice": 200,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 500,
     "categorySlug": "personal-care"
   },
@@ -18304,7 +18304,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 502,
     "categorySlug": "personal-care"
   },
@@ -18328,7 +18328,7 @@
     "comparePrice": 275,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 161,
     "categorySlug": "personal-care"
   },
@@ -18588,7 +18588,7 @@
     "comparePrice": 285,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 125,
     "categorySlug": "personal-care"
   },
@@ -18674,7 +18674,7 @@
     "comparePrice": 60,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 376,
     "categorySlug": "personal-care"
   },
@@ -18710,7 +18710,7 @@
     "comparePrice": 95,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1048,
     "categorySlug": "personal-care"
   },
@@ -18917,7 +18917,7 @@
     "comparePrice": 42,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 292,
     "categorySlug": "personal-care"
   },
@@ -18954,7 +18954,7 @@
     "comparePrice": 72,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 380,
     "categorySlug": "personal-care"
   },
@@ -19002,7 +19002,7 @@
     "comparePrice": 120,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 390,
     "categorySlug": "personal-care",
     "badge": "Sale"
@@ -19052,7 +19052,7 @@
     "comparePrice": 115,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1015,
     "categorySlug": "personal-care",
     "badge": "Organic"
@@ -19065,7 +19065,7 @@
     "comparePrice": 140,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 891,
     "categorySlug": "personal-care"
   },
@@ -19077,7 +19077,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 422,
     "categorySlug": "personal-care"
   },
@@ -19434,7 +19434,7 @@
     "comparePrice": 225,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1195,
     "categorySlug": "personal-care"
   },
@@ -19470,7 +19470,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 293,
     "categorySlug": "personal-care"
   },
@@ -19494,7 +19494,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 870,
     "categorySlug": "personal-care",
     "badge": "New"
@@ -19556,7 +19556,7 @@
     "comparePrice": 175,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 213,
     "categorySlug": "personal-care"
   },
@@ -19618,7 +19618,7 @@
     "comparePrice": 1270,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1111,
     "categorySlug": "personal-care",
     "badge": "Sale"
@@ -19631,7 +19631,7 @@
     "comparePrice": 440,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1095,
     "categorySlug": "personal-care"
   },
@@ -19704,7 +19704,7 @@
     "comparePrice": 1520,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 81,
     "categorySlug": "personal-care"
   },
@@ -19778,7 +19778,7 @@
     "comparePrice": 540,
     "image": "/placeholder.svg",
     "unit": "kg",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1086,
     "categorySlug": "household"
   },
@@ -20099,7 +20099,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "L",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1096,
     "categorySlug": "household",
     "badge": "Sale"
@@ -20249,7 +20249,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "m",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 918,
     "categorySlug": "household"
   },
@@ -20287,7 +20287,7 @@
     "comparePrice": 110,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 318,
     "categorySlug": "household"
   },
@@ -20335,7 +20335,7 @@
     "comparePrice": 120,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 356,
     "categorySlug": "household",
     "badge": "Organic"
@@ -20411,7 +20411,7 @@
     "comparePrice": 62,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 570,
     "categorySlug": "household",
     "badge": "Organic"
@@ -20649,7 +20649,7 @@
     "comparePrice": 120,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 97,
     "categorySlug": "household"
   },
@@ -20685,7 +20685,7 @@
     "comparePrice": 160,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 260,
     "categorySlug": "household"
   },
@@ -20882,7 +20882,7 @@
     "comparePrice": 625,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 233,
     "categorySlug": "household",
     "badge": "Organic"
@@ -20908,7 +20908,7 @@
     "comparePrice": 499,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 71,
     "categorySlug": "household"
   },
@@ -21020,7 +21020,7 @@
     "comparePrice": 225,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 212,
     "categorySlug": "household",
     "badge": "Bestseller"
@@ -21083,7 +21083,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 276,
     "categorySlug": "household"
   },
@@ -21343,7 +21343,7 @@
     "comparePrice": 110,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 136,
     "categorySlug": "household"
   },
@@ -21391,7 +21391,7 @@
     "comparePrice": 125,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 281,
     "categorySlug": "household"
   },
@@ -21415,7 +21415,7 @@
     "comparePrice": 200,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 615,
     "categorySlug": "household"
   },
@@ -21499,7 +21499,7 @@
     "comparePrice": 148,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1148,
     "categorySlug": "household"
   },
@@ -21598,7 +21598,7 @@
     "comparePrice": 80,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 762,
     "categorySlug": "household",
     "badge": "New"
@@ -21732,7 +21732,7 @@
     "comparePrice": 98,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 629,
     "categorySlug": "household",
     "badge": "New"
@@ -22012,7 +22012,7 @@
     "comparePrice": 38,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 419,
     "categorySlug": "household"
   },
@@ -22036,7 +22036,7 @@
     "comparePrice": 185,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 957,
     "categorySlug": "household",
     "badge": "New"
@@ -22220,7 +22220,7 @@
     "comparePrice": 999,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 801,
     "categorySlug": "baby-care"
   },
@@ -22442,7 +22442,7 @@
     "comparePrice": 855,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 643,
     "categorySlug": "baby-care",
     "badge": "Bestseller"
@@ -22455,7 +22455,7 @@
     "comparePrice": 855,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 738,
     "categorySlug": "baby-care"
   },
@@ -22605,7 +22605,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 766,
     "categorySlug": "baby-care"
   },
@@ -22629,7 +22629,7 @@
     "comparePrice": 440,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 141,
     "categorySlug": "baby-care"
   },
@@ -22641,7 +22641,7 @@
     "comparePrice": 225,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 815,
     "categorySlug": "baby-care"
   },
@@ -22715,7 +22715,7 @@
     "comparePrice": 185,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1151,
     "categorySlug": "baby-care"
   },
@@ -22727,7 +22727,7 @@
     "comparePrice": 160,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1121,
     "categorySlug": "baby-care",
     "badge": "Sale"
@@ -22790,7 +22790,7 @@
     "comparePrice": 182,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 605,
     "categorySlug": "baby-care"
   },
@@ -22887,7 +22887,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1075,
     "categorySlug": "baby-care",
     "badge": "Organic"
@@ -22937,7 +22937,7 @@
     "comparePrice": 290,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 760,
     "categorySlug": "baby-care"
   },
@@ -23023,7 +23023,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "ml",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 832,
     "categorySlug": "baby-care"
   },
@@ -23086,7 +23086,7 @@
     "comparePrice": 315,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1158,
     "categorySlug": "baby-care"
   },
@@ -23222,7 +23222,7 @@
     "comparePrice": 762,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 596,
     "categorySlug": "baby-care"
   },
@@ -23308,7 +23308,7 @@
     "comparePrice": 540,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 116,
     "categorySlug": "baby-care",
     "badge": "Bestseller"
@@ -23506,7 +23506,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 652,
     "categorySlug": "baby-care"
   },
@@ -23812,7 +23812,7 @@
     "comparePrice": 250,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 1024,
     "categorySlug": "baby-care",
     "badge": "Organic"
@@ -24180,7 +24180,7 @@
     "comparePrice": 72,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 462,
     "categorySlug": "baby-care"
   },
@@ -24254,7 +24254,7 @@
     "comparePrice": 225,
     "image": "/placeholder.svg",
     "unit": "g",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 742,
     "categorySlug": "baby-care"
   },
@@ -24509,7 +24509,7 @@
     "comparePrice": 290,
     "image": "/placeholder.svg",
     "unit": "each",
-    "rating": 4.0,
+    "rating": 4,
     "reviewsCount": 746,
     "categorySlug": "baby-care",
     "badge": "Organic"

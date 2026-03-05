@@ -11,6 +11,9 @@ type Coupon = {
   type: string;
   value: number;
   minOrder: number;
+  maxDiscount: number | null;
+  perUserLimit: number | null;
+  description: string;
   uses: string;
   expiry: string;
   active: boolean;
@@ -88,7 +91,13 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
                   Min. Order
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
+                  Max Disc.
+                </th>
+                <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
                   Uses
+                </th>
+                <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
+                  Per User
                 </th>
                 <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
                   Expiry
@@ -105,7 +114,7 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
               {coupons.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={10}
                     className="px-4 py-8 text-center text-muted-foreground"
                   >
                     No coupons found. Create your first coupon to get started.
@@ -126,7 +135,13 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
                     <td className="px-4 py-3 text-muted-foreground">
                       ₹{c.minOrder}
                     </td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {c.maxDiscount !== null ? `₹${c.maxDiscount}` : "—"}
+                    </td>
                     <td className="px-4 py-3">{c.uses}</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {c.perUserLimit !== null ? c.perUserLimit : "∞"}
+                    </td>
                     <td className="px-4 py-3 text-muted-foreground">
                       {c.expiry}
                     </td>
@@ -163,7 +178,7 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
       {/* Add/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-card border border-border rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+          <div className="bg-card border border-border rounded-2xl shadow-xl w-full max-w-md mx-4 p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-lg">
                 {editingCoupon ? "Edit Coupon" : "Add Coupon"}
@@ -192,6 +207,16 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
                   defaultValue={editingCoupon?.code || ""}
                   className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm uppercase"
                   placeholder="SAVE20"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Description</label>
+                <input
+                  name="description"
+                  defaultValue={editingCoupon?.description || ""}
+                  className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm"
+                  placeholder="e.g. Welcome bonus for new users"
                 />
               </div>
 
@@ -235,11 +260,35 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
                   />
                 </div>
                 <div className="space-y-2">
+                  <label className="text-sm font-medium">Max Discount (₹)</label>
+                  <input
+                    name="max_discount"
+                    type="number"
+                    step="0.01"
+                    defaultValue={editingCoupon?.maxDiscount ?? ""}
+                    className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm"
+                    placeholder="No cap"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
                   <label className="text-sm font-medium">Max Uses</label>
                   <input
                     name="max_uses"
                     type="number"
                     defaultValue={editingCoupon?.rawMaxUses || ""}
+                    className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm"
+                    placeholder="Unlimited"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Per User Limit</label>
+                  <input
+                    name="per_user_limit"
+                    type="number"
+                    defaultValue={editingCoupon?.perUserLimit ?? ""}
                     className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm"
                     placeholder="Unlimited"
                   />
@@ -255,8 +304,8 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
                   defaultValue={
                     editingCoupon?.rawExpiresAt
                       ? new Date(editingCoupon.rawExpiresAt)
-                          .toISOString()
-                          .slice(0, 16)
+                        .toISOString()
+                        .slice(0, 16)
                       : ""
                   }
                   className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm"

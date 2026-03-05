@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,11 @@ export default function CheckoutPage() {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [autoDiscountAmount, setAutoDiscountAmount] = useState(0);
+
+  const handleAutoDiscountChange = useCallback((amount: number) => {
+    setAutoDiscountAmount(amount);
+  }, []);
 
   const { items, getTotal, clearCart, appliedPromo, removeItem } =
     useCartStore();
@@ -104,7 +109,8 @@ export default function CheckoutPage() {
       const isFreeDelivery = cartTotal >= 50;
       const deliveryFee = cartTotal > 0 && !isFreeDelivery ? 4.99 : 0;
       const expressFee = isExpressDelivery ? 3.99 : 0;
-      const finalTotal = cartTotal + deliveryFee + expressFee;
+      const totalDiscount = (appliedPromo?.discountAmount || 0) + autoDiscountAmount;
+      const finalTotal = Math.max(0, cartTotal + deliveryFee + expressFee - totalDiscount);
 
       const result = await placeOrderAction(
         selectedAddress,
@@ -113,8 +119,8 @@ export default function CheckoutPage() {
         finalTotal,
         formattedItems,
         substitutionPref,
-        appliedPromo?.code,
-        appliedPromo?.discountAmount,
+        appliedPromo?.code || (autoDiscountAmount > 0 ? "AUTO_DISCOUNT" : undefined),
+        totalDiscount,
       );
 
       if (result.error) {
@@ -249,7 +255,10 @@ export default function CheckoutPage() {
         </div>
 
         {/* Right: Order Summary */}
-        <OrderSummaryPanel isExpressDelivery={isExpressDelivery} />
+        <OrderSummaryPanel
+          isExpressDelivery={isExpressDelivery}
+          onAutoDiscountChange={handleAutoDiscountChange}
+        />
       </div>
     </div>
   );

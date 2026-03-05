@@ -1,6 +1,7 @@
+# pylint: disable=too-many-lines
 """
 Generate 2000 real Indian grocery products across 10 categories.
-All products are real items available in Indian grocery stores/apps like BigBasket, Blinkit, Zepto, JioMart.
+All products are real items available in Indian grocery stores/apps.
 """
 
 import json
@@ -10,7 +11,10 @@ import os
 random.seed(42)
 
 def slugify(text):
-    return text.lower().replace("'", "").replace("&", "and").replace(" ", "-").replace("(", "").replace(")", "").replace(",", "").replace(".", "").replace("/", "-").replace("--", "-").strip("-")
+    """Convert text to a URL-friendly slug."""
+    return text.lower().replace("'", "").replace("&", "and").replace(" ", "-")\
+        .replace("(", "").replace(")", "").replace(",", "").replace(".", "")\
+        .replace("/", "-").replace("--", "-").strip("-")
 
 # =====================================================================
 # CATEGORY 1: VEGETABLES (200 real products)
@@ -37,7 +41,7 @@ vegetables_products = [
     ("Fresho Cabbage", 500, "g", 20, 28),
     ("Fresho Red Cabbage", 250, "g", 35, 45),
     ("Fresho Arugula", 100, "g", 55, 68),
-    
+
     # Root Vegetables
     ("Fresho Potato (Aloo)", 1, "kg", 30, 40),
     ("Fresho Onion (Pyaaz)", 1, "kg", 35, 50),
@@ -51,7 +55,7 @@ vegetables_products = [
     ("Fresho Yam (Jimikand)", 500, "g", 35, 48),
     ("Fresho Colocasia (Arbi)", 500, "g", 30, 40),
     ("Fresho Raw Turmeric (Kachi Haldi)", 250, "g", 25, 35),
-    
+
     # Gourds & Squash
     ("Fresho Bottle Gourd (Lauki)", 500, "g", 18, 25),
     ("Fresho Ridge Gourd (Turai)", 500, "g", 25, 35),
@@ -63,7 +67,7 @@ vegetables_products = [
     ("Fresho Pumpkin (Kaddu)", 500, "g", 18, 25),
     ("Fresho Zucchini Green", 250, "g", 35, 48),
     ("Fresho Yellow Zucchini", 250, "g", 40, 52),
-    
+
     # Peppers & Tomatoes
     ("Fresho Tomato (Tamatar)", 500, "g", 20, 32),
     ("Fresho Cherry Tomatoes", 200, "g", 55, 68),
@@ -72,7 +76,7 @@ vegetables_products = [
     ("Fresho Capsicum Red", 250, "g", 55, 72),
     ("Fresho Capsicum Yellow", 250, "g", 55, 72),
     ("Fresho Jalapeno Peppers", 100, "g", 40, 55),
-    
+
     # Beans & Pods
     ("Fresho French Beans", 250, "g", 25, 35),
     ("Fresho Cluster Beans (Gawar)", 250, "g", 22, 30),
@@ -80,7 +84,7 @@ vegetables_products = [
     ("Fresho Green Peas (Matar)", 250, "g", 35, 48),
     ("Fresho Drumstick (Sahjan)", 250, "g", 25, 35),
     ("Fresho Lady Finger (Bhindi)", 250, "g", 22, 30),
-    
+
     # Brinjal & Others
     ("Fresho Brinjal Purple Long", 500, "g", 22, 30),
     ("Fresho Brinjal Round (Baingan)", 500, "g", 20, 28),
@@ -91,7 +95,7 @@ vegetables_products = [
     ("Fresho Mushroom Button", 200, "g", 42, 55),
     ("Fresho Mushroom Oyster", 200, "g", 60, 78),
     ("Fresho Mushroom Shiitake", 100, "g", 95, 120),
-    
+
     # Organic Vegetables
     ("Organic Tattva Potato", 1, "kg", 52, 65),
     ("Organic Tattva Onion", 1, "kg", 55, 70),
@@ -108,7 +112,7 @@ vegetables_products = [
     ("24 Mantra Organic Palak", 200, "g", 35, 45),
     ("24 Mantra Organic Methi", 200, "g", 32, 42),
     ("24 Mantra Organic Green Chilli", 100, "g", 18, 25),
-    
+
     # More Fresh Vegetables
     ("Fresho Cucumber (Kheera)", 500, "g", 18, 25),
     ("Fresho English Cucumber", 1, "pc", 28, 38),
@@ -123,7 +127,7 @@ vegetables_products = [
     ("Fresho Elephant Yam (Suran)", 500, "g", 30, 42),
     ("Fresho Lemon (Nimbu)", 250, "g", 20, 30),
     ("Fresho Avocado", 1, "pc", 75, 120),
-    
+
     # Frozen Vegetables
     ("McCain French Fries", 420, "g", 99, 125),
     ("McCain Smiles", 415, "g", 109, 135),
@@ -135,7 +139,7 @@ vegetables_products = [
     ("ITC Masterchef Frozen Mixed Veg", 500, "g", 85, 105),
     ("Mother Dairy Safal Frozen Beans", 500, "g", 80, 98),
     ("Birds Eye Mixed Vegetables", 450, "g", 165, 199),
-    
+
     # Exotic Vegetables
     ("Fresho Red Bell Pepper", 1, "pc", 45, 60),
     ("Fresho Asparagus", 100, "g", 120, 155),
@@ -148,7 +152,7 @@ vegetables_products = [
     ("Fresho Thai Basil", 50, "g", 35, 45),
     ("Fresho Lemongrass", 100, "g", 30, 40),
     ("Fresho Galangal", 100, "g", 60, 78),
-    
+
     # Pack Vegetables
     ("Fresho Salad Mix Pack", 200, "g", 75, 95),
     ("Fresho Stir Fry Vegetables Pack", 400, "g", 85, 105),
@@ -156,7 +160,7 @@ vegetables_products = [
     ("Fresho Curry Cut Vegetables Pack", 400, "g", 55, 70),
     ("Fresho Sabzi Mix Pack", 500, "g", 52, 65),
     ("Fresho Raita Mix Pack", 200, "g", 35, 45),
-    
+
     # More basics to reach 200
     ("Fresho Green Garlic", 100, "g", 15, 22),
     ("Fresho Red Onion", 1, "kg", 38, 52),
@@ -266,7 +270,7 @@ fruits_products = [
     ("Fresho Banana Nendran", 500, "g", 35, 48),
     ("Fresho Banana Grand Naine", 1, "dozen", 48, 62),
     ("Fresho Raw Banana (Cooking)", 500, "g", 22, 30),
-    
+
     # Citrus
     ("Fresho Orange Nagpur", 1, "kg", 75, 95),
     ("Fresho Orange Valencia", 1, "kg", 110, 140),
@@ -276,14 +280,14 @@ fruits_products = [
     ("Fresho Grapefruit", 1, "pc", 55, 72),
     ("Fresho Blood Orange", 500, "g", 85, 110),
     ("Fresho Tangerine", 500, "g", 75, 95),
-    
+
     # Grapes
     ("Fresho Green Grapes Seedless", 500, "g", 55, 72),
     ("Fresho Black Grapes", 500, "g", 60, 78),
     ("Fresho Red Globe Grapes", 500, "g", 65, 82),
     ("Fresho Thompson Seedless Grapes", 500, "g", 58, 75),
     ("Fresho Crimson Seedless Grapes", 500, "g", 70, 90),
-    
+
     # Mangoes (seasonal)
     ("Fresho Mango Alphonso", 1, "kg", 350, 450),
     ("Fresho Mango Banganapalli", 1, "kg", 120, 155),
@@ -292,7 +296,7 @@ fruits_products = [
     ("Fresho Mango Kesar", 1, "kg", 200, 260),
     ("Fresho Mango Totapuri", 1, "kg", 60, 80),
     ("Fresho Mango Mallika", 1, "kg", 110, 140),
-    
+
     # Berries
     ("Fresho Strawberry", 200, "g", 75, 99),
     ("Fresho Blueberry", 125, "g", 180, 240),
@@ -302,7 +306,7 @@ fruits_products = [
     ("Fresho Indian Gooseberry (Amla)", 250, "g", 25, 35),
     ("Fresho Mulberry (Shahtoot)", 200, "g", 85, 110),
     ("Fresho Cape Gooseberry", 100, "g", 95, 125),
-    
+
     # Tropical Fruits
     ("Fresho Papaya", 1, "pc", 35, 50),
     ("Fresho Pineapple", 1, "pc", 45, 65),
@@ -324,18 +328,18 @@ fruits_products = [
     ("Fresho Rambutan", 250, "g", 120, 160),
     ("Fresho Mangosteen", 250, "g", 180, 240),
     ("Fresho Longan", 250, "g", 110, 145),
-    
+
     # Stone Fruits
     ("Fresho Peach", 500, "g", 90, 120),
     ("Fresho Plum", 500, "g", 80, 105),
     ("Fresho Apricot", 500, "g", 120, 160),
     ("Fresho Cherry", 250, "g", 250, 320),
     ("Fresho Nectarine", 500, "g", 110, 145),
-    
+
     # Melons
     ("Fresho Cantaloupe", 1, "pc", 40, 55),
     ("Fresho Honeydew Melon", 1, "pc", 55, 72),
-    
+
     # Pears & Others
     ("Fresho Pear Bartlett", 500, "g", 85, 110),
     ("Fresho Pear Nashi (Asian Pear)", 500, "g", 110, 145),
@@ -348,7 +352,7 @@ fruits_products = [
     ("Fresho Wood Apple", 1, "pc", 20, 30),
     ("Fresho Karonda", 250, "g", 30, 42),
     ("Fresho Falsa", 200, "g", 45, 60),
-    
+
     # Dry Fruits
     ("Happilo Premium Almonds", 200, "g", 195, 250),
     ("Happilo Premium Cashews", 200, "g", 220, 280),
@@ -370,7 +374,7 @@ fruits_products = [
     ("Solimo Almonds", 500, "g", 360, 450),
     ("Solimo Cashews", 500, "g", 425, 540),
     ("Carnival Mixed Dried Fruits", 200, "g", 245, 310),
-    
+
     # More Fruits
     ("Fresho Peru Guava White", 500, "g", 45, 60),
     ("Fresho Taiwan Pink Guava", 500, "g", 55, 72),
@@ -382,7 +386,7 @@ fruits_products = [
     ("Fresho Tamarind Fresh", 250, "g", 35, 48),
     ("Fresho Sweet Lime (Mosambi)", 1, "kg", 55, 72),
     ("Fresho Amla (Indian Gooseberry)", 500, "g", 35, 48),
-    
+
     # Imported Fruits
     ("Imported Avocado Hass", 1, "pc", 95, 130),
     ("Imported Avocado Large", 1, "pc", 130, 175),
@@ -398,7 +402,7 @@ fruits_products = [
     ("Driscoll's Strawberries", 250, "g", 110, 150),
     ("Driscoll's Blueberries", 125, "g", 210, 275),
     ("Driscoll's Raspberries", 125, "g", 220, 290),
-    
+
     # Fruit Packs
     ("Fresho Fruit Basket Premium", 2, "kg", 350, 450),
     ("Fresho Seasonal Fruit Pack", 1, "kg", 180, 230),
@@ -506,7 +510,7 @@ dairy_products = [
     ("Pride of Cows Milk", 1, "L", 95, 109),
     ("Country Delight Full Cream Milk", 1, "L", 72, 82),
     ("Sid's Farm A2 Cow Milk", 1, "L", 78, 88),
-    
+
     # Curd & Yogurt
     ("Amul Masti Dahi", 400, "g", 40, 45),
     ("Amul Masti Dahi", 1, "kg", 75, 85),
@@ -524,7 +528,7 @@ dairy_products = [
     ("Danone Flavoured Yogurt Mixed Fruit", 100, "g", 30, 38),
     ("Danone Flavoured Yogurt Strawberry", 100, "g", 30, 38),
     ("Nestle A+ Pro-Grow Dahi", 400, "g", 45, 52),
-    
+
     # Paneer & Cheese
     ("Amul Fresh Paneer", 200, "g", 80, 95),
     ("Amul Fresh Paneer", 1, "kg", 340, 400),
@@ -550,7 +554,7 @@ dairy_products = [
     ("Brie Cheese Imported", 125, "g", 360, 450),
     ("Amul Cream Cheese", 200, "g", 115, 140),
     ("DaVita Cream Cheese", 200, "g", 145, 180),
-    
+
     # Butter & Ghee
     ("Amul Butter Salted", 100, "g", 52, 58),
     ("Amul Butter Salted", 500, "g", 250, 280),
@@ -568,7 +572,7 @@ dairy_products = [
     ("Patanjali Cow Ghee", 1, "L", 530, 620),
     ("Gowardhan Ghee", 1, "L", 555, 640),
     ("Ananda Ghee", 1, "L", 550, 635),
-    
+
     # Cream & Milkshakes
     ("Amul Fresh Cream", 200, "ml", 45, 55),
     ("Amul Fresh Cream", 1, "L", 180, 220),
@@ -581,7 +585,7 @@ dairy_products = [
     ("Amul Kool Mango", 200, "ml", 25, 30),
     ("Hershey's Milkshake Chocolate", 200, "ml", 35, 45),
     ("Hershey's Milkshake Vanilla", 200, "ml", 35, 45),
-    
+
     # Buttermilk & Lassi
     ("Amul Masti Chaas", 1, "L", 30, 38),
     ("Amul Masti Spiced Buttermilk", 200, "ml", 15, 20),
@@ -591,7 +595,7 @@ dairy_products = [
     ("Amul Lassi Mango", 200, "ml", 25, 30),
     ("Mother Dairy Chaas", 500, "ml", 25, 32),
     ("Nandini Buttermilk Spiced", 200, "ml", 15, 20),
-    
+
     # Eggs
     ("Fresho Farm Eggs White", 6, "pcs", 42, 52),
     ("Fresho Farm Eggs White", 12, "pcs", 78, 95),
@@ -605,7 +609,7 @@ dairy_products = [
     ("Happy Hens Farm Eggs Free Range", 6, "pcs", 80, 100),
     ("ITC Aashirvaad Eggs Omega 3", 6, "pcs", 72, 90),
     ("Eggoz Nutrition Protein Eggs", 6, "pcs", 68, 85),
-    
+
     # Tofu & Plant-Based
     ("Nutrela Soya Paneer Tofu", 200, "g", 55, 68),
     ("Morinaga Silken Tofu", 349, "g", 125, 160),
@@ -617,7 +621,7 @@ dairy_products = [
     ("Only Earth Soy Milk Original", 1, "L", 155, 200),
     ("Goodmylk Oat Milk", 1, "L", 210, 270),
     ("So Good Almond Milk", 1, "L", 185, 240),
-    
+
     # Condensed & Flavoured Milk
     ("Amul Mithai Mate", 200, "g", 42, 50),
     ("Nestle Milkmaid Sweetened Condensed Milk", 400, "g", 155, 185),
@@ -625,7 +629,7 @@ dairy_products = [
     ("Amul Kool Chocolate Milk", 200, "ml", 25, 30),
     ("Mother Dairy Fruit Yogurt Strawberry", 100, "g", 30, 38),
     ("Danone Smoothie Mixed Berry", 180, "ml", 55, 70),
-    
+
     # Ice Cream
     ("Amul Ice Cream Vanilla", 750, "ml", 165, 199),
     ("Amul Ice Cream Chocolate", 750, "ml", 175, 210),
@@ -637,13 +641,13 @@ dairy_products = [
     ("Havmor Ice Cream Mango", 700, "ml", 175, 220),
     ("Naturals Ice Cream Tender Coconut", 500, "ml", 195, 249),
     ("London Dairy Ice Cream Vanilla", 500, "ml", 295, 375),
-    
+
     # Khoa, Rabdi & Others
     ("Amul Khoa Mawa", 200, "g", 85, 105),
     ("Chitale Shrikhand Kesar", 250, "g", 115, 145),
     ("Amul Shrikhand Elaichi", 100, "g", 42, 52),
     ("Amul Malai Paneer Tikka Pack", 300, "g", 155, 190),
-    
+
     # More Dairy
     ("Nestle A+ Slim Milk", 1, "L", 50, 58),
     ("Amul Taaza Homogenised Toned Milk", 500, "ml", 28, 32),
@@ -736,7 +740,7 @@ bakery_products = [
     ("The Baker's Dozen Sourdough", 400, "g", 120, 155),
     ("The Baker's Dozen Multigrain Bread", 400, "g", 95, 125),
     ("Theobroma Whole Wheat Bread", 400, "g", 65, 82),
-    
+
     # Pav & Buns
     ("Britannia Pav", 6, "pcs", 30, 38),
     ("Modern Pav", 6, "pcs", 28, 35),
@@ -786,7 +790,7 @@ bakery_products = [
     ("Modern Rusk", 200, "g", 30, 38),
     ("Fresho Suji Rusk", 300, "g", 45, 58),
     ("English Oven Suji Rusk", 300, "g", 48, 60),
-    
+
     # Cakes & Pastries
     ("Britannia Cake Chocolate", 250, "g", 60, 75),
     ("Britannia Cake Fruit", 250, "g", 65, 80),
@@ -803,7 +807,7 @@ bakery_products = [
     ("Fresho Cup Cake Red Velvet", 6, "pcs", 110, 140),
     ("Fresho Brownie", 4, "pcs", 125, 160),
     ("Theobroma Brownie", 2, "pcs", 145, 185),
-    
+
     # Croissants & Danish
     ("Fresho Butter Croissant", 4, "pcs", 95, 125),
     ("Fresho Chocolate Croissant", 4, "pcs", 110, 140),
@@ -811,7 +815,7 @@ bakery_products = [
     ("English Oven Butter Croissant", 4, "pcs", 105, 135),
     ("Fresho Danish Pastry Sugar", 4, "pcs", 85, 110),
     ("Fresho Danish Pastry Cinnamon", 2, "pcs", 65, 85),
-    
+
     # Muffins & Donuts
     ("Fresho Chocolate Muffin", 2, "pcs", 65, 85),
     ("Fresho Blueberry Muffin", 2, "pcs", 70, 90),
@@ -820,7 +824,7 @@ bakery_products = [
     ("Fresho Glazed Sugar Donut", 2, "pcs", 50, 65),
     ("Mad Over Donuts Chocolate Fantasy", 1, "pc", 65, 85),
     ("Mad Over Donuts Sugar Glaze", 1, "pc", 55, 72),
-    
+
     # Indian Bakery
     ("Fresho Khari Biscuit", 200, "g", 35, 45),
     ("Fresho Nankhatai", 200, "g", 55, 72),
@@ -831,7 +835,7 @@ bakery_products = [
     ("Fresho Fruit Bread", 300, "g", 75, 98),
     ("Fresho Plum Cake", 300, "g", 95, 125),
     ("Karachi Bakery Dilkush", 300, "g", 95, 125),
-    
+
     # Pizza Base & Wraps
     ("Fresho Pizza Base 7 inch", 2, "pcs", 55, 72),
     ("Fresho Pizza Base 10 inch", 2, "pcs", 75, 98),
@@ -843,7 +847,7 @@ bakery_products = [
     ("Fresho Naan Bread", 4, "pcs", 55, 72),
     ("Fresho Garlic Bread Frozen", 200, "g", 85, 110),
     ("Fresho Cheese Garlic Bread", 200, "g", 95, 125),
-    
+
     # Bakery Snacks
     ("Fresho Puff Pastry Veg", 4, "pcs", 55, 72),
     ("Fresho Paneer Puff", 4, "pcs", 65, 85),
@@ -853,7 +857,7 @@ bakery_products = [
     ("Fresho Kachori", 4, "pcs", 48, 62),
     ("Fresho Masala Bun", 4, "pcs", 42, 55),
     ("Fresho Cream Roll", 2, "pcs", 35, 45),
-    
+
     # Cake Mixes & Baking
     ("Betty Crocker Chocolate Cake Mix", 395, "g", 225, 290),
     ("Betty Crocker Vanilla Cake Mix", 395, "g", 225, 290),
@@ -865,7 +869,7 @@ bakery_products = [
     ("Fun Foods Baking Soda", 100, "g", 28, 35),
     ("Morde Dark Compound Chocolate", 400, "g", 155, 195),
     ("Morde White Compound Chocolate", 400, "g", 160, 205),
-    
+
     # More Bakery items
     ("Fresho Focaccia Bread", 200, "g", 85, 110),
     ("Fresho Ciabatta Bread", 200, "g", 75, 98),
@@ -969,7 +973,7 @@ meat_products = [
     ("TenderCuts Chicken Wings", 500, "g", 150, 190),
     ("Fresho Chicken Curry Cut", 500, "g", 155, 195),
     ("Fresho Chicken Breast", 500, "g", 218, 275),
-    
+
     # Chicken - Marinated
     ("Licious Chicken Tikka", 250, "g", 165, 210),
     ("Licious Chicken Malai Tikka", 250, "g", 175, 225),
@@ -981,7 +985,7 @@ meat_products = [
     ("FreshToHome Tandoori Chicken Leg", 500, "g", 235, 300),
     ("ITC Master Chef Chicken Seekh Kebab", 200, "g", 155, 199),
     ("ITC Master Chef Chicken Nuggets", 240, "g", 145, 185),
-    
+
     # Mutton/Goat
     ("Licious Goat Curry Cut", 500, "g", 450, 565),
     ("Licious Goat Biryani Cut", 500, "g", 465, 585),
@@ -1016,7 +1020,7 @@ meat_products = [
     ("TenderCuts Nethili (Anchovies)", 500, "g", 125, 160),
     ("Fresho Rohu Fish", 500, "g", 175, 225),
     ("Fresho Pomfret White", 500, "g", 470, 595),
-    
+
     # Prawns & Shellfish
     ("Licious Prawns Medium Cleaned", 250, "g", 195, 250),
     ("Licious Prawns Large Cleaned", 250, "g", 280, 355),
@@ -1028,7 +1032,7 @@ meat_products = [
     ("FreshToHome Squid Cleaned", 250, "g", 180, 230),
     ("FreshToHome Mussels", 500, "g", 155, 200),
     ("Fresho Prawns Cleaned", 250, "g", 195, 250),
-    
+
     # Ready to Cook Non-Veg
     ("Licious Chicken Momos", 10, "pcs", 165, 210),
     ("Licious Mutton Momos", 10, "pcs", 195, 250),
@@ -1040,7 +1044,7 @@ meat_products = [
     ("Godrej Yummiez Chicken Nuggets", 250, "g", 145, 185),
     ("Godrej Yummiez Chicken Sausages", 250, "g", 135, 175),
     ("Godrej Yummiez Chicken Momos", 10, "pcs", 155, 200),
-    
+
     # Frozen Meat/Seafood
     ("McCain Chicken Strips", 400, "g", 235, 300),
     ("McCain Chicken Nuggets", 325, "g", 195, 250),
@@ -1052,43 +1056,43 @@ meat_products = [
     ("Prasuma Pork Sausages", 200, "g", 165, 210),
     ("Prasuma Lamb Seekh Kebab", 200, "g", 195, 250),
     ("Licious Chicken Cutlet", 250, "g", 155, 200),
-    
+
     # Eggs & Preparations
     ("Licious Egg Omelette Mix Masala", 200, "g", 75, 98),
     ("Licious Chicken Egg Bhurji Mix", 200, "g", 85, 110),
-    
+
     # Pork
     ("Licious Pork Curry Cut", 500, "g", 225, 290),
     ("Licious Pork Belly Slices", 250, "g", 195, 250),
     ("Licious Pork Ribs", 500, "g", 310, 395),
     ("Licious Pork Sausages", 250, "g", 175, 225),
     ("FreshToHome Pork Curry Cut", 500, "g", 220, 280),
-    
+
     # Lamb
     ("Licious Lamb Curry Cut", 500, "g", 475, 600),
     ("Licious Lamb Chops", 250, "g", 295, 375),
     ("Licious Lamb Mince", 500, "g", 455, 575),
     ("FreshToHome Lamb Curry Cut", 500, "g", 470, 595),
-    
+
     # Turkey & Duck
     ("Licious Turkey Breast Slices", 200, "g", 245, 310),
     ("Godrej Real Good Chicken Turkey Sausages", 250, "g", 175, 225),
     ("Fresho Duck Whole", 1, "kg", 380, 480),
-    
+
     # Deli Meats
     ("Prasuma Chi-Ken Salami Herbs", 200, "g", 165, 210),
     ("Prasuma Chi-Ken Sausage Smoked", 200, "g", 155, 200),
     ("Prasuma Chi-Ken Ham Smoked", 150, "g", 195, 250),
     ("D'Licious Chicken Ham", 200, "g", 175, 225),
     ("Zorabian Roasted Chicken Breast", 200, "g", 195, 250),
-    
+
     # Ready to Eat
     ("Licious Chicken Biryani Pack", 350, "g", 195, 250),
     ("Licious Butter Chicken Pack", 300, "g", 175, 225),
     ("ITC Kitchen of India Butter Chicken", 285, "g", 165, 210),
     ("ITC Kitchen of India Murgh Tikka Masala", 285, "g", 170, 220),
     ("MTR Ready to Eat Fish Curry", 300, "g", 125, 160),
-    
+
     # More seafood
     ("Licious Salmon Norwegian Fillet", 200, "g", 595, 750),
     ("Licious Tuna Steak", 200, "g", 395, 500),
@@ -1196,7 +1200,7 @@ snacks_products = [
     ("Bingo Mad Angles Tomato Madness", 72, "g", 20, 25),
     ("Bingo Chips Original Style", 90, "g", 30, 38),
     ("Bingo Tedhe Medhe Masala", 100, "g", 20, 25),
-    
+
     # Chips - Pringles & Others
     ("Pringles Original", 107, "g", 99, 130),
     ("Pringles Sour Cream & Onion", 107, "g", 99, 130),
@@ -1207,14 +1211,14 @@ snacks_products = [
     ("Balaji Wafers Masala Masti", 150, "g", 30, 38),
     ("Too Yumm Veggie Stix Tomato", 60, "g", 30, 38),
     ("Too Yumm Multigrain Chips", 60, "g", 30, 38),
-    
+
     # Kurkure & Puffed
     ("Kurkure Masala Munch", 90, "g", 20, 25),
     ("Kurkure Chilli Chatka", 90, "g", 20, 25),
     ("Kurkure Puffcorn Yummy Cheese", 62, "g", 20, 25),
     ("Cheetos Flamin Hot Crunchy", 42, "g", 20, 25),
     ("Cheetos Puffs Cheese", 60, "g", 20, 25),
-    
+
     # Namkeen - Haldiram's
     ("Haldiram's Aloo Bhujia", 400, "g", 110, 140),
     ("Haldiram's Bhujia Sev", 400, "g", 105, 135),
@@ -1227,7 +1231,7 @@ snacks_products = [
     ("Haldiram's Nimbu Masala", 200, "g", 55, 72),
     ("Haldiram's Bikaneri Bhujia", 400, "g", 110, 140),
     ("Haldiram's Tasty Nuts", 200, "g", 85, 110),
-    
+
     # Namkeen - Bikaji & Others
     ("Bikaji Aloo Bhujia", 400, "g", 95, 125),
     ("Bikaji Bhujia Sev", 400, "g", 90, 115),
@@ -1237,7 +1241,7 @@ snacks_products = [
     ("Balaji Ratlami Sev", 250, "g", 50, 65),
     ("Balaji Tikha Mitha Mix", 250, "g", 55, 72),
     ("Balaji Sing Bhujia", 250, "g", 60, 78),
-    
+
     # Roasted Nuts & Seeds
     ("Happilo Roasted Almonds Salted", 200, "g", 210, 270),
     ("Happilo Roasted Cashews Pepper", 200, "g", 235, 300),
@@ -1250,7 +1254,7 @@ snacks_products = [
     ("Sundrop Peanut Butter Crunchy", 200, "g", 95, 125),
     ("MyFitness Peanut Butter Chocolate", 510, "g", 340, 430),
     ("MyFitness Peanut Butter Natural", 510, "g", 310, 395),
-    
+
     # Popcorn
     ("Act II Instant Popcorn Butter", 70, "g", 35, 45),
     ("Act II Instant Popcorn Classic Salted", 70, "g", 35, 45),
@@ -1258,12 +1262,12 @@ snacks_products = [
     ("4700BC Gourmet Popcorn Himalayan Salt", 35, "g", 50, 65),
     ("4700BC Gourmet Popcorn Cheese", 45, "g", 55, 72),
     ("4700BC Gourmet Popcorn Caramel", 50, "g", 60, 78),
-    
+
     # Crackers & Rusks
     ("Parle Monaco Classic", 200, "g", 30, 38),
     ("Britannia 50-50 Potazos", 100, "g", 20, 25),
     ("Britannia Timepass", 150, "g", 30, 38),
-    
+
     # Indian Snacks (Ready to Eat)
     ("Haldiram's Samosa", 4, "pcs", 85, 110),
     ("Haldiram's Kachori", 4, "pcs", 90, 115),
@@ -1274,7 +1278,7 @@ snacks_products = [
     ("Haldiram's Soan Papdi", 500, "g", 145, 185),
     ("Haldiram's Kaju Katli", 250, "g", 225, 290),
     ("Haldiram's Motichoor Ladoo", 500, "g", 165, 210),
-    
+
     # Chocolate
     ("Cadbury Dairy Milk Silk", 150, "g", 155, 180),
     ("Cadbury Dairy Milk Silk Oreo", 130, "g", 155, 180),
@@ -1303,7 +1307,7 @@ snacks_products = [
     ("Bounty", 57, "g", 40, 50),
     ("M&M's Peanut", 45, "g", 40, 50),
     ("M&M's Milk Chocolate", 45, "g", 40, 50),
-    
+
     # Makhana & Healthy
     ("Farmley Roasted Makhana Cream & Onion", 80, "g", 99, 130),
     ("Farmley Roasted Makhana Peri Peri", 80, "g", 99, 130),
@@ -1315,7 +1319,7 @@ snacks_products = [
     ("Yoga Bar Protein Bar Almond Fudge", 60, "g", 95, 120),
     ("RiteBite Max Protein Bar Choco Fudge", 70, "g", 110, 140),
     ("RiteBite Max Protein Bar Peanut", 70, "g", 110, 140),
-    
+
     # More Snacks
     ("Doritos Nacho Cheese", 72, "g", 30, 38),
     ("Doritos Sweet Chilli", 72, "g", 30, 38),
@@ -1330,7 +1334,7 @@ snacks_products = [
     ("Aliva Cream Crackers", 175, "g", 40, 50),
     ("Britannia NutriChoice Seeds", 150, "g", 55, 72),
     ("Sunfeast Caker Choco", 40, "g", 10, 15),
-    
+
     # Sweets & Mithai
     ("Haldiram's Besan Ladoo", 400, "g", 175, 225),
     ("Bikaji Rasgulla Tin", 1, "kg", 175, 225),
@@ -1442,7 +1446,7 @@ beverages_products = [
     ("Girnar Green Tea Desi Kahwa", 36, "bags", 135, 175),
     ("Girnar Instant Premix Tea Masala", 10, "sachets", 85, 110),
     ("Society Tea Premium", 500, "g", 255, 310),
-    
+
     # Coffee
     ("Nescafe Classic Coffee", 200, "g", 445, 525),
     ("Nescafe Classic Coffee", 100, "g", 240, 285),
@@ -1459,7 +1463,7 @@ beverages_products = [
     ("Rage Coffee Instant Coffee Original", 50, "g", 225, 290),
     ("Sleepy Owl Cold Brew Coffee", 200, "ml", 145, 185),
     ("Blue Tokai Coffee Attikan Estate", 250, "g", 395, 495),
-    
+
     # Water
     ("Bisleri Mineral Water", 1, "L", 20, 22),
     ("Bisleri Mineral Water", 2, "L", 35, 40),
@@ -1471,7 +1475,7 @@ beverages_products = [
     ("Himalayan Natural Mineral Water", 500, "ml", 20, 25),
     ("Evian Natural Mineral Water", 500, "ml", 85, 110),
     ("Evian Natural Mineral Water", 1, "L", 145, 185),
-    
+
     # Carbonated Drinks
     ("Coca-Cola", 750, "ml", 38, 45),
     ("Coca-Cola", 1.25, "L", 65, 75),
@@ -1494,7 +1498,7 @@ beverages_products = [
     ("Red Bull Energy Drink", 250, "ml", 110, 135),
     ("Red Bull Sugar Free", 250, "ml", 115, 140),
     ("Monster Energy Original", 350, "ml", 95, 120),
-    
+
     # Juices
     ("Real Fruit Juice Mango", 1, "L", 99, 125),
     ("Real Fruit Juice Orange", 1, "L", 99, 125),
@@ -1513,13 +1517,13 @@ beverages_products = [
     ("Paper Boat Jaljeera", 200, "ml", 30, 38),
     ("Paper Boat Aamras", 200, "ml", 30, 38),
     ("Paper Boat Chilli Guava", 200, "ml", 30, 38),
-    
+
     # Coconut Water
     ("Paper Boat Coconut Water", 200, "ml", 30, 38),
     ("Raw Pressery Coconut Water", 200, "ml", 50, 65),
     ("Coco Soul Coconut Water", 200, "ml", 35, 45),
     ("Tropicana Coco Island Coconut Water", 200, "ml", 28, 35),
-    
+
     # Health Drinks
     ("Horlicks Classic Malt", 500, "g", 245, 298),
     ("Horlicks Chocolate", 500, "g", 255, 310),
@@ -1530,7 +1534,7 @@ beverages_products = [
     ("Protinex Original", 400, "g", 395, 495),
     ("Ensure Vanilla Nutrition Shake", 400, "g", 680, 850),
     ("PediaSure Chocolate", 400, "g", 545, 685),
-    
+
     # Flavoured Milk & Drinks
     ("Frooti Mango Drink", 600, "ml", 25, 30),
     ("Frooti Mango Drink", 200, "ml", 10, 15),
@@ -1540,13 +1544,13 @@ beverages_products = [
     ("Appy Fizz Sparkling Drink", 600, "ml", 45, 55),
     ("Minute Maid Nimbu Fresh", 400, "ml", 20, 25),
     ("Minute Maid Pulpy Orange", 400, "ml", 28, 35),
-    
+
     # Soda & Mixers
     ("Schweppes Tonic Water", 300, "ml", 45, 58),
     ("Schweppes Ginger Ale", 300, "ml", 45, 58),
     ("Schweppes Soda Water", 300, "ml", 22, 28),
     ("Kingfisher Soda", 750, "ml", 15, 20),
-    
+
     # More beverages
     ("Amul Kool Koko", 200, "ml", 20, 25),
     ("Nestle A+ Chaas Masala", 200, "ml", 18, 22),
@@ -1557,7 +1561,7 @@ beverages_products = [
     ("Tang Orange Instant Drink Mix", 500, "g", 155, 195),
     ("Rasna Khus Khus Concentrate", 750, "ml", 75, 95),
     ("Rooh Afza Rose Sharbat", 750, "ml", 125, 160),
-    
+
     # Oat & Plant-Based Drinks
     ("Epigamia Oat Milk Chocolate", 180, "ml", 55, 72),
     ("Epigamia Protein Smoothie Mango", 180, "ml", 55, 72),
@@ -1665,7 +1669,7 @@ personal_care_products = [
     ("Himalaya Gentle Daily Care Shampoo", 400, "ml", 225, 290),
     ("Mamaearth Onion Shampoo", 250, "ml", 295, 375),
     ("WOW Apple Cider Vinegar Shampoo", 300, "ml", 395, 499),
-    
+
     # Conditioner
     ("Dove Daily Shine Conditioner", 180, "ml", 145, 185),
     ("Dove Hair Fall Rescue Conditioner", 180, "ml", 145, 185),
@@ -1673,7 +1677,7 @@ personal_care_products = [
     ("TRESemme Keratin Smooth Conditioner", 340, "ml", 275, 350),
     ("L'Oreal Paris Total Repair 5 Conditioner", 192, "ml", 175, 225),
     ("Mamaearth Onion Conditioner", 250, "ml", 295, 375),
-    
+
     # Body Wash & Soap
     ("Dove Cream Beauty Bathing Bar", 100, "g", 49, 58),
     ("Dove Deeply Nourishing Body Wash", 250, "ml", 195, 250),
@@ -1692,7 +1696,7 @@ personal_care_products = [
     ("Biotique Bio Basil Soap", 150, "g", 65, 82),
     ("Himalaya Neem Face Wash", 150, "ml", 155, 198),
     ("Himalaya Purifying Neem Pack", 100, "g", 125, 160),
-    
+
     # Toothpaste & Oral Care
     ("Colgate Strong Teeth Toothpaste", 200, "g", 95, 120),
     ("Colgate Strong Teeth Toothpaste", 100, "g", 52, 65),
@@ -1712,7 +1716,7 @@ personal_care_products = [
     ("Listerine Cool Mint Mouthwash", 250, "ml", 115, 148),
     ("Listerine Total Care Mouthwash", 250, "ml", 135, 175),
     ("Colgate Plax Fresh Mint Mouthwash", 250, "ml", 105, 135),
-    
+
     # Deodorant & Perfume
     ("Nivea Men Fresh Active Deodorant", 150, "ml", 195, 250),
     ("Nivea Men Deep Impact Deodorant", 150, "ml", 210, 270),
@@ -1724,7 +1728,7 @@ personal_care_products = [
     ("Axe Dark Temptation Deodorant", 150, "ml", 215, 275),
     ("Dove Women Deodorant Original", 150, "ml", 210, 270),
     ("Secret Temptation Deodorant Dream", 150, "ml", 155, 200),
-    
+
     # Face Care
     ("Garnier Men Oil Clear Face Wash", 100, "g", 155, 198),
     ("Garnier Skin Naturals Light Complete Cream", 45, "g", 120, 155),
@@ -1740,7 +1744,7 @@ personal_care_products = [
     ("Mamaearth Ubtan Face Wash", 100, "ml", 195, 250),
     ("Plum Green Tea Face Wash", 100, "ml", 285, 365),
     ("The Derma Co Salicylic Acid Face Wash", 100, "ml", 195, 250),
-    
+
     # Hair Oil
     ("Parachute Coconut Oil", 200, "ml", 95, 120),
     ("Parachute Coconut Oil", 500, "ml", 215, 275),
@@ -1751,7 +1755,7 @@ personal_care_products = [
     ("Indulekha Bringha Hair Oil", 100, "ml", 375, 475),
     ("Mamaearth Onion Hair Oil", 250, "ml", 325, 415),
     ("Kesh King Ayurvedic Hair Oil", 200, "ml", 275, 350),
-    
+
     # Men's Grooming
     ("Gillette Mach3 Razor", 1, "pc", 225, 285),
     ("Gillette Mach3 Cartridge", 4, "pcs", 445, 565),
@@ -1760,14 +1764,14 @@ personal_care_products = [
     ("Gillette Series Shaving Foam", 245, "g", 175, 225),
     ("Beardo Beard Oil", 30, "ml", 295, 375),
     ("Bombay Shaving Company Razor", 1, "pc", 175, 225),
-    
+
     # Skin Care Extras
     ("Vaseline Petroleum Jelly", 100, "g", 85, 110),
     ("Nivea Body Lotion Nourishing", 200, "ml", 195, 250),
     ("Himalaya Lip Balm", 10, "g", 45, 58),
     ("Neutrogena Sunscreen SPF 50+", 50, "ml", 395, 499),
     ("Lakme Sun Expert SPF 50", 50, "ml", 275, 350),
-    
+
     # Feminine Care
     ("Whisper Ultra Clean XL Sanitary Pads", 15, "pcs", 105, 135),
     ("Whisper Ultra Clean XL+ Sanitary Pads", 30, "pcs", 225, 285),
@@ -1775,14 +1779,14 @@ personal_care_products = [
     ("Sofy Bodyfit Overnight XL Pads", 15, "pcs", 115, 148),
     ("Nua Ultra Thin Sanitary Pads XL", 12, "pcs", 175, 225),
     ("Carmesi Sensitive Sanitary Pads", 10, "pcs", 165, 210),
-    
+
     # Hand Wash & Sanitizer
     ("Dettol Liquid Hand Wash Original", 200, "ml", 52, 65),
     ("Dettol Liquid Hand Wash Refill", 175, "ml", 38, 48),
     ("Lifebuoy Hand Wash Total 10", 190, "ml", 48, 60),
     ("Himalaya PureHands Hand Wash", 250, "ml", 75, 98),
     ("Dettol Hand Sanitizer", 200, "ml", 95, 120),
-    
+
     # Cotton & Tissue
     ("Vicks VapoRub", 25, "g", 75, 95),
     ("Vicks Action 500 Advanced", 10, "tablets", 28, 35),
@@ -1899,7 +1903,7 @@ household_products = [
     ("Comfort After Wash Morning Fresh", 800, "ml", 175, 225),
     ("Downy Fabric Conditioner", 900, "ml", 235, 300),
     ("Vanish Oxi Action Stain Remover", 400, "g", 195, 250),
-    
+
     # Dish Wash
     ("Vim Dishwash Liquid Gel Lemon", 500, "ml", 99, 125),
     ("Vim Dishwash Liquid Gel", 750, "ml", 135, 175),
@@ -1907,7 +1911,7 @@ household_products = [
     ("Pril Tamarind Dishwash Gel", 500, "ml", 99, 125),
     ("Exo Dishwash Bar", 250, "g", 20, 25),
     ("Scotch-Brite Dishwash Bar", 200, "g", 25, 32),
-    
+
     # Floor & Toilet Cleaners
     ("Lizol Disinfectant Floor Cleaner Citrus", 1, "L", 195, 250),
     ("Lizol Disinfectant Floor Cleaner Lavender", 1, "L", 195, 250),
@@ -1918,12 +1922,12 @@ household_products = [
     ("Harpic Powerplus Toilet Cleaner", 1, "L", 170, 215),
     ("Harpic Flushmatic Twin In-Cistern Block", 100, "g", 95, 120),
     ("Domex Fresh Guard Ocean Fresh", 500, "ml", 82, 105),
-    
+
     # Glass & Surface Cleaners
     ("Colin Glass & Surface Cleaner Spray", 500, "ml", 110, 140),
     ("Cif Cream Cleaner Original", 250, "ml", 85, 110),
     ("Mr. Muscle Kitchen Cleaner", 500, "ml", 165, 210),
-    
+
     # Kitchen Essentials
     ("Fresho Aluminium Foil", 9, "m", 75, 95),
     ("Freshwrap Aluminium Foil", 21, "m", 195, 250),
@@ -1931,19 +1935,19 @@ household_products = [
     ("Freshwrap Parchment Paper", 5, "m", 85, 110),
     ("Freshwrap Zip Lock Bags Medium", 25, "pcs", 85, 110),
     ("Freshwrap Zip Lock Bags Large", 15, "pcs", 85, 110),
-    
+
     # Garbage Bags
     ("Ezee Bio-Degradable Garbage Bags Medium", 30, "pcs", 85, 110),
     ("Ezee Bio-Degradable Garbage Bags Large", 15, "pcs", 85, 110),
     ("Scotch-Brite Garbage Bag Roll", 30, "pcs", 95, 120),
-    
+
     # Scrubs & Wipes
     ("Scotch-Brite Scrub Pad Green", 3, "pcs", 55, 72),
     ("Scotch-Brite Heavy Duty Scrub Sponge", 1, "pc", 38, 48),
     ("Scotch-Brite Stainless Steel Scrub", 1, "pc", 35, 45),
     ("Vim Anti Smell Scrubber", 1, "pc", 42, 55),
     ("Sparkle Kitchen Wipes", 10, "pcs", 55, 72),
-    
+
     # Room Fresheners
     ("Odonil Bathroom Air Freshener Block", 75, "g", 48, 62),
     ("Odonil Room Spray Lavender Mist", 220, "ml", 95, 120),
@@ -1951,7 +1955,7 @@ household_products = [
     ("Ambi Pur Car Freshener Lavender", 7.5, "ml", 265, 335),
     ("Godrej Aer Twist Cool Surf Blue", 45, "g", 95, 120),
     ("Godrej Aer Spray Alive", 270, "ml", 195, 250),
-    
+
     # Pest Control
     ("Good Knight Gold Flash Liquid Vapouriser", 45, "ml", 70, 90),
     ("Good Knight Activ+ Liquid Refill", 45, "ml", 68, 85),
@@ -1963,7 +1967,7 @@ household_products = [
     ("Kala Hit Cockroach Killer Spray", 200, "ml", 145, 185),
     ("Baygon Cockroach Killer Spray", 200, "ml", 155, 200),
     ("Maxo Mosquito Coil", 10, "pcs", 55, 72),
-    
+
     # Tissue & Paper Products
     ("Origami Facial Tissue Box", 100, "pulls", 65, 85),
     ("Origami Kitchen Towel Roll", 2, "rolls", 125, 160),
@@ -1971,7 +1975,7 @@ household_products = [
     ("Kleenex Facial Tissue Box", 100, "pulls", 95, 120),
     ("Scott Kitchen Towel", 1, "roll", 85, 110),
     ("Fresho Tissue Paper Roll", 4, "rolls", 85, 110),
-    
+
     # Batteries
     ("Duracell AA Batteries", 4, "pcs", 125, 160),
     ("Duracell AAA Batteries", 4, "pcs", 120, 155),
@@ -1979,14 +1983,14 @@ household_products = [
     ("Eveready AA Batteries", 4, "pcs", 75, 98),
     ("Eveready AAA Batteries", 4, "pcs", 72, 92),
     ("Panasonic Eneloop Rechargeable AA", 2, "pcs", 395, 499),
-    
+
     # Light Bulbs
     ("Philips LED Bulb 9W Cool White", 1, "pc", 85, 110),
     ("Philips LED Bulb 12W Cool White", 1, "pc", 110, 140),
     ("Syska LED Bulb 9W", 1, "pc", 75, 98),
     ("Syska LED Bulb 12W", 1, "pc", 95, 120),
     ("Wipro LED Bulb 9W", 1, "pc", 80, 105),
-    
+
     # Mops & Brooms
     ("Scotch-Brite 2-in-1 Bucket Spin Mop", 1, "set", 895, 1125),
     ("Spotzero by Milton Spin Mop", 1, "set", 795, 999),
@@ -1995,27 +1999,27 @@ household_products = [
     ("York Floor Wiper", 1, "pc", 155, 200),
     ("Scotch-Brite Flat Mop", 1, "pc", 495, 625),
     ("Scotch-Brite Toilet Brush", 1, "pc", 95, 120),
-    
+
     # Garbage Bag & Storage
     ("Milton Tiffin Carrier 3 Containers", 1, "set", 395, 499),
     ("Fresho Container Round 500ml", 1, "pc", 55, 72),
     ("Fresho Container Set", 3, "pcs", 195, 250),
     ("Borosil Glass Container 400ml", 1, "pc", 295, 375),
     ("Borosil Lunch Box Set", 1, "set", 495, 625),
-    
+
     # Candles & Matchbox
     ("Ship Safety Matchbox", 10, "boxes", 28, 35),
     ("Flair Wax Candle White", 6, "pcs", 48, 62),
     ("Yankee Candle Vanilla Cupcake", 1, "pc", 895, 1125),
-    
+
     # Clothesline & Pegs
     ("Gala Clothes Peg", 12, "pcs", 65, 85),
     ("Scotch-Brite Lint Roller", 1, "pc", 175, 225),
-    
+
     # Shoe Care
     ("Cherry Blossom Shoe Polish Black", 40, "g", 48, 62),
     ("Cherry Blossom Shoe Cream Brown", 60, "g", 55, 72),
-    
+
     # More Household
     ("Fevicol SH Synthetic Resin Adhesive", 50, "g", 42, 55),
     ("Fevikwik One Drop Instant Adhesive", 1, "g", 10, 15),
@@ -2130,7 +2134,7 @@ baby_products = [
     ("Pampers Premium Care Pants L", 34, "pcs", 895, 1149),
     ("Pampers Premium Care Pants XL", 28, "pcs", 895, 1149),
     ("Pampers New Born Taped Diapers", 24, "pcs", 295, 380),
-    
+
     # Diapers - Huggies
     ("Huggies Wonder Pants S", 56, "pcs", 649, 835),
     ("Huggies Wonder Pants M", 50, "pcs", 749, 959),
@@ -2140,7 +2144,7 @@ baby_products = [
     ("Huggies Nature Made Pants M", 34, "pcs", 895, 1149),
     ("Huggies Nature Made Pants L", 30, "pcs", 895, 1149),
     ("Huggies Complete Comfort Wonder Pants NB", 24, "pcs", 295, 380),
-    
+
     # Diapers - MamyPoko
     ("MamyPoko Pants Extra Absorb M", 40, "pcs", 665, 855),
     ("MamyPoko Pants Extra Absorb L", 36, "pcs", 665, 855),
@@ -2148,7 +2152,7 @@ baby_products = [
     ("MamyPoko Pants Extra Absorb XXL", 28, "pcs", 665, 855),
     ("MamyPoko Pants Standard M", 32, "pcs", 395, 510),
     ("MamyPoko Pants Standard L", 28, "pcs", 395, 510),
-    
+
     # Baby Wipes
     ("Pampers Baby Wipes Aloe", 72, "pcs", 175, 225),
     ("Pampers Baby Wipes Sensitive", 56, "pcs", 195, 250),
@@ -2159,7 +2163,7 @@ baby_products = [
     ("Sebamed Baby Cleansing Wipes", 72, "pcs", 295, 375),
     ("LuvLap Paraben Free Baby Wipes", 72, "pcs", 145, 185),
     ("Mother Sparsh Water Wipes", 72, "pcs", 195, 250),
-    
+
     # Baby Bath & Skin Care
     ("Johnson's Baby Shampoo", 200, "ml", 165, 210),
     ("Johnson's Baby Shampoo", 500, "ml", 345, 440),
@@ -2196,7 +2200,7 @@ baby_products = [
     ("Mamaearth Baby Lotion", 200, "ml", 245, 315),
     ("Pigeon Baby Wash 2-in-1", 200, "ml", 195, 250),
     ("Pigeon Baby Lotion", 200, "ml", 175, 225),
-    
+
     # Baby Food
     ("Cerelac Baby Cereal Wheat Rice Mixed Veg", 300, "g", 235, 300),
     ("Cerelac Baby Cereal Wheat Apple", 300, "g", 235, 300),
@@ -2216,7 +2220,7 @@ baby_products = [
     ("PediaSure Complete Chocolate Flavour", 400, "g", 545, 699),
     ("PediaSure Complete Vanilla Flavour", 400, "g", 545, 699),
     ("Hipp Organic Combiotic Stage 1", 350, "g", 895, 1149),
-    
+
     # Baby Feeding
     ("Pigeon Peristaltic Feeding Bottle 120ml", 1, "pc", 285, 365),
     ("Pigeon Peristaltic Feeding Bottle 240ml", 1, "pc", 325, 415),
@@ -2229,13 +2233,13 @@ baby_products = [
     ("Chicco Well-Being Feeding Bottle 250ml", 1, "pc", 325, 415),
     ("LuvLap Anti-Colic Feeding Bottle 150ml", 1, "pc", 195, 250),
     ("Mee Mee Premium Feeding Bottle 250ml", 1, "pc", 225, 290),
-    
+
     # Baby Nipples & Pacifiers
     ("Pigeon Silicone Nipple S", 2, "pcs", 195, 250),
     ("Pigeon Silicone Nipple M", 2, "pcs", 195, 250),
     ("Philips Avent Orthodontic Soother", 2, "pcs", 345, 440),
     ("Chicco Physio Comfort Pacifier", 1, "pc", 225, 290),
-    
+
     # Baby Accessories
     ("Pigeon Baby Nail Scissors", 1, "pc", 345, 440),
     ("Chicco Digital Thermometer", 1, "pc", 295, 375),
@@ -2244,14 +2248,14 @@ baby_products = [
     ("LuvLap Baby Comb & Brush Set", 1, "set", 195, 250),
     ("Himalaya Baby Care Gift Pack", 1, "set", 395, 499),
     ("Johnson's Baby Gift Set", 1, "set", 495, 625),
-    
+
     # Teethers & Toys
     ("Pigeon Cooling Teether", 1, "pc", 295, 375),
     ("Chicco Fresh Relax Teether", 1, "pc", 245, 315),
     ("Mee Mee Multi-Textured Teether", 1, "pc", 175, 225),
     ("Fisher-Price Rattle Set", 1, "set", 395, 499),
     ("LuvLap Silicone Teether", 1, "pc", 145, 185),
-    
+
     # Baby Detergent & Cleaning
     ("Pigeon Baby Laundry Detergent", 500, "ml", 275, 350),
     ("Pigeon Baby Bottle Cleanser", 500, "ml", 245, 315),
@@ -2261,7 +2265,7 @@ baby_products = [
     ("LuvLap Bottle Cleaning Brush 5-in-1", 1, "set", 175, 225),
     ("Tritan Baby Bottle Sterilizer", 1, "pc", 795, 999),
     ("Mee Mee Liquid Cleanser for Feeding Bottles", 500, "ml", 195, 250),
-    
+
     # Baby Clothing Basics
     ("Babyhug Cotton Onesie Pack", 3, "pcs", 395, 499),
     ("Babyhug Full Sleeves Bodysuit", 1, "pc", 195, 250),
@@ -2269,12 +2273,12 @@ baby_products = [
     ("LuvLap Muslin Cloth Diapers", 6, "pcs", 295, 375),
     ("Mee Mee Soft Absorbent Napkins", 6, "pcs", 195, 250),
     ("Babyhug Swaddle Wrapper", 1, "pc", 295, 375),
-    
+
     # Baby Safety
     ("LuvLap Baby Safety Lock", 2, "pcs", 195, 250),
     ("Chicco Corner Guards", 4, "pcs", 175, 225),
     ("LuvLap Mosquito Net for Baby", 1, "pc", 395, 499),
-    
+
     # More Baby Products
     ("Himalaya Baby Rice Cereal", 300, "g", 195, 250),
     ("Nestle Cerelac Fortified Baby Cereal 5 Grains", 300, "g", 255, 325),
@@ -2367,86 +2371,92 @@ all_categories = [
     ("baby-care", baby_products),
 ]
 
-badges = ["", "", "", "", "Sale", "New", "Bestseller", "Organic", "", "", "", ""]
+def main():
+    """Main function to generate real products."""
+    badges = ["", "", "", "", "Sale", "New", "Bestseller", "Organic", "", "", "", ""]
 
-all_products = []
-product_id_counter = 0
+    all_products = []
+    product_id_counter = 0
 
-for cat_slug, products_list in all_categories:
-    # Ensure exactly 200 products per category
-    # If we have more than 200, trim
-    # If we have less than 200, this will not happen with our data (we've ensured 200+)
-    products_to_use = products_list[:200]
-    
-    if len(products_to_use) < 200:
-        print(f"WARNING: {cat_slug} only has {len(products_to_use)} products!")
-    
-    for idx, product_tuple in enumerate(products_to_use):
-        name = product_tuple[0]
-        qty = product_tuple[1]
-        unit_label = product_tuple[2]
-        price = product_tuple[3]
-        compare_price = product_tuple[4]
-        
-        # Build display name with quantity
-        if unit_label in ("g", "ml", "L", "kg", "m"):
-            display_name = f"{name} {qty}{unit_label}"
-        elif unit_label in ("pc", "pcs", "bags", "sachets", "pulls", "rolls", "boxes", "pair", "set", "tablets", "dozen"):
-            display_name = f"{name} {qty} {unit_label}"
-        else:
-            display_name = name
-        
-        # Generate unique slug
-        slug = f"{cat_slug}-{slugify(name)}-{idx}"
-        
-        # Determine unit for the product record
-        if unit_label in ("kg", "L"):
-            record_unit = unit_label
-        elif unit_label in ("g", "ml", "m"):
-            record_unit = unit_label
-        elif unit_label in ("pc", "pcs", "dozen", "pair", "set"):
-            record_unit = "each"
-        else:
-            record_unit = "each"
-        
-        # Rating between 3.8 and 4.9
-        rating = round(random.uniform(3.8, 4.9), 1)
-        reviews = random.randint(50, 1200)
-        
-        # Badge (occasional)
-        badge = random.choice(badges)
-        
-        product = {
-            "id": f"prod-{cat_slug}-{idx}",
-            "name": display_name,
-            "slug": slug,
-            "price": price,
-            "comparePrice": compare_price if compare_price > price else None,
-            "image": "/placeholder.svg",
-            "unit": record_unit,
-            "rating": rating,
-            "reviewsCount": reviews,
-            "categorySlug": cat_slug,
-        }
-        
-        if badge:
-            product["badge"] = badge
-        
-        # Remove None comparePrice
-        if product["comparePrice"] is None:
-            del product["comparePrice"]
-        
-        all_products.append(product)
+    for cat_slug, products_list in all_categories:
+        # Ensure exactly 200 products per category
+        # If we have more than 200, trim
+        # If we have less than 200, this will not happen with our data (we've ensured 200+)
+        products_to_use = products_list[:200]
 
-print(f"Total products generated: {len(all_products)}")
-for cat_slug, _ in all_categories:
-    count = sum(1 for p in all_products if p["categorySlug"] == cat_slug)
-    print(f"  {cat_slug}: {count}")
+        if len(products_to_use) < 200:
+            print(f"WARNING: {cat_slug} only has {len(products_to_use)} products!")
 
-# Write to products.json
-output_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src", "features", "products", "utils", "products.json")
-with open(output_path, "w", encoding="utf-8") as f:
-    json.dump(all_products, f, indent=2, ensure_ascii=False)
+        for idx, product_tuple in enumerate(products_to_use):
+            name = product_tuple[0]
+            qty = product_tuple[1]
+            unit_label = product_tuple[2]
+            price = product_tuple[3]
+            compare_price = product_tuple[4]
 
-print(f"\nWritten to: {output_path}")
-print(f"File size: {os.path.getsize(output_path) / 1024:.1f} KB")
+            # Build display name with quantity
+            if unit_label in ("g", "ml", "L", "kg", "m"):
+                display_name = f"{name} {qty}{unit_label}"
+            elif unit_label in ("pc", "pcs", "bags", "sachets", "pulls", "rolls", "boxes", "pair", "set", "tablets", "dozen"):
+                display_name = f"{name} {qty} {unit_label}"
+            else:
+                display_name = name
+
+            # Generate unique slug
+            slug = f"{cat_slug}-{slugify(name)}-{idx}"
+
+            # Determine unit for the product record
+            if unit_label in ("kg", "L"):
+                record_unit = unit_label
+            elif unit_label in ("g", "ml", "m"):
+                record_unit = unit_label
+            elif unit_label in ("pc", "pcs", "dozen", "pair", "set"):
+                record_unit = "each"
+            else:
+                record_unit = "each"
+
+            # Rating between 3.8 and 4.9
+            rating = round(random.uniform(3.8, 4.9), 1)
+            reviews = random.randint(50, 1200)
+
+            # Badge (occasional)
+            badge = random.choice(badges)
+
+            product = {
+                "id": f"prod-{cat_slug}-{idx}",
+                "name": display_name,
+                "slug": slug,
+                "price": price,
+                "comparePrice": compare_price if compare_price > price else None,
+                "image": "/placeholder.svg",
+                "unit": record_unit,
+                "rating": rating,
+                "reviewsCount": reviews,
+                "categorySlug": cat_slug,
+            }
+
+            if badge:
+                product["badge"] = badge
+
+            # Remove None comparePrice
+            if product["comparePrice"] is None:
+                del product["comparePrice"]
+
+            all_products.append(product)
+
+    print(f"Total products generated: {len(all_products)}")
+    for cat_slug, _ in all_categories:
+        count = sum(1 for p in all_products if p["categorySlug"] == cat_slug)
+        print(f"  {cat_slug}: {count}")
+
+    # Write to products.json
+        output_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+    output_path = os.path.join(output_dir, "features", "products", "utils", "products.json")
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(all_products, f, indent=2, ensure_ascii=False)
+
+    print(f"\nWritten to: {output_path}")
+    print(f"File size: {os.path.getsize(output_path) / 1024:.1f} KB")
+
+if __name__ == '__main__':
+    main()

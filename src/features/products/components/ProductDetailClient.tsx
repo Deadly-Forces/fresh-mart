@@ -153,7 +153,7 @@ export function ProductDetailClient({
               src={product.images[selectedImage]}
               alt={product.name}
               fill
-              className="object-contain p-12 mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+              className="object-contain p-12 mix-blend-multiply group-hover:scale-105 transition-transform duration-700 [transition-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)]"
               sizes="(max-width: 1024px) 100vw, 52vw"
               priority
             />

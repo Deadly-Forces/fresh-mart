@@ -1,7 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { ProfileDashboard } from "@/features/profile/components/ProfileDashboard";
 import { UserOrderItem } from "@/types";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Profile Dashboard | FreshMart",
@@ -11,10 +14,11 @@ export const metadata = {
 export default async function ProfilePage({
   searchParams,
 }: {
-  searchParams: Promise<{ edit?: string }>;
+  searchParams: Promise<{ edit?: string; tab?: string }>;
 }) {
   const params = await searchParams;
   const initialEditing = params.edit === "true";
+  const initialTab = params.tab || "details";
   const supabase = await createClient();
 
   // Check auth
@@ -97,27 +101,34 @@ export default async function ProfilePage({
     notifications: true as boolean | null,
     address: address
       ? {
-          building: address.building || "",
-          street: address.street || "",
-          area: address.area || "",
-          landmark: address.landmark || "",
-          city: address.city || "",
-          state: address.state || "",
-          pincode: address.pincode || "",
-        }
+        building: address.building || "",
+        street: address.street || "",
+        area: address.area || "",
+        landmark: address.landmark || "",
+        city: address.city || "",
+        state: address.state || "",
+        pincode: address.pincode || "",
+      }
       : null,
   };
 
   return (
-    <main className="min-h-screen pt-[72px]">
+    <section className="min-h-screen pt-[72px]">
       <div className="container mx-auto px-4 py-6 max-w-5xl">
-        <ProfileDashboard
-          profile={profileData}
-          email={user.email || ""}
-          orders={orders}
-          initialEditing={initialEditing}
-        />
+        <Suspense fallback={
+          <div className="w-full h-64 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+          </div>
+        }>
+          <ProfileDashboard
+            profile={profileData}
+            email={user.email || ""}
+            orders={orders}
+            initialEditing={initialEditing}
+            initialTab={initialTab}
+          />
+        </Suspense>
       </div>
-    </main>
+    </section>
   );
 }

@@ -8,6 +8,17 @@ const CACHE_NAME = "fresh-mart-v1";
 // Install event - cache essential assets
 self.addEventListener("install", (event) => {
   console.log("[Service Worker] Installing...");
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll([
+        "/", // homepage
+        "/manifest.json",
+        "/icons/icon-192x192.png",
+        "/icons/icon-512x512.png",
+        // Add more static assets as needed
+      ]);
+    })
+  );
   self.skipWaiting();
 });
 
@@ -21,9 +32,36 @@ self.addEventListener("activate", (event) => {
           .filter((name) => name !== CACHE_NAME)
           .map((name) => caches.delete(name)),
       );
-    }),
+    })
   );
-  return self.clients.claim();
+  self.clients.claim();
+});
+// Fetch event - serve cached assets, cache static and image requests
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  // Only cache GET requests
+  if (request.method !== "GET") return;
+
+  // Cache static assets and images
+  if (
+    request.url.includes("/_next/static/") ||
+    request.url.includes("/_next/image/") ||
+    request.url.match(/\.(png|jpg|jpeg|webp|avif|svg|ico)$/)
+  ) {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(request).then((response) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, response.clone());
+            return response;
+          });
+        });
+      })
+    );
+  }
 });
 
 // Push event - handle incoming push notifications

@@ -17,7 +17,16 @@ export default async function RiderLayout({
     redirect("/login");
   }
 
-  // In a real app, verify `role === 'rider'` here
+  // Verify the user has the rider role
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role !== "delivery") {
+    redirect("/");
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">

@@ -2,6 +2,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { CategoryStrip } from "@/components/layout/CategoryStrip";
 import { Footer } from "@/components/layout/Footer";
 
+export const dynamic = "force-dynamic";
+
 export default function StoreLayout({
   children,
 }: {

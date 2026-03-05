@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { rateLimit } from "@/lib/security";
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,11 +21,32 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createClient();
 
-    // Delete the subscription
+    // Require authentication
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
+    // Rate limit: 10 unsubscribe requests per minute per user
+    if (!rateLimit(`push-unsubscribe:${user.id}`, 10, 60_000)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait." },
+        { status: 429 },
+      );
+    }
+
+    // Only allow users to unsubscribe their own subscriptions
     const { error } = await supabase
       .from("push_subscriptions")
       .delete()
-      .eq("endpoint", endpoint);
+      .eq("endpoint", endpoint)
+      .eq("user_id", user.id);
 
     if (error) {
       console.error("[Push Unsubscribe] Database error:", error);

@@ -209,6 +209,35 @@ export async function placeOrderAction(
 
     const orderId = result.order_id;
 
+    // Record coupon usage if a promo code was applied
+    if (appliedPromocode && appliedPromocode !== "AUTO_DISCOUNT" && orderId) {
+      try {
+        // Find the coupon by code
+        const { data: coupon } = await supabase
+          .from("coupons")
+          .select("id")
+          .eq("code", appliedPromocode.toUpperCase())
+          .single();
+
+        if (coupon) {
+          // Increment used_count
+          await supabase.rpc("increment_coupon_usage", {
+            p_coupon_id: coupon.id,
+          });
+
+          // Record per-user usage
+          await supabase.from("coupon_usage").insert({
+            coupon_id: coupon.id,
+            user_id: user.id,
+            order_id: orderId,
+          });
+        }
+      } catch (e) {
+        // Don't fail the order if coupon tracking fails
+        console.error("Failed to record coupon usage:", e);
+      }
+    }
+
     return { success: true, orderId };
   } catch (err: any) {
     console.error("Error in placeOrderAction:", err);

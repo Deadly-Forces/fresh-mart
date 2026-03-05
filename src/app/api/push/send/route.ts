@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { stripHtml } from "@/lib/security";
 import {
   sendPushNotificationBatch,
   NotificationPayload,
@@ -50,6 +51,21 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { type, payload, targetUserId, orderId } = body;
 
+    // Validate inputs
+    if (targetUserId && typeof targetUserId !== "string") {
+      return NextResponse.json(
+        { error: "Invalid target user ID" },
+        { status: 400 },
+      );
+    }
+
+    if (orderId && typeof orderId !== "string") {
+      return NextResponse.json(
+        { error: "Invalid order ID" },
+        { status: 400 },
+      );
+    }
+
     // Build notification payload
     let notification: NotificationPayload;
 
@@ -65,7 +81,7 @@ export async function POST(request: NextRequest) {
         case "order_out_for_delivery":
           notification = OrderNotifications.orderOutForDelivery(
             orderId,
-            body.riderName,
+            stripHtml(String(body.riderName || "Your rider")),
           );
           break;
         case "order_delivered":

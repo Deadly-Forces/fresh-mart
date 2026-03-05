@@ -16,6 +16,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { DeleteProductButton, InlineStockEditor } from "./ProductActions";
+import { ProductSearchInput } from "./ProductSearchInput";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +31,7 @@ export default async function AdminProductsPage({
   const params = await searchParams;
   const pageRaw = typeof params?.page === "string" ? params.page : "1";
   const currentPage = Math.max(1, parseInt(pageRaw, 10) || 1);
+  const searchQuery = typeof params?.q === "string" ? params.q.trim() : "";
   const supabase = await createClient();
 
   // Get total count efficiently (no data transfer)
@@ -47,11 +50,16 @@ export default async function AdminProductsPage({
   const from = (currentPage - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
 
-  const { data: productsData } = await supabase
+  let productsQuery = supabase
     .from("products")
     .select("id, name, price, stock, is_active, images, categories(name)")
-    .order("created_at", { ascending: false })
-    .range(from, to);
+    .order("created_at", { ascending: false });
+
+  if (searchQuery) {
+    productsQuery = productsQuery.ilike("name", `%${searchQuery}%`);
+  }
+
+  const { data: productsData } = await productsQuery.range(from, to);
 
   const products = (productsData || []).map((p: any) => ({
     id: p.id,
@@ -107,10 +115,14 @@ export default async function AdminProductsPage({
 
       {/* Top Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input placeholder="Search products..." className="pl-9 h-10" />
-        </div>
+        <Suspense fallback={
+          <div className="relative w-full sm:w-80">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input placeholder="Search products..." className="pl-9 h-10" disabled />
+          </div>
+        }>
+          <ProductSearchInput />
+        </Suspense>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" className="gap-1">
             <Upload className="w-4 h-4" /> Import

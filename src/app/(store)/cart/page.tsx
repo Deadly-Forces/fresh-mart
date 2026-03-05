@@ -2,12 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, X, ShoppingBag, ArrowRight, Trash2 } from "lucide-react";
+import { Minus, Plus, X, ShoppingBag, ArrowRight, Trash2, Gift, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/store/cartStore";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { validatePromoCodeAction } from "@/features/checkout/actions/promoActions";
+import {
+  getAutoDiscountsAction,
+  type AutoDiscount,
+} from "@/features/checkout/actions/autoDiscountActions";
 import { toast } from "sonner";
 
 export default function CartPage() {
@@ -23,11 +27,32 @@ export default function CartPage() {
   } = useCartStore();
   const [promoInput, setPromoInput] = useState("");
   const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+  const [autoDiscounts, setAutoDiscounts] = useState<AutoDiscount[]>([]);
+  const [autoTotal, setAutoTotal] = useState(0);
+  const [isFirstOrder, setIsFirstOrder] = useState(false);
 
   const subtotal = getTotal();
   const deliveryFee = subtotal >= 499 ? 0 : 49;
-  const discount = appliedPromo?.discountAmount || 0;
-  const total = Math.max(0, subtotal + deliveryFee - discount);
+  const promoDiscount = appliedPromo?.discountAmount || 0;
+  const totalDiscount = promoDiscount + autoTotal;
+  const total = Math.max(0, subtotal + deliveryFee - totalDiscount);
+
+  // Fetch auto-discounts when subtotal changes
+  const fetchAutoDiscounts = useCallback(async () => {
+    if (subtotal <= 0) {
+      setAutoDiscounts([]);
+      setAutoTotal(0);
+      return;
+    }
+    const result = await getAutoDiscountsAction(subtotal);
+    setAutoDiscounts(result.discounts);
+    setAutoTotal(result.totalDiscount);
+    setIsFirstOrder(result.isFirstOrder);
+  }, [subtotal]);
+
+  useEffect(() => {
+    fetchAutoDiscounts();
+  }, [fetchAutoDiscounts]);
 
   if (items.length === 0) {
     return (
@@ -166,6 +191,30 @@ export default function CartPage() {
                     {deliveryFee === 0 ? "Free" : `₹${deliveryFee.toFixed(2)}`}
                   </span>
                 </div>
+
+                {/* Auto Discounts */}
+                {autoDiscounts.length > 0 && (
+                  <div className="pt-2 border-t border-border/30 space-y-2">
+                    {autoDiscounts.map((d) => (
+                      <div
+                        key={d.key}
+                        className="flex justify-between items-center text-emerald-600 font-medium"
+                      >
+                        <span className="flex items-center gap-1.5 text-xs">
+                          {d.key === "first_order" ? (
+                            <Gift className="w-3.5 h-3.5" />
+                          ) : (
+                            <Sparkles className="w-3.5 h-3.5" />
+                          )}
+                          {d.label}
+                        </span>
+                        <span className="text-sm">-₹{d.amount.toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Manual Promo Code Discount */}
                 {appliedPromo && (
                   <div className="flex justify-between items-center text-emerald-600 font-medium pt-2 border-t border-border/30">
                     <span className="flex items-center gap-2">
