@@ -20,6 +20,7 @@ interface ReturnRequest {
     status: string;
     refundAmount: number | null;
     adminNotes: string;
+    items?: any | null;
     createdAt: string;
     updatedAt: string;
 }
@@ -201,6 +202,25 @@ export function ReturnsClient({ requests }: { requests: ReturnRequest[] }) {
                                     <p className="text-muted-foreground mt-1">{selected.description}</p>
                                 )}
                             </div>
+
+                            {/* Show Items Included */}
+                            {selected.items && Array.isArray(selected.items) && selected.items.length > 0 && (
+                                <div className="text-sm">
+                                    <p className="text-xs text-muted-foreground mb-1">Items Included</p>
+                                    <div className="bg-secondary/20 rounded-lg border border-border divide-y divide-border max-h-40 overflow-y-auto">
+                                        {selected.items.map((item: any, i: number) => (
+                                            <div key={i} className="flex justify-between items-center p-2 text-xs">
+                                                <span className="font-medium text-foreground truncate mr-2">
+                                                    {(item.product_snapshot as any)?.name || "Unknown Product"}
+                                                </span>
+                                                <span className="text-muted-foreground whitespace-nowrap">
+                                                    Qty: {item.quantity}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Show AI Notes if they exist */}
                             {selected.adminNotes && selected.adminNotes.startsWith("AI") && (

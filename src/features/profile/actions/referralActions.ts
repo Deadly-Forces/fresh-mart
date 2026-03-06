@@ -14,12 +14,12 @@ export async function getReferralDataAction() {
       return { error: "You must be logged in." };
     }
 
-    // Get user's referral code
-    const { data: profile } = await supabase
+    // Get user's referral code (column added via migration, not yet in generated types)
+    const { data: profile } = (await supabase
       .from("profiles")
       .select("referral_code")
       .eq("id", user.id)
-      .single();
+      .single()) as unknown as { data: { referral_code: string | null } | null };
 
     // Get referrals made by this user
     const { data: referrals } = await supabase
@@ -93,7 +93,7 @@ export async function applyReferralCodeAction(code: string) {
       .from("profiles")
       .select("id, referral_code")
       .eq("referral_code", sanitizedCode)
-      .maybeSingle();
+      .maybeSingle() as { data: { id: string; referral_code: string | null } | null };
 
     if (!referrer) {
       return { error: "Referral code not found." };
@@ -128,10 +128,10 @@ export async function applyReferralCodeAction(code: string) {
       type: "referral_bonus",
       description: "Referral bonus — a friend joined using your code",
     });
-    await supabase.rpc("increment_loyalty_points", {
+    await (supabase.rpc as Function)("increment_loyalty_points", {
       user_row_id: referrer.id,
       amount: bonusPoints,
-    }).then(({ error }) => {
+    }).then(({ error }: { error: any }) => {
       // Fallback if RPC doesn't exist
       if (error) {
         supabase

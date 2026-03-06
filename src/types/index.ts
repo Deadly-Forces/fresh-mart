@@ -87,6 +87,20 @@ export interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
+// --- Notifications ---
+
+export type NotificationType = "order_update" | "promo" | "system";
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: NotificationType;
+  title: string;
+  message: string | null;
+  is_read: boolean;
+  created_at: string;
+}
+
 // --- Onboarding ---
 
 export interface OnboardingState {

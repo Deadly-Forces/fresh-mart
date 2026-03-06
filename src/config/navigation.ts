@@ -13,6 +13,8 @@ import {
   RotateCcw,
   Star,
   UserPlus,
+  Bell,
+  Heart,
 } from "lucide-react";
 import type { NavItem } from "@/types";
 
@@ -25,11 +27,13 @@ export const adminNavItems: NavItem[] = [
   { href: "/admin/returns", label: "Returns", icon: RotateCcw },
   { href: "/admin/picker", label: "Picker", icon: ListChecks },
   { href: "/admin/rider", label: "Rider", icon: Navigation2 },
+  { href: "/admin/notifications", label: "Notifications", icon: Bell },
   { href: "/admin/loyalty", label: "Loyalty", icon: Star },
   { href: "/admin/referrals", label: "Referrals", icon: UserPlus },
   { href: "/admin/reviews", label: "Reviews", icon: MessageSquare },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/coupons", label: "Coupons", icon: Ticket },
   { href: "/admin/banners", label: "Banners", icon: ImageIcon },
+  { href: "/admin/wishlist", label: "Wishlists", icon: Heart },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
 ];

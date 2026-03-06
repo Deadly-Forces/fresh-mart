@@ -47,7 +47,7 @@ export async function getAutoDiscountsAction(
                 .from("orders")
                 .select("*", { count: "exact", head: true })
                 .eq("user_id", user.id)
-                .eq("status", "delivered");
+                .neq("status", "cancelled");
 
             isFirstOrder = (count ?? 0) === 0;
         }

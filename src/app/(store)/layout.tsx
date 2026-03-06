@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { CategoryStrip } from "@/components/layout/CategoryStrip";
 import { Footer } from "@/components/layout/Footer";
+import { CartSyncProvider } from "@/components/providers/CartSyncProvider";
+import { WishlistSyncProvider } from "@/components/providers/WishlistSyncProvider";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,8 @@ export default function StoreLayout({
 }) {
   return (
     <div className="flex flex-col min-h-screen" suppressHydrationWarning>
+      <CartSyncProvider />
+      <WishlistSyncProvider />
       <Suspense fallback={<NavbarFallback />}>
         <Navbar />
       </Suspense>

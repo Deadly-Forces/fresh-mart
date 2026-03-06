@@ -24,6 +24,12 @@ export default async function EditProductPage({
     notFound();
   }
 
+  // Fetch wishlist count for this product
+  const { count: wishlistCount } = await supabase
+    .from("wishlist")
+    .select("*", { count: "exact", head: true })
+    .eq("product_id", id);
+
   const productData = {
     id: product.id,
     name: product.name,
@@ -35,6 +41,7 @@ export default async function EditProductPage({
     is_active: product.is_active,
     images: product.images || [],
     category_name: (product.categories as any)?.name || null,
+    wishlistCount: wishlistCount || 0,
   };
 
   return <ProductEditForm product={productData} />;

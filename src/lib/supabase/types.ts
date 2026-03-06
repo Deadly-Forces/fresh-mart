@@ -899,6 +899,7 @@ export type Database = {
           description: string | null;
           images: string[] | null;
           status: string;
+          items: any | null;
           refund_amount: number | null;
           admin_notes: string | null;
           created_at: string | null;
@@ -912,6 +913,7 @@ export type Database = {
           description?: string | null;
           images?: string[] | null;
           status?: string;
+          items?: any | null;
           refund_amount?: number | null;
           admin_notes?: string | null;
           created_at?: string | null;
@@ -925,6 +927,7 @@ export type Database = {
           description?: string | null;
           images?: string[] | null;
           status?: string;
+          items?: any | null;
           refund_amount?: number | null;
           admin_notes?: string | null;
           created_at?: string | null;

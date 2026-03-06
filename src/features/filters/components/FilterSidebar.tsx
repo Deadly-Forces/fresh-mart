@@ -145,6 +145,15 @@ export function FilterSidebar({
           { label: "Bestsellers", value: "Bestseller" },
         ],
       },
+      {
+        title: "Rating",
+        paramKey: "rating",
+        options: [
+          { label: "4★ & above", value: "4" },
+          { label: "3★ & above", value: "3" },
+          { label: "2★ & above", value: "2" },
+        ],
+      },
     ],
     [categoryCounts],
   );
@@ -156,6 +165,8 @@ export function FilterSidebar({
     (update: (params: URLSearchParams) => void) => {
       const params = new URLSearchParams(searchParams.toString());
       update(params);
+      // Reset to page 1 when filters change
+      params.delete("page");
       router.push(`${pathname}?${params.toString()}`, { scroll: false });
     },
     [router, pathname, searchParams],
@@ -188,12 +199,42 @@ export function FilterSidebar({
     });
   }, [pushParams, inStockOnly]);
 
+  const hasActiveFilters =
+    searchParams.has("category") ||
+    searchParams.has("dietary") ||
+    searchParams.has("rating") ||
+    searchParams.has("maxPrice") ||
+    searchParams.has("inStock") ||
+    searchParams.has("brand");
+
+  const clearAllFilters = useCallback(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("category");
+    params.delete("dietary");
+    params.delete("rating");
+    params.delete("maxPrice");
+    params.delete("inStock");
+    params.delete("brand");
+    params.delete("page");
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    setLocalPrice(1800);
+  }, [router, pathname, searchParams]);
+
   return (
     <aside className={cn("w-[280px] shrink-0", className)}>
       <div className="sticky top-[132px] max-h-[calc(100vh-160px)] overflow-y-auto pr-2 scrollbar-hide rounded-2xl border border-border/50 bg-background/70 backdrop-blur-sm p-5 shadow-soft">
         <h3 className="text-lg font-bold mb-4 bg-gradient-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
           Filters
         </h3>
+
+        {hasActiveFilters && (
+          <button
+            onClick={clearAllFilters}
+            className="text-xs font-medium text-primary hover:text-primary/80 transition-colors mb-3 underline underline-offset-2"
+          >
+            Clear all filters
+          </button>
+        )}
 
         {/* Price Range */}
         <CollapsibleSection title="Price Range" defaultOpen>

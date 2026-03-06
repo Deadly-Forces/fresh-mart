@@ -27,6 +27,8 @@ export function SortDropdown() {
   const handleSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", value);
+    // Reset to page 1 when sort changes
+    params.delete("page");
     router.push(`${pathname}?${params.toString()}`);
   };
 

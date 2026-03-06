@@ -82,8 +82,8 @@ export function generateInvoice(order: UserOrder) {
             String(idx + 1),
             name,
             String(item.quantity),
-            `₹${Number(item.price).toFixed(2)}`,
-            `₹${(item.price * item.quantity).toFixed(2)}`,
+            `Rs.${Number(item.price).toFixed(2)}`,
+            `Rs.${(item.price * item.quantity).toFixed(2)}`,
         ];
     });
 
@@ -138,13 +138,13 @@ export function generateInvoice(order: UserOrder) {
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     doc.text("Subtotal:", pageWidth - 90, totalsY);
-    doc.text(`₹${subtotal.toFixed(2)}`, pageWidth - 20, totalsY, { align: "right" });
+    doc.text(`Rs.${subtotal.toFixed(2)}`, pageWidth - 20, totalsY, { align: "right" });
 
     if (discount > 0) {
         totalsY += 7;
         doc.setTextColor(22, 163, 74);
         doc.text("Discount:", pageWidth - 90, totalsY);
-        doc.text(`-₹${discount.toFixed(2)}`, pageWidth - 20, totalsY, { align: "right" });
+        doc.text(`-Rs.${discount.toFixed(2)}`, pageWidth - 20, totalsY, { align: "right" });
     }
 
     totalsY += 10;
@@ -156,7 +156,7 @@ export function generateInvoice(order: UserOrder) {
     doc.setFontSize(14);
     doc.setTextColor(22, 163, 74);
     doc.text("Total:", pageWidth - 90, totalsY + 4);
-    doc.text(`₹${order.total.toFixed(2)}`, pageWidth - 20, totalsY + 4, { align: "right" });
+    doc.text(`Rs.${order.total.toFixed(2)}`, pageWidth - 20, totalsY + 4, { align: "right" });
 
     // --- Thank you note ---
     const thankY = totalsY + 25;

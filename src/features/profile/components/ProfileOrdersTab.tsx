@@ -36,6 +36,7 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
     const [orderToCancel, setOrderToCancel] = useState<string | null>(null);
     const [isCancelling, setIsCancelling] = useState(false);
     const [trackingOrderId, setTrackingOrderId] = useState<string | null>(null);
+    const [expandedOrders, setExpandedOrders] = useState<Record<string, boolean>>({});
     const [now, setNow] = useState<number | null>(null);
 
     useEffect(() => {
@@ -101,6 +102,10 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
         } catch {
             toast.error("Failed to generate invoice.");
         }
+    };
+
+    const toggleOrderItems = (orderId: string) => {
+        setExpandedOrders(prev => ({ ...prev, [orderId]: !prev[orderId] }));
     };
 
     const handleReorder = (order: UserOrder) => {
@@ -196,13 +201,21 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                             const canReturn = isSimulatedDelivered && order.status !== "cancelled" && (now ? (now - actualDeliveryMs) < oneHourMs : false);
                             const canReplaceOnly = isSimulatedDelivered && order.status !== "cancelled" && !canReturn && (now ? (now - actualDeliveryMs) < twoHoursMs : false);
 
+                            let displayStatus = order.status;
+                            if (order.status !== "cancelled") {
+                                if (progressPercent >= 100) displayStatus = "delivered";
+                                else if (progressPercent >= 75) displayStatus = "out_for_delivery";
+                                else if (progressPercent >= 45) displayStatus = "packed";
+                                else if (progressPercent >= 10) displayStatus = "confirmed";
+                            }
+
                             return (
                                 <>
                                     {/* Order status strip */}
                                     <div
-                                        className={`h-1 transition-all duration-1000 ease-linear rounded-tl-2xl ${order.status === "delivered"
+                                        className={`h-1 transition-all duration-1000 ease-linear rounded-tl-2xl ${displayStatus === "delivered"
                                             ? "bg-gradient-to-r from-green-400 to-emerald-500 rounded-tr-2xl"
-                                            : order.status === "cancelled"
+                                            : displayStatus === "cancelled"
                                                 ? "bg-gradient-to-r from-red-400 to-red-500 rounded-tr-2xl"
                                                 : "bg-gradient-to-r from-blue-400 to-primary"
                                             }`}
@@ -276,16 +289,16 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                                         Order #{order.id.slice(0, 8).toUpperCase()}
                                                     </h4>
                                                     <span
-                                                        className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${order.status === "delivered"
+                                                        className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${displayStatus === "delivered"
                                                             ? "bg-green-100 text-green-700 border border-green-200"
-                                                            : order.status === "cancelled"
+                                                            : displayStatus === "cancelled"
                                                                 ? "bg-red-100 text-red-700 border border-red-200"
                                                                 : "bg-blue-100 text-blue-700 border border-blue-200"
                                                             }`}
                                                     >
-                                                        {order.status.replace("_", " ")}
+                                                        {displayStatus.replace(/_/g, " ")}
                                                     </span>
-                                                    <DeliveryCountdown createdAt={order.created_at} status={order.status} />
+                                                    <DeliveryCountdown createdAt={order.created_at} status={displayStatus} />
                                                 </div>
                                                 <div className="flex flex-col gap-2 mt-2">
                                                     <p className="text-sm text-muted-foreground font-body flex items-center gap-1.5">
@@ -301,7 +314,7 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                                     </p>
                                                     {order.payment_method === "cod" && (
                                                         <p className="text-xs font-medium flex items-center gap-1.5">
-                                                            {order.payment_status === "pending" ? (
+                                                            {order.payment_status === "pending" && displayStatus !== "delivered" ? (
                                                                 <span className="text-amber-600 bg-amber-100/50 px-2 py-0.5 rounded-sm">
                                                                     💵 Payment Due on Delivery
                                                                 </span>
@@ -346,8 +359,8 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                                         <RefreshCw className="w-3.5 h-3.5" /> Reorder
                                                     </Button>
                                                 </div>
-                                                <div className="space-y-2">
-                                                    {order.items.slice(0, 3).map((item, idx) => (
+                                                <div className="space-y-2 mt-4 ml-8 md:ml-[60px] max-w-2xl bg-secondary/10 p-3 rounded-xl border border-secondary/20">
+                                                    {(expandedOrders[order.id] ? order.items : order.items.slice(0, 3)).map((item, idx) => (
                                                         <div
                                                             key={idx}
                                                             className="flex justify-between items-center text-sm bg-secondary/30 rounded-lg px-3 py-2"
@@ -371,10 +384,17 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
                                                         </div>
                                                     ))}
                                                     {order.items.length > 3 && (
-                                                        <p className="text-xs text-muted-foreground flex items-center gap-1 pt-1">
-                                                            <ChevronRight className="w-3 h-3" />{" "}
-                                                            {order.items.length - 3} more items
-                                                        </p>
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                toggleOrderItems(order.id);
+                                                            }}
+                                                            className="text-xs text-muted-foreground flex items-center gap-1 pt-1 hover:text-primary transition-colors focus:outline-none"
+                                                        >
+                                                            <ChevronRight className={`w-3 h-3 transition-transform ${expandedOrders[order.id] ? "rotate-90" : ""}`} />{" "}
+                                                            {expandedOrders[order.id] ? "Show less" : `${order.items.length - 3} more items`}
+                                                        </button>
                                                     )}
                                                 </div>
                                             </div>
@@ -382,7 +402,7 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
 
                                         {/* Order actions */}
                                         <div className="pt-4 border-t border-border/50 mt-4 flex justify-end gap-2 flex-wrap">
-                                            {isTrackable(order.status) && (
+                                            {isTrackable(displayStatus) && (
                                                 <Button
                                                     type="button"
                                                     variant="outline"

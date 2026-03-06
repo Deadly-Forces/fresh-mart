@@ -444,6 +444,13 @@ export async function updateOrderStatusAction(
 
     const { supabase } = await requireAdmin();
 
+    // Fetch user_id before updating so we can send notifications
+    const { data: order } = await supabase
+      .from("orders")
+      .select("user_id")
+      .eq("id", orderId)
+      .single();
+
     const { error } = await supabase
       .from("orders")
       .update({ status: statusValidation.data })
@@ -454,10 +461,145 @@ export async function updateOrderStatusAction(
       return { error: error.message };
     }
 
+    // Send in-app + push notification to the customer
+    const userId = order?.user_id;
+    if (userId) {
+      const statusTitles: Record<string, string> = {
+        confirmed: "Order Confirmed! 🎉",
+        packed: "Order Packed 📦",
+        processing: "Order Processing",
+        out_for_delivery: "Out for Delivery! 🚴",
+        delivered: "Order Delivered! ✅",
+        cancelled: "Order Cancelled",
+      };
+      const statusMessages: Record<string, string> = {
+        confirmed: `Your order #${orderId.slice(0, 8).toUpperCase()} has been confirmed and is being prepared.`,
+        packed: `Your order #${orderId.slice(0, 8).toUpperCase()} has been packed and is ready for dispatch.`,
+        processing: `Your order #${orderId.slice(0, 8).toUpperCase()} is being processed.`,
+        out_for_delivery: `Your order #${orderId.slice(0, 8).toUpperCase()} is out for delivery.`,
+        delivered: `Your order #${orderId.slice(0, 8).toUpperCase()} has been delivered. Enjoy!`,
+        cancelled: `Your order #${orderId.slice(0, 8).toUpperCase()} has been cancelled. Refund will be processed.`,
+      };
+
+      const title = statusTitles[statusValidation.data];
+      if (title) {
+        // Insert in-app notification (non-blocking)
+        supabase
+          .from("notifications")
+          .insert({
+            user_id: userId,
+            type: "order_update" as const,
+            title,
+            message: statusMessages[statusValidation.data] ?? null,
+          })
+          .then(({ error: notifErr }) => {
+            if (notifErr) console.error("Error inserting notification:", notifErr);
+          });
+
+        // Send push notification (non-blocking)
+        const pushStatusMap: Record<string, string> = {
+          confirmed: "confirmed",
+          packed: "picked",
+          out_for_delivery: "out_for_delivery",
+          delivered: "delivered",
+          cancelled: "cancelled",
+        };
+        const pushStatus = pushStatusMap[statusValidation.data];
+        if (pushStatus) {
+          import("@/lib/push/actions").then(({ sendOrderNotification }) =>
+            sendOrderNotification(
+              orderId,
+              userId,
+              pushStatus as "confirmed" | "picked" | "out_for_delivery" | "delivered" | "cancelled",
+            ).catch((err) => console.error("Push notification error:", err)),
+          );
+        }
+      }
+    }
+
     revalidatePath("/admin/orders");
     revalidatePath("/admin/dashboard");
     revalidatePath("/admin/analytics");
     return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "An unexpected error occurred." };
+  }
+}
+
+const notificationTypeSchema = z.enum(["order_update", "promo", "system"]);
+
+/**
+ * Admin action: Send a notification to a specific user or broadcast to all users
+ */
+export async function sendAdminNotificationAction(data: {
+  title: string;
+  message: string;
+  type: "order_update" | "promo" | "system";
+  userId?: string; // If omitted, broadcast to all users
+}) {
+  try {
+    const titleVal = sanitizeString(stripHtml(data.title));
+    const messageVal = sanitizeString(stripHtml(data.message)) ?? "";
+    if (!titleVal || titleVal.length > 200) return { error: "Title is required (max 200 chars)." };
+    if (messageVal && messageVal.length > 1000) return { error: "Message too long (max 1000 chars)." };
+
+    const typeVal = notificationTypeSchema.safeParse(data.type);
+    if (!typeVal.success) return { error: "Invalid notification type." };
+
+    if (data.userId && !isValidUUID(data.userId)) return { error: "Invalid user ID." };
+
+    const { supabase } = await requireAdmin();
+
+    if (data.userId) {
+      // Send to specific user
+      const { error } = await supabase.from("notifications").insert({
+        user_id: data.userId,
+        type: typeVal.data,
+        title: titleVal,
+        message: messageVal,
+      });
+      if (error) return { error: error.message };
+
+      // Also send push notification if promo type
+      if (typeVal.data === "promo") {
+        import("@/lib/push/actions").then(({ sendPromoNotification }) =>
+          sendPromoNotification({ title: titleVal, body: messageVal, tag: `admin-${Date.now()}` })
+            .catch((err) => console.error("Push error:", err)),
+        );
+      }
+
+      return { success: true, count: 1 };
+    } else {
+      // Broadcast to all users
+      const { data: users, error: usersErr } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("role", "customer");
+
+      if (usersErr) return { error: usersErr.message };
+      if (!users || users.length === 0) return { error: "No users found." };
+
+      const rows = users.map((u) => ({
+        user_id: u.id,
+        type: typeVal.data,
+        title: titleVal,
+        message: messageVal,
+      }));
+
+      const { error } = await supabase.from("notifications").insert(rows);
+      if (error) return { error: error.message };
+
+      // Also send push notification for promo broadcasts
+      if (typeVal.data === "promo" || typeVal.data === "system") {
+        import("@/lib/push/actions").then(({ sendPromoNotification }) =>
+          sendPromoNotification({ title: titleVal, body: messageVal, tag: `admin-broadcast-${Date.now()}` })
+            .catch((err) => console.error("Push error:", err)),
+        );
+      }
+
+      revalidatePath("/admin/notifications");
+      return { success: true, count: users.length };
+    }
   } catch (err: any) {
     return { error: err.message || "An unexpected error occurred." };
   }

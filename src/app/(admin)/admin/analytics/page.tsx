@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { ExportButton } from "./ExportButton";
+import { Heart } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -51,7 +52,24 @@ export default async function AdminAnalyticsPage() {
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 5);
 
-  // 3. Fetch top customers by spend (separate profile + order fetching to avoid FK join issues)
+  // 3. Most Wishlisted Products
+  const { data: wishlistAgg } = await supabase
+    .from("wishlist")
+    .select("product_id, products:product_id ( name )");
+
+  const wishlistCounts: Record<string, { name: string; count: number }> = {};
+  (wishlistAgg || []).forEach((row: any) => {
+    const pid = row.product_id;
+    const name = row.products?.name || "Unknown";
+    if (!wishlistCounts[pid]) wishlistCounts[pid] = { name, count: 0 };
+    wishlistCounts[pid].count += 1;
+  });
+
+  const topWishlisted = Object.values(wishlistCounts)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+
+  // 4. Fetch top customers by spend (separate profile + order fetching to avoid FK join issues)
   const { data: profilesData } = await supabase
     .from("profiles")
     .select("id, name, email")
@@ -221,6 +239,51 @@ export default async function AdminAnalyticsPage() {
                   <td className="py-3 font-medium">{p.name}</td>
                   <td className="py-3">{p.sold}</td>
                   <td className="py-3 font-medium">₹{p.revenue.toFixed(2)}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </section>
+
+      {/* Most Wishlisted Products */}
+      <section className="bg-card border border-border rounded-card p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-heading text-lg flex items-center gap-2">
+            <Heart className="w-5 h-5 text-red-500" /> Most Wishlisted Products
+          </h3>
+          <ExportButton
+            label="Export"
+            fileName="most-wishlisted.csv"
+            headers={["#", "Product", "Wishlist Count"]}
+            rows={topWishlisted.map((p, i) => [
+              String(i + 1),
+              p.name,
+              String(p.count),
+            ])}
+          />
+        </div>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-border">
+              <th className="py-2 text-left font-medium text-muted-foreground text-xs">#</th>
+              <th className="py-2 text-left font-medium text-muted-foreground text-xs">Product</th>
+              <th className="py-2 text-left font-medium text-muted-foreground text-xs">Wishlist Count</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border">
+            {topWishlisted.length === 0 ? (
+              <tr>
+                <td colSpan={3} className="py-6 text-center text-muted-foreground text-sm">
+                  No wishlist data yet.
+                </td>
+              </tr>
+            ) : (
+              topWishlisted.map((p, i) => (
+                <tr key={i} className="hover:bg-secondary/30">
+                  <td className="py-3 text-muted-foreground">{i + 1}</td>
+                  <td className="py-3 font-medium">{p.name}</td>
+                  <td className="py-3">{p.count}</td>
                 </tr>
               ))
             )}

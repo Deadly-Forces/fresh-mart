@@ -56,7 +56,7 @@ export default function OnboardingPage() {
             avatarUrl: user.user_metadata.avatar_url || "",
           }));
         }
-      });
+      }).catch(() => {});
     }
   }, [supabase.auth]);
 

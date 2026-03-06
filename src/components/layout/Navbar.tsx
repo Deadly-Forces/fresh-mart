@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import { SearchBar } from "./SearchBar";
 import { CartButton } from "./CartButton";
 import { WishlistButton } from "./WishlistButton";
+import { NotificationBell } from "./NotificationBell";
 import { MobileMenu } from "./MobileMenu";
 import { UserMenu } from "./UserMenu";
 import { createClient } from "@/lib/supabase/server";
@@ -52,6 +53,8 @@ export async function Navbar() {
           </Suspense>
 
           <WishlistButton />
+
+          {user && <NotificationBell />}
 
           {user ? (
             <UserMenu

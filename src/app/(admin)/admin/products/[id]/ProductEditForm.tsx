@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Save, Plus, X, GripVertical } from "lucide-react";
+import { ArrowLeft, Save, Plus, X, GripVertical, Heart } from "lucide-react";
 import Link from "next/link";
 import { updateProductAction, updateProductImagesAction } from "@/features/admin/actions/productActions";
 
@@ -22,10 +22,12 @@ interface ProductEditFormProps {
     is_active: boolean;
     images: string[];
     category_name: string | null;
+    wishlistCount: number;
   };
 }
 
 export function ProductEditForm({ product }: ProductEditFormProps) {
+  const { wishlistCount } = product;
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description || "");
   const [price, setPrice] = useState(product.price);
@@ -124,7 +126,14 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
       </div>
 
       <div className="bg-card border border-border rounded-card p-6">
-        <h2 className="font-heading text-lg mb-6">Edit Product</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-heading text-lg">Edit Product</h2>
+          {wishlistCount > 0 && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 text-sm font-medium">
+              <Heart className="w-4 h-4 fill-current" /> {wishlistCount} wishlisted
+            </span>
+          )}
+        </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-2">

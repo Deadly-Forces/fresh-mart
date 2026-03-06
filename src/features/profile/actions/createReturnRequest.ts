@@ -20,6 +20,7 @@ export async function createReturnRequestAction(formData: FormData) {
         const reason = formData.get("reason") as string;
         const status = formData.get("status") as string;
         const adminNotes = formData.get("adminNotes") as string;
+        const itemsJson = formData.get("items") as string | null;
         const imageUrl = formData.get("imageUrl") as string | null;
 
         if (!orderId || !reason || !status) {
@@ -28,6 +29,15 @@ export async function createReturnRequestAction(formData: FormData) {
 
         // We use type as part of reason string so admin knows what they requested, e.g. "[Replace] Item broken"
         const formattedReason = `[${type.toUpperCase()}] ${reason.substring(0, 50)}${reason.length > 50 ? "..." : ""}`;
+
+        let parsedItems = null;
+        if (itemsJson) {
+            try {
+                parsedItems = JSON.parse(itemsJson);
+            } catch (e) {
+                console.error("Failed to parse items json:", e);
+            }
+        }
 
         const { error: insertError } = await supabase
             .from("return_requests")
@@ -38,6 +48,7 @@ export async function createReturnRequestAction(formData: FormData) {
                 description: reason,
                 status: status, // "approved", "manual_review", etc.
                 admin_notes: adminNotes,
+                items: parsedItems,
                 images: imageUrl ? [imageUrl] : null,
             });
 

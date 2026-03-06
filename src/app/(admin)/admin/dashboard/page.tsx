@@ -9,6 +9,7 @@ import {
   RotateCcw,
   Star,
   UserPlus,
+  Heart,
 } from "lucide-react";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -118,6 +119,16 @@ export default async function AdminDashboardPage() {
     console.warn("Referrals count fetch failed:", err);
   }
 
+  let totalWishlisted = 0;
+  try {
+    const { count } = await supabase
+      .from("wishlist")
+      .select("*", { count: "exact", head: true });
+    totalWishlisted = count || 0;
+  } catch (err) {
+    console.warn("Wishlist count fetch failed:", err);
+  }
+
   // Compute period-over-period changes (last 7 days vs previous 7 days)
   const now = new Date();
   const sevenDaysAgo = new Date(
@@ -209,6 +220,13 @@ export default async function AdminDashboardPage() {
       change: `${totalReferrals} referrals`,
       up: totalReferrals > 0,
       icon: UserPlus,
+    },
+    {
+      label: "Wishlisted Items",
+      value: totalWishlisted.toString(),
+      change: `${totalWishlisted} wishlisted`,
+      up: totalWishlisted > 0,
+      icon: Heart,
     },
   ];
 
