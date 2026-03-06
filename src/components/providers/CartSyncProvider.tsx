@@ -127,21 +127,13 @@ export function CartSyncProvider() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN" && session?.user) {
+      if ((event === "INITIAL_SESSION" || event === "SIGNED_IN") && session?.user) {
         userId.current = session.user.id;
         await syncOnLogin(session.user.id);
       } else if (event === "SIGNED_OUT") {
         userId.current = null;
       }
     });
-
-    // Check if already logged in on mount
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        userId.current = user.id;
-        syncOnLogin(user.id);
-      }
-    }).catch(() => {});
 
     // ── Debounced push on local cart changes ──────────────────────
     let debounceTimer: ReturnType<typeof setTimeout>;

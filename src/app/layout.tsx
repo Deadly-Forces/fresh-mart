@@ -31,20 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${inter.variable} font-body antialiased`} suppressHydrationWarning>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              // Suppress benign Supabase navigator.locks AbortError
-              // caused by concurrent auth token refresh during HMR / navigation
-              addEventListener("unhandledrejection", function(e) {
-                if (e.reason && e.reason.name === "AbortError" &&
-                    e.reason.message && e.reason.message.includes("steal")) {
-                  e.preventDefault();
-                }
-              });
-            `,
-          }}
-        />
+
         {children}
         <Toaster
           richColors

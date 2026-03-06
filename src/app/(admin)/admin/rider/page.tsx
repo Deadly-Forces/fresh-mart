@@ -22,17 +22,20 @@ export const dynamic = "force-dynamic";
 export default async function AdminRiderPage() {
   const supabase = await createClient();
 
-  // Fetch orders relevant to rider: out_for_delivery + recently delivered (last 24h)
+  // Fetch orders relevant to rider:
+  // packed = ready at store, awaiting rider pickup
+  // out_for_delivery = rider accepted and en-route
+  // delivered = completed (last 24h)
   const { data: activeOrders } = await supabase
     .from("orders")
     .select(
       "id, total, status, created_at, user_id, address_id, order_items(id)",
     )
-    .in("status", ["out_for_delivery", "delivered"])
+    .in("status", ["packed", "out_for_delivery", "delivered"])
     .order("created_at", { ascending: false });
 
-  // Ensure simOrders replaces db orders seamlessly
-  const simOrders = simulateOrderList(activeOrders || []);
+  // Use raw DB data — real statuses set by Picker/Rider apps
+  const simOrders = activeOrders || [];
 
   // Fetch profiles
   const allUserIds = [
@@ -92,6 +95,9 @@ export default async function AdminRiderPage() {
     };
   };
 
+  const packedList = simOrders
+    .filter((o: any) => o.status === 'packed')
+    .map(mapOrder);
   const activeList = simOrders
     .filter((o: any) => o.status === 'out_for_delivery')
     .map(mapOrder);
@@ -117,7 +123,16 @@ export default async function AdminRiderPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="bg-card border border-border rounded-card p-5">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <Package className="w-4 h-4 text-amber-600" />
+            </div>
+            <span className="text-sm font-medium text-muted-foreground">Awaiting Pickup</span>
+          </div>
+          <p className="text-3xl font-heading font-bold text-amber-600">{packedList.length}</p>
+        </div>
         <div className="bg-card border border-border rounded-card p-5">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center">

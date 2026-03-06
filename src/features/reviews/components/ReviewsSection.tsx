@@ -45,9 +45,9 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
     const checkAuth = async () => {
       const supabase = createClient();
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setIsLoggedIn(!!user);
+        data: { session },
+      } = await supabase.auth.getSession();
+      setIsLoggedIn(!!session?.user);
     };
     checkAuth();
   }, [loadReviews]);

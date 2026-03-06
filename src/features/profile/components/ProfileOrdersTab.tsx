@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { UserOrder } from "@/types";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
@@ -47,6 +48,38 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
         setNow(Date.now());
         const id = setInterval(() => setNow(Date.now()), 1000);
         return () => clearInterval(id);
+    }, []);
+
+    // ── Realtime: live order status sync from Rider/Picker ──
+    useEffect(() => {
+        const supabase = createClient();
+
+        const channel = supabase
+            .channel("profile-orders-live")
+            .on(
+                "postgres_changes",
+                {
+                    event: "UPDATE",
+                    schema: "public",
+                    table: "orders",
+                },
+                (payload) => {
+                    // Only update if this order belongs to the current user's list
+                    const updatedOrder = payload.new as { id: string; status: string; payment_status: string | null; updated_at: string };
+                    setLocalOrders((prev) =>
+                        prev.map((o) =>
+                            o.id === updatedOrder.id
+                                ? { ...o, status: updatedOrder.status as UserOrder["status"], payment_status: updatedOrder.payment_status ?? undefined }
+                                : o
+                        )
+                    );
+                },
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, []);
 
     const handleDeleteOrder = async () => {

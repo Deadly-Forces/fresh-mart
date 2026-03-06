@@ -1,5 +1,6 @@
 import { fetchAllReviews } from "@/lib/supabase/reviews";
 import { ReviewModerationClient } from "./ReviewModerationClient";
+import { AutoRefresh } from "@/components/admin/AutoRefresh";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,7 @@ export default async function AdminReviewsPage() {
             pages.
           </p>
         </div>
+        <AutoRefresh intervalMs={30000} tables={["reviews"]} />
       </div>
 
       <ReviewModerationClient initialReviews={reviews} />

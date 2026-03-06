@@ -1,15 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Order status auto-progression timeline (from order creation):
- * 0 min  → processing (initial)
- * 2 min  → confirmed
- * 5 min  → packed
- * 9 min  → out_for_delivery
- * 13 min → delivered (payment marked as paid)
+ * Order status progression.
+ * Stages that require MANUAL staff actions (packed, out_for_delivery, delivered)
+ * are now handled by the real Picker and Rider apps.
  *
- * This function checks elapsed time and updates the DB if the order
- * should advance. Cancelled orders are skipped.
+ * This auto-sync only advances gateway stages:
+ *   pending    → processing  (immediate — payment received)
+ *   processing → confirmed   (2 min — order accepted by store)
+ *
+ * Everything after confirmed is handled by the Picker/Rider apps.
  */
 
 const STATUS_ORDER = [
@@ -30,23 +30,22 @@ export function getExpectedStatus(createdAt: string | Date): {
 
   const elapsedMin = (Date.now() - created) / 60000;
 
-  if (elapsedMin >= 15) return { status: "delivered", paymentStatus: "paid" };
-  if (elapsedMin >= 10)
-    return { status: "out_for_delivery", paymentStatus: "pending" };
-  if (elapsedMin >= 6) return { status: "packed", paymentStatus: "pending" };
+  // Only auto-advance up to "confirmed" — Picker/Rider handle the rest
   if (elapsedMin >= 3) return { status: "confirmed", paymentStatus: "pending" };
   return { status: "processing", paymentStatus: "pending" };
 }
 
 /**
- * In-memory simulation for display (no DB write).
- * Used when rendering pages to show the correct status instantly.
+ * In-memory simulation for display only (no DB write).
+ * Does NOT override stages set by Picker/Rider (packed, out_for_delivery, delivered, cancelled).
  */
 export function simulateOrderProgress(order: any) {
-  if (!order || order.status === "cancelled") return order;
+  if (!order) return order;
 
-  const created = new Date(order.created_at || order.createdAt).getTime();
-  if (isNaN(created)) return order;
+  // Never override manual staff stages or cancelled
+  if (["packed", "out_for_delivery", "delivered", "cancelled"].includes(order.status)) {
+    return order;
+  }
 
   const { status: newStatus, paymentStatus: newPayment } = getExpectedStatus(
     order.created_at || order.createdAt,
@@ -55,7 +54,8 @@ export function simulateOrderProgress(order: any) {
   const currentIdx = STATUS_ORDER.indexOf(order.status as any);
   const newIdx = STATUS_ORDER.indexOf(newStatus as any);
 
-  if (currentIdx !== -1 && newIdx !== -1 && newIdx > currentIdx) {
+  // Only advance to confirmed at most (newIdx <= 2)
+  if (currentIdx !== -1 && newIdx !== -1 && newIdx > currentIdx && newIdx <= 2) {
     return {
       ...order,
       status: newStatus,
@@ -73,18 +73,18 @@ export function simulateOrderList(orders: any[]) {
 
 /**
  * Persist auto-progression to the database.
- * Call this on page loads or via a cron/interval to keep DB in sync.
- * Only advances orders that are behind their expected status.
+ * ONLY advances pending → processing → confirmed.
+ * Picker/Rider apps are responsible for packed, out_for_delivery, delivered.
  */
 export async function syncOrderStatuses() {
   try {
     const supabase = await createClient();
 
-    // Fetch all non-cancelled, non-delivered orders
+    // Only fetch early-stage orders that can be auto-advanced
     const { data: activeOrders, error } = await supabase
       .from("orders")
       .select("id, status, payment_status, created_at")
-      .not("status", "in", '("cancelled","delivered")');
+      .in("status", ["pending", "processing"]); // only these two can be auto-advanced
 
     if (error || !activeOrders || activeOrders.length === 0) return;
 
@@ -95,8 +95,8 @@ export async function syncOrderStatuses() {
       const currentIdx = STATUS_ORDER.indexOf(order.status as any);
       const expectedIdx = STATUS_ORDER.indexOf(expectedStatus as any);
 
-      // Only advance, never go backwards
-      if (expectedIdx > currentIdx) {
+      // Guard: only advance, never go backwards, never go past "confirmed" (idx 2)
+      if (expectedIdx > currentIdx && expectedIdx <= 2) {
         await supabase
           .from("orders")
           .update({
@@ -107,6 +107,6 @@ export async function syncOrderStatuses() {
       }
     }
   } catch (err) {
-    console.warn("Failed to sync order statuses (maybe timeout):", err);
+    console.warn("Failed to sync order statuses:", err);
   }
 }

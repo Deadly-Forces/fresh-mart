@@ -2,7 +2,6 @@ import { createClient } from "@/lib/supabase/server";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { DeliveryCountdown } from "@/components/ui/DeliveryCountdown";
-import { simulateOrderList } from "@/lib/orders/simulateProgress";
 import {
   ListChecks,
   Package,
@@ -19,17 +18,20 @@ export const dynamic = "force-dynamic";
 export default async function AdminPickerPage() {
   const supabase = await createClient();
 
-  // Fetch orders that need picking: pending & confirmed
+  // Fetch orders that need picking.
+  // processing = auto-advanced by system (payment confirmed)
+  // confirmed  = verified by store
+  // Both land in the Picker App queue via staffOrderActions.getPickerOrdersAction()
   const { data: pendingOrders } = await supabase
     .from("orders")
     .select(
       `id, total, status, created_at, user_id,
             order_items(id, quantity, price, product_snapshot)`,
     )
-    .in("status", ["pending", "confirmed"])
+    .in("status", ["processing", "confirmed"])
     .order("created_at", { ascending: true }); // oldest first = most urgent
 
-  // Fetch recently packed orders (last 24h)
+  // Fetch recently packed orders (last 24h) — set by the Picker App
   const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const { data: packedOrders } = await supabase
     .from("orders")
@@ -38,8 +40,9 @@ export default async function AdminPickerPage() {
     .gte("created_at", yesterday)
     .order("created_at", { ascending: false });
 
-  const pending = simulateOrderList(pendingOrders || []);
-  const packed = simulateOrderList(packedOrders || []);
+  // Use raw DB data — no simulation override
+  const pending = pendingOrders || [];
+  const packed = packedOrders || [];
 
   // Fetch profiles
   const allUserIds = [
@@ -65,8 +68,7 @@ export default async function AdminPickerPage() {
       0,
     );
     const minutesAgo = Math.round(
-      (/* eslint-disable-next-line react-hooks/purity */
-      (Date.now() - new Date(o.created_at).getTime())) / 60000,
+      (Date.now() - new Date(o.created_at).getTime()) / 60000,
     );
 
     return {
@@ -76,7 +78,7 @@ export default async function AdminPickerPage() {
       itemCount: items.length,
       totalQty,
       total: Number(o.total || 0),
-      status: o.status || "pending",
+      status: o.status || "processing",
       minutesAgo,
       isUrgent: minutesAgo > 30,
       createdAt: o.created_at,
@@ -98,17 +100,11 @@ export default async function AdminPickerPage() {
     createdAt: o.created_at,
   });
 
-  const pendingList = pending
-    .map(mapPendingOrder)
-    .filter((o) => o.status === "pending" || o.status === "confirmed");
-  const packedList = packed
-    .map(mapPackedOrder)
-    .filter((o) => o.status === "packed");
+  const pendingList = pending.map(mapPendingOrder);
+  const packedList = packed.map(mapPackedOrder).filter((o) => o.status === "packed");
 
-  const pendingCount = pendingList.filter((o) => o.status === "pending").length;
-  const confirmedCount = pendingList.filter(
-    (o) => o.status === "confirmed",
-  ).length;
+  const pendingCount = pendingList.filter((o) => o.status === "processing").length;
+  const confirmedCount = pendingList.filter((o) => o.status === "confirmed").length;
 
   return (
     <div className="space-y-6">
@@ -137,7 +133,7 @@ export default async function AdminPickerPage() {
               <Clock className="w-4 h-4 text-amber-600" />
             </div>
             <span className="text-sm font-medium text-muted-foreground">
-              Pending
+              Processing
             </span>
           </div>
           <p className="text-3xl font-heading font-bold text-amber-600">
@@ -194,18 +190,16 @@ export default async function AdminPickerPage() {
             {pendingList.map((order) => (
               <div
                 key={order.id}
-                className={`bg-card border rounded-card shadow-sm overflow-hidden hover:shadow-md transition-shadow ${
-                  order.isUrgent
+                className={`bg-card border rounded-card shadow-sm overflow-hidden hover:shadow-md transition-shadow ${order.isUrgent
                     ? "border-red-200 dark:border-red-500/20"
                     : "border-border"
-                }`}
+                  }`}
               >
                 <div
-                  className={`h-1 ${
-                    order.isUrgent
+                  className={`h-1 ${order.isUrgent
                       ? "bg-gradient-to-r from-red-500 to-red-400"
                       : "bg-gradient-to-r from-primary to-emerald-500"
-                  }`}
+                    }`}
                 />
                 <div className="p-5">
                   {/* Header */}
@@ -225,11 +219,10 @@ export default async function AdminPickerPage() {
                     <div className="flex items-center gap-2">
                       <StatusBadge status={order.status} />
                       <span
-                        className={`text-[10px] font-bold px-2 py-1 rounded-pill flex items-center gap-1 ${
-                          order.isUrgent
+                        className={`text-[10px] font-bold px-2 py-1 rounded-pill flex items-center gap-1 ${order.isUrgent
                             ? "bg-red-500/10 text-red-500"
                             : "bg-muted text-muted-foreground"
-                        }`}
+                          }`}
                       >
                         <Timer className="w-3 h-3" />
                         {order.minutesAgo}m ago

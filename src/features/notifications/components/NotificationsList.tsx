@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Bell,
@@ -63,8 +63,59 @@ export function NotificationsList({
   const [notifications, setNotifications] =
     useState<Notification[]>(initialNotifications);
   const [isPending, startTransition] = useTransition();
+  const [newIds, setNewIds] = useState<Set<string>>(new Set());
   const router = useRouter();
   const supabase = createClient();
+  const userIdRef = useRef<string | null>(null);
+
+  // ── Realtime subscription: get live notifications without page refresh ──
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+
+    async function subscribe() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      userIdRef.current = user.id;
+
+      channel = supabase
+        .channel("notifications-list-live")
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const newN = payload.new as Notification;
+            setNotifications((prev) => [newN, ...prev]);
+            // Flag as "new" for animation, clear after 2s
+            setNewIds((prev) => new Set(prev).add(newN.id));
+            setTimeout(() => setNewIds((prev) => { const s = new Set(prev); s.delete(newN.id); return s; }), 2000);
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const updated = payload.new as Notification;
+            setNotifications((prev) => prev.map((n) => n.id === updated.id ? { ...n, ...updated } : n));
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "DELETE", schema: "public", table: "notifications" },
+          (payload) => {
+            const deleted = payload.old as { id: string };
+            setNotifications((prev) => prev.filter((n) => n.id !== deleted.id));
+          }
+        )
+        .subscribe();
+    }
+
+    subscribe();
+
+    return () => {
+      if (channel) supabase.removeChannel(channel);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
 
@@ -143,15 +194,17 @@ export function NotificationsList({
         {notifications.map((notification) => {
           const config = typeConfig[notification.type];
           const Icon = config.icon;
+          const isNew = newIds.has(notification.id);
 
           return (
             <div
               key={notification.id}
               className={cn(
-                "group relative flex items-start gap-3 p-4 rounded-xl border transition-colors",
+                "group relative flex items-start gap-3 p-4 rounded-xl border transition-all duration-500",
                 notification.is_read
                   ? "bg-background border-border/50"
                   : "bg-primary/[0.02] border-primary/20",
+                isNew && "animate-in slide-in-from-top-2 shadow-md ring-1 ring-primary/30",
               )}
             >
               {/* Unread dot */}

@@ -17,19 +17,12 @@ export function WishlistSyncProvider() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN" && session?.user) {
+      if ((event === "INITIAL_SESSION" || event === "SIGNED_IN") && session?.user) {
         await setAuthenticated(true);
       } else if (event === "SIGNED_OUT") {
         setAuthenticated(false);
       }
     });
-
-    // Check if already logged in on mount
-    supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (user) {
-        await setAuthenticated(true);
-      }
-    }).catch(() => {});
 
     return () => {
       subscription.unsubscribe();

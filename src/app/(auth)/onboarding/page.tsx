@@ -47,8 +47,9 @@ export default function OnboardingPage() {
         setState(JSON.parse(saved));
       } catch {}
     } else {
-      // Pre-fill name from auth if available
-      supabase.auth.getUser().then(({ data: { user } }) => {
+      // Pre-fill name from auth if available (use getSession to avoid lock contention)
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        const user = session?.user;
         if (user?.user_metadata?.full_name) {
           setState((s) => ({
             ...s,
