@@ -17,12 +17,23 @@ if (!supabaseUrl || !supabaseServiceKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 async function seed() {
-  // 0. Delete ALL existing products first so old ones are removed
+  // 0. Delete dependent rows first to avoid FK constraint errors
+  console.log("Deleting order_items (FK dependency)...");
+  const { error: delOiErr } = await supabase
+    .from("order_items")
+    .delete()
+    .neq("id", "00000000-0000-0000-0000-000000000000");
+  if (delOiErr) {
+    console.error("Error deleting order_items:", delOiErr);
+  } else {
+    console.log("Order items deleted.");
+  }
+
   console.log("Deleting all existing products...");
   const { error: delProdErr } = await supabase
     .from("products")
     .delete()
-    .neq("id", "00000000-0000-0000-0000-000000000000"); // delete all rows
+    .neq("id", "00000000-0000-0000-0000-000000000000");
   if (delProdErr) {
     console.error("Error deleting old products:", delProdErr);
   } else {
@@ -118,6 +129,15 @@ async function seed() {
     if (p.categorySlug === "bakery")
       imageUrl =
         "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80";
+    if (p.categorySlug === "cooking-essentials")
+      imageUrl =
+        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80";
+    if (p.categorySlug === "spices-seasonings")
+      imageUrl =
+        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80";
+    if (p.categorySlug === "staples")
+      imageUrl =
+        "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80";
 
     return {
       name: p.name,

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ChevronRight, Heart } from "lucide-react";
 
 export default function WishlistPage() {
-  const { items } = useWishlistStore();
+  const items = useWishlistStore((s) => s.items);
 
   return (
     <div className="container mx-auto px-4 max-w-7xl py-10 min-h-[60vh]">

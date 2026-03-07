@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
 import products from "@/features/products/utils/products.json";
-import { defaultModel, fallbackModel } from "@/lib/openrouter";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
-// To save tokens, we only extract the names of the products available in the store.
+// Waterfall of free models — tried in order until one succeeds
+const MODEL_WATERFALL = [
+  process.env.OPENROUTER_MODEL,
+  "meta-llama/llama-4-scout:free",
+  "google/gemma-3-4b-it:free",
+  "mistralai/mistral-7b-instruct:free",
+  "nousresearch/hermes-3-llama-3.1-8b:free",
+].filter(Boolean) as string[];
+
+// Deduplicate while preserving order
+const MODELS = [...new Set(MODEL_WATERFALL)];
+
 const storeProductNames = products.map((p: any) => p.name).join(", ");
 
 const SYSTEM_PROMPT = `
@@ -57,27 +67,34 @@ export async function POST(req: Request) {
       });
     };
 
-    let response = await callModel(defaultModel);
-
-    // Retry with fallback model on any error from primary
-    if (!response.ok && fallbackModel !== defaultModel) {
-      console.warn(
-        `Primary model ${defaultModel} failed (${response.status}), falling back to ${fallbackModel}`,
-      );
-      response = await callModel(fallbackModel);
+    // Try each model in the waterfall until one succeeds
+    let lastResponse: Response | null = null;
+    for (const model of MODELS) {
+      const response = await callModel(model);
+      if (response.ok) {
+        const data = await response.json();
+        return NextResponse.json(data);
+      }
+      // Only retry on rate-limit (429) or server errors (5xx) — not on client errors
+      if (response.status !== 429 && response.status < 500) {
+        const errorData = await response.text();
+        console.error(`Model ${model} returned client error:`, errorData);
+        return NextResponse.json(
+          { error: "Failed to fetch from OpenRouter API." },
+          { status: response.status },
+        );
+      }
+      console.warn(`Model ${model} failed (${response.status}), trying next model...`);
+      lastResponse = response;
     }
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error("OpenRouter API Error:", errorData);
-      return NextResponse.json(
-        { error: "Failed to fetch from OpenRouter API." },
-        { status: response.status },
-      );
-    }
-
-    const data = await response.json();
-    return NextResponse.json(data);
+    // All models failed
+    const errorData = await lastResponse?.text();
+    console.error("All models failed. Last error:", errorData);
+    return NextResponse.json(
+      { error: "All AI models are currently unavailable. Please try again shortly." },
+      { status: 503 },
+    );
   } catch (error) {
     console.error("Error in assistant API:", error);
     return NextResponse.json(

@@ -1,0 +1,137 @@
+/* ─── Hero background animations ─── */
+
+@keyframes hero-float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-20px) translateX(var(--drift, 15px)) rotate(45deg)
+      scale(1.05);
+  }
+  50% {
+    transform: translateY(-40px) translateX(calc(var(--drift, 15px) * -0.5))
+      rotate(180deg) scale(0.95);
+  }
+  75% {
+    transform: translateY(-15px) translateX(var(--drift, 15px)) rotate(270deg)
+      scale(1.02);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes hero-drift {
+  0% {
+    transform: translateY(0) translateX(0) rotate(var(--rotation, 0deg));
+  }
+  33% {
+    transform: translateY(-25px) translateX(var(--drift, 20px))
+      rotate(calc(var(--rotation, 0deg) + 120deg));
+  }
+  66% {
+    transform: translateY(10px) translateX(calc(var(--drift, 20px) * -0.7))
+      rotate(calc(var(--rotation, 0deg) + 240deg));
+  }
+  100% {
+    transform: translateY(0) translateX(0)
+      rotate(calc(var(--rotation, 0deg) + 360deg));
+  }
+}
+
+@keyframes hero-twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes hero-orb-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(40px, 30px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, -15px) scale(0.95);
+  }
+}
+
+@keyframes hero-orb-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(-35px, -25px) scale(1.08);
+  }
+  70% {
+    transform: translate(25px, 15px) scale(0.92);
+  }
+}
+
+@keyframes hero-orb-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-20px, 30px) scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* Hero particle base — positioned via CSS custom properties */
+.heroParticle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  animation-duration: var(--dur);
+  animation-delay: var(--del);
+}
+
+/* Hero grid texture background */
+.heroGridTexture {
+  background-image:
+    linear-gradient(hsl(var(--primary) / 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / 0.4) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.animateHeroFloat {
+  animation: hero-float var(--duration, 20s) ease-in-out infinite;
+  will-change: transform;
+}
+
+.animateHeroDrift {
+  animation: hero-drift var(--duration, 24s) ease-in-out infinite;
+  will-change: transform;
+}
+
+.animateHeroTwinkle {
+  animation: hero-twinkle var(--duration, 6s) ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animateHeroOrb1 {
+  animation: hero-orb-1 30s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animateHeroOrb2 {
+  animation: hero-orb-2 35s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animateHeroOrb3 {
+  animation: hero-orb-3 25s ease-in-out infinite;
+  will-change: transform, opacity;
+}

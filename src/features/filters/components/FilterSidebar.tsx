@@ -133,6 +133,21 @@ export function FilterSidebar({
             value: "baby-care",
             count: categoryCounts["baby-care"] ?? 0,
           },
+          {
+            label: "Cooking Essentials",
+            value: "cooking-essentials",
+            count: categoryCounts["cooking-essentials"] ?? 0,
+          },
+          {
+            label: "Spices & Seasonings",
+            value: "spices-seasonings",
+            count: categoryCounts["spices-seasonings"] ?? 0,
+          },
+          {
+            label: "Staples",
+            value: "staples",
+            count: categoryCounts["staples"] ?? 0,
+          },
         ],
       },
       {

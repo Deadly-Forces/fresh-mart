@@ -13,6 +13,9 @@ export async function PopularSearches() {
     { name: "Dairy & Eggs", slug: "dairy-eggs" },
     { name: "Bakery", slug: "bakery" },
     { name: "Meat & Seafood", slug: "meat-seafood" },
+    { name: "Cooking Essentials", slug: "cooking-essentials" },
+    { name: "Spices & Seasonings", slug: "spices-seasonings" },
+    { name: "Staples", slug: "staples" },
     { name: "Snacks", slug: "snacks" },
     { name: "Beverages", slug: "beverages" },
     { name: "Personal Care", slug: "personal-care" },
@@ -37,7 +40,17 @@ export async function PopularSearches() {
       desc: "Baked fresh every morning",
       slug: "bakery",
     },
-    { name: "Pantry Staples", desc: "Stock your kitchen", slug: "pantry" },
+    {
+      name: "Cooking Essentials",
+      desc: "Oils, sauces & baking needs",
+      slug: "cooking-essentials",
+    },
+    {
+      name: "Spices & Seasonings",
+      desc: "Masalas, pickles & more",
+      slug: "spices-seasonings",
+    },
+    { name: "Staples", desc: "Rice, flour, dal & grains", slug: "staples" },
   ];
 
   const categoryGridRight = [
@@ -47,7 +60,7 @@ export async function PopularSearches() {
       slug: "snacks",
     },
     { name: "Beverages", desc: "Quench your thirst", slug: "beverages" },
-    { name: "Frozen Foods", desc: "Convenient meals & treats", slug: "frozen" },
+    { name: "Fresh Fruits", desc: "Seasonal picks", slug: "fruits" },
     {
       name: "Personal Care",
       desc: "Health & beauty essentials",
@@ -58,6 +71,7 @@ export async function PopularSearches() {
       desc: "Keep your home sparkling",
       slug: "household",
     },
+    { name: "Baby Care", desc: "Everything for your little one", slug: "baby-care" },
   ];
 
   return (

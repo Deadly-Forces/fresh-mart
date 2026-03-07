@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./HeroBackground.module.css";
+
 /**
  * Aesthetic animated background for the hero section.
  * Renders floating grocery-themed SVG shapes (leaves, citrus slices, rings)
@@ -277,11 +279,11 @@ function RingSvg({ size }: { size: number }) {
 }
 
 const ANIM_MAP: Record<string, string> = {
-  leaf: "animate-hero-float",
-  citrus: "animate-hero-drift",
-  ring: "animate-hero-float",
-  circle: "animate-hero-drift",
-  dot: "animate-hero-twinkle",
+  leaf: styles.animateHeroFloat,
+  citrus: styles.animateHeroDrift,
+  ring: styles.animateHeroFloat,
+  circle: styles.animateHeroDrift,
+  dot: styles.animateHeroTwinkle,
 };
 
 const COLOR_MAP: Record<string, string> = {
@@ -326,9 +328,9 @@ export function HeroBackground() {
       />
 
       {/* ── Slow gradient orbs ── */}
-      <div className="absolute w-[600px] h-[600px] top-[-10%] left-[15%] rounded-full bg-gradient-to-br from-emerald-500/20 via-emerald-400/10 to-transparent blur-3xl animate-hero-orb-1" />
-      <div className="absolute w-[500px] h-[500px] bottom-[-5%] right-[10%] rounded-full bg-gradient-to-tl from-teal-400/15 via-teal-300/8 to-transparent blur-3xl animate-hero-orb-2" />
-      <div className="absolute w-[400px] h-[400px] top-[40%] right-[-3%] rounded-full bg-gradient-to-bl from-amber-400/12 to-transparent blur-3xl animate-hero-orb-3" />
+      <div className={`absolute w-[600px] h-[600px] top-[-10%] left-[15%] rounded-full bg-gradient-to-br from-emerald-500/20 via-emerald-400/10 to-transparent blur-3xl ${styles.animateHeroOrb1}`} />
+      <div className={`absolute w-[500px] h-[500px] bottom-[-5%] right-[10%] rounded-full bg-gradient-to-tl from-teal-400/15 via-teal-300/8 to-transparent blur-3xl ${styles.animateHeroOrb2}`} />
+      <div className={`absolute w-[400px] h-[400px] top-[40%] right-[-3%] rounded-full bg-gradient-to-bl from-amber-400/12 to-transparent blur-3xl ${styles.animateHeroOrb3}`} />
 
       {/* ── Floating particles ── */}
       {PARTICLES.map((p) => {
@@ -336,7 +338,7 @@ export function HeroBackground() {
         return (
           <div
             key={p.id}
-            className={`hero-particle hp-${p.id} ${ANIM_MAP[p.type]} ${COLOR_MAP[p.type]}`}
+            className={`${styles.heroParticle} hp-${p.id} ${ANIM_MAP[p.type]} ${COLOR_MAP[p.type]}`}
           >
             {Svg && <Svg size={p.size} />}
           </div>
@@ -344,7 +346,7 @@ export function HeroBackground() {
       })}
 
       {/* ── Subtle grid texture ── */}
-      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] hero-grid-texture" />
+      <div className={`absolute inset-0 opacity-[0.03] dark:opacity-[0.05] ${styles.heroGridTexture}`} />
     </div>
   );
 }

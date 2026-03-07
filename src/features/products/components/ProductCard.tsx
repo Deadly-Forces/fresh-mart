@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { memo, useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, ShoppingCart, Minus, Plus, Heart, Sparkles } from "lucide-react";
@@ -25,7 +25,7 @@ interface ProductCardProps {
   className?: string;
 }
 
-export function ProductCard({
+export const ProductCard = memo(function ProductCard({
   id,
   name,
   slug,
@@ -38,8 +38,12 @@ export function ProductCard({
   badge,
   className,
 }: ProductCardProps) {
-  const { items, addItem, updateQuantity, removeItem } = useCartStore();
-  const { toggleItem, isInWishlist } = useWishlistStore();
+  const items = useCartStore((s) => s.items);
+  const addItem = useCartStore((s) => s.addItem);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeItem = useCartStore((s) => s.removeItem);
+  const toggleItem = useWishlistStore((s) => s.toggleItem);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist);
   const [mounted, setMounted] = useState(false);
   const [showSparkle, setShowSparkle] = useState(false);
   const sparkleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -53,10 +57,10 @@ export function ProductCard({
 
   const isLiked = mounted ? isInWishlist(id) : false;
 
-  const cartItem = items.find((i) => i.productId === id);
+  const cartItem = useMemo(() => items.find((i) => i.productId === id), [items, id]);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigating if wrapped in a link area
+  const handleAddToCart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     addItem({
       productId: id,
       name,
@@ -66,16 +70,16 @@ export function ProductCard({
       unit,
     });
     toast.success(`Added ${name} to cart!`);
-  };
+  }, [addItem, id, name, price, image, unit]);
 
-  const handleIncrement = (e: React.MouseEvent) => {
+  const handleIncrement = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     if (cartItem) {
       updateQuantity(cartItem.id, cartItem.quantity + 1);
     }
-  };
+  }, [cartItem, updateQuantity]);
 
-  const handleDecrement = (e: React.MouseEvent) => {
+  const handleDecrement = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     if (cartItem) {
       if (cartItem.quantity === 1) {
@@ -85,11 +89,11 @@ export function ProductCard({
         updateQuantity(cartItem.id, cartItem.quantity - 1);
       }
     }
-  };
+  }, [cartItem, removeItem, updateQuantity, name]);
 
-  const handleToggleWishlist = (e: React.MouseEvent) => {
+  const handleToggleWishlist = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    const wasLiked = isLiked;
+    const wasLiked = isInWishlist(id);
     toggleItem({
       id,
       name,
@@ -113,7 +117,7 @@ export function ProductCard({
     toast.success(
       wasLiked ? `Removed ${name} from wishlist` : `Added ${name} to wishlist`,
     );
-  };
+  }, [toggleItem, isInWishlist, id, name, slug, price, comparePrice, image, unit, rating, reviewsCount, badge]);
 
   return (
     <div
@@ -242,4 +246,4 @@ export function ProductCard({
       </div>
     </div>
   );
-}
+});

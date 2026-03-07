@@ -86,24 +86,26 @@ export function MobileMenu({ user, profile }: MobileMenuProps) {
             Cooking Assistant
           </Link>
           <div className="h-px bg-border/50 my-2 mx-3" />
-          <Link
-            href="/category/fruits"
-            className="flex items-center px-3 py-3 rounded-lg text-[15px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
-          >
-            Fresh Fruits
-          </Link>
-          <Link
-            href="/category/vegetables"
-            className="flex items-center px-3 py-3 rounded-lg text-[15px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
-          >
-            Vegetables
-          </Link>
-          <Link
-            href="/category/dairy-eggs"
-            className="flex items-center px-3 py-3 rounded-lg text-[15px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
-          >
-            Dairy & Eggs
-          </Link>
+          {[
+            { name: "Fresh Fruits", slug: "fruits" },
+            { name: "Vegetables", slug: "vegetables" },
+            { name: "Dairy & Eggs", slug: "dairy-eggs" },
+            { name: "Bakery", slug: "bakery" },
+            { name: "Meat & Seafood", slug: "meat-seafood" },
+            { name: "Cooking Essentials", slug: "cooking-essentials" },
+            { name: "Spices & Seasonings", slug: "spices-seasonings" },
+            { name: "Staples", slug: "staples" },
+            { name: "Snacks", slug: "snacks" },
+            { name: "Beverages", slug: "beverages" },
+          ].map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/category/${cat.slug}`}
+              className="flex items-center px-3 py-3 rounded-lg text-[15px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
+            >
+              {cat.name}
+            </Link>
+          ))}
         </nav>
 
         {/* Mobile footer */}

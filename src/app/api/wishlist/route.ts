@@ -68,7 +68,9 @@ export async function GET() {
       })
       .filter(Boolean);
 
-    return NextResponse.json({ items });
+    return NextResponse.json({ items }, {
+      headers: { "Cache-Control": "private, max-age=30, stale-while-revalidate=60" },
+    });
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },

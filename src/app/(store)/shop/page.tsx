@@ -15,8 +15,8 @@ import { createClient } from "@/lib/supabase/server";
 
 type Props = {
   searchParams:
-    | Promise<{ [key: string]: string | string[] | undefined }>
-    | { [key: string]: string | string[] | undefined };
+  | Promise<{ [key: string]: string | string[] | undefined }>
+  | { [key: string]: string | string[] | undefined };
 };
 
 function str(val: string | string[] | undefined): string | undefined {
@@ -117,61 +117,190 @@ export default async function ShopPage(props: Props) {
   /* Calculate products to show */
   let displayProducts = productsList;
   let semanticMatches: any[] | null = null;
+  let unmatchedTerms: string[] = [];
+  let isAiSearch = false;
+  let isRecipeSearch = false;
+  let pantryStaples: string[] = [];
+
+  // Pantry keywords — only items truly NOT sold in our store
+  const PANTRY_KEYWORDS = new Set([
+    "water", "warm water", "cold water", "ice", "ice cubes",
+  ]);
 
   if (q) {
     let ql = q.toLowerCase().trim();
     const isAi = searchParams?.ai === "true";
 
-    // 1. Try Semantic Search first
-    try {
-      const { generateEmbedding } = await import("@/lib/embeddings/generate");
-      const embedding = await generateEmbedding(ql);
+    if (isAi) {
+      // AI search: the AI extracted ingredient names (comma-separated).
+      // All ingredients (store + pantry) are in q. We classify on the server side.
+      isAiSearch = true;
+      const isRecipe = searchParams?.recipe === "true";
+      isRecipeSearch = isRecipe;
 
-      const { data: matches } = await supabase.rpc("match_products", {
-        query_embedding: `[${embedding.join(",")}]`,
-        match_threshold: 0.15, // Keep threshold low to capture more, filter will refine
-        match_count: 50,
-      });
+      const stem = (w: string) => {
+        if (w.endsWith("ies")) return w.slice(0, -3) + "y";
+        if (w.endsWith("ves")) return w.slice(0, -3) + "f";
+        if (w.endsWith("es")) return w.slice(0, -2);
+        if (w.endsWith("s") && !w.endsWith("ss")) return w.slice(0, -1);
+        return w;
+      };
 
-      if (matches && matches.length > 0) {
-        semanticMatches = matches;
-      }
-    } catch (err) {
-      console.error(
-        "Semantic search failed, falling back to keyword text search",
-        err,
-      );
-    }
+      const rawTerms = ql
+        .split(",")
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0);
 
-    if (semanticMatches && semanticMatches.length > 0) {
-      // Create a map of ID -> similarity score
-      const scoreMap = new Map(
-        semanticMatches.map((m) => [m.id, m.similarity]),
-      );
-
-      // Filter the in-memory displayProducts to only those returned by semantic search
-      // and sort them by similarity score
-      displayProducts = displayProducts
-        .filter((p) => scoreMap.has(p.id))
-        .sort((a, b) => (scoreMap.get(b.id) || 0) - (scoreMap.get(a.id) || 0));
-    } else {
-      // Fallback: Keyword search
-      if (ql.endsWith("s") && ql.length > 3) {
-        ql = ql.slice(0, -1);
-      }
-
-      // If Magic Search passed multiple space-separated words, we should check if ANY word matches
-      const terms = ql.split(" ").filter(Boolean);
-
-      displayProducts = displayProducts.filter((p) => {
-        return terms.some((term) => {
-          const nameMatch = p.name.toLowerCase().includes(term);
-          const catMatch =
-            p.categorySlug && p.categorySlug.toLowerCase().includes(term);
-          const brandMatch = p.brand && p.brand.toLowerCase().includes(term);
-          return nameMatch || catMatch || brandMatch;
+      // In recipe mode, pre-filter pantry items BEFORE DB matching to avoid
+      // false matches (e.g., "water" matching nothing)
+      let termsToMatch = rawTerms;
+      if (isRecipe) {
+        const prePantry: string[] = [];
+        termsToMatch = rawTerms.filter((t) => {
+          const tl = t.toLowerCase();
+          if (PANTRY_KEYWORDS.has(tl)) {
+            prePantry.push(t);
+            return false;
+          }
+          return true;
         });
-      });
+        pantryStaples = [...pantryStaples, ...prePantry];
+      }
+
+      // For each AI term, try full-term match first; only fall back to
+      // individual split-words when the full term finds nothing.
+      const nonFoodCats = new Set([
+        "personal-care",
+        "household",
+        "baby-care",
+        ...(isRecipe ? ["snacks"] : []),
+      ]);
+
+      const foodProducts = isRecipe
+        ? displayProducts.filter(
+            (p) => !nonFoodCats.has(p.categorySlug?.toLowerCase() ?? ""),
+          )
+        : displayProducts;
+
+      const matchedIds = new Set<string>();
+      const matchedTerms: string[] = [];
+      const _unmatchedTerms: string[] = [];
+
+      // Escape special regex chars
+      const escRe = (s: string) =>
+        s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      // Build a word-boundary regex allowing common plural suffixes
+      const wordRe = (t: string) =>
+        new RegExp(`\\b${escRe(t)}(s|es|e)?\\b`, "i");
+
+      for (const term of termsToMatch) {
+        const stemmed = stem(term);
+        let termFound = false;
+
+        // 1. Try full stemmed term with word boundary
+        const fullRe = wordRe(stemmed);
+        const fullMatches = foodProducts.filter((p) =>
+          fullRe.test(p.name),
+        );
+
+        if (fullMatches.length > 0) {
+          fullMatches.forEach((p) => matchedIds.add(p.id));
+          matchedTerms.push(term);
+          continue; // full term found products, skip word splitting
+        }
+
+        // 2. Fall back to individual words (min 3 chars after stemming)
+        const words = term
+          .split(/\s+/)
+          .map((w) => stem(w))
+          .filter((w) => w.length >= 3);
+
+        // Also try the full stemmed term itself if it's a single word
+        if (!term.includes(" ")) words.push(stemmed);
+
+        for (const w of words) {
+          const wRe = wordRe(w);
+          const wMatches = foodProducts.filter((p) =>
+            wRe.test(p.name),
+          );
+          if (wMatches.length > 0) {
+            wMatches.forEach((p) => matchedIds.add(p.id));
+            termFound = true;
+          }
+        }
+
+        if (termFound) matchedTerms.push(term);
+        else _unmatchedTerms.push(term);
+      }
+
+      unmatchedTerms = _unmatchedTerms;
+
+      // Move any unmatched terms that are pantry staples to the pantry list
+      if (isRecipe) {
+        const pantryFromUnmatched = unmatchedTerms.filter(
+          (t) => PANTRY_KEYWORDS.has(t.toLowerCase()),
+        );
+        if (pantryFromUnmatched.length > 0) {
+          unmatchedTerms = unmatchedTerms.filter(
+            (t) => !pantryFromUnmatched.includes(t),
+          );
+          pantryStaples = [
+            ...pantryStaples,
+            ...pantryFromUnmatched.filter(
+              (t) => !pantryStaples.includes(t),
+            ),
+          ];
+        }
+      }
+
+      displayProducts = displayProducts.filter((p) => matchedIds.has(p.id));
+    } else {
+      // Normal search: try semantic search first, fall back to keyword
+      try {
+        const { generateEmbedding } = await import(
+          "@/lib/embeddings/generate"
+        );
+        const embedding = await generateEmbedding(ql);
+
+        const { data: matches } = await supabase.rpc("match_products", {
+          query_embedding: `[${embedding.join(",")}]`,
+          match_threshold: 0.25,
+          match_count: 50,
+        });
+
+        if (matches && matches.length >= 3) {
+          semanticMatches = matches;
+        }
+      } catch (err) {
+        console.error(
+          "Semantic search failed, falling back to keyword text search",
+          err,
+        );
+      }
+
+      if (semanticMatches && semanticMatches.length > 0) {
+        const scoreMap = new Map(
+          semanticMatches.map((m: any) => [m.id, m.similarity]),
+        );
+        displayProducts = displayProducts
+          .filter((p) => scoreMap.has(p.id))
+          .sort(
+            (a, b) => (scoreMap.get(b.id) || 0) - (scoreMap.get(a.id) || 0),
+          );
+      } else {
+        // Keyword fallback for normal search
+        const terms = ql.split(" ").filter(Boolean);
+        displayProducts = displayProducts.filter((p) => {
+          return terms.some((term) => {
+            const nameMatch = p.name.toLowerCase().includes(term);
+            const catMatch =
+              p.categorySlug && p.categorySlug.toLowerCase().includes(term);
+            const brandMatch =
+              p.brand && p.brand.toLowerCase().includes(term);
+            return nameMatch || catMatch || brandMatch;
+          });
+        });
+      }
     }
   }
   if (categories.length > 0) {
@@ -226,11 +355,19 @@ export default async function ShopPage(props: Props) {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight mb-1">
-                {q ? (
+                {isRecipeSearch && str(searchParams?.title) ? (
+                  <>
+                    Ingredients for &ldquo;
+                    <span className="bg-gradient-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
+                      {str(searchParams?.title)}
+                    </span>
+                    &rdquo;
+                  </>
+                ) : q ? (
                   <>
                     Results for &ldquo;
                     <span className="bg-gradient-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
-                      {q}
+                      {searchParams?.ai === "true" ? q.replace(/,/g, ", ") : q}
                     </span>
                     &rdquo;
                   </>
@@ -244,9 +381,11 @@ export default async function ShopPage(props: Props) {
                 )}
               </h1>
               <p className="text-muted-foreground">
-                {q
-                  ? "Found these products matching your search."
-                  : "Discover our complete range of farm-fresh groceries and essentials."}
+                {isRecipeSearch
+                  ? `We found ${totalProducts} ingredient${totalProducts !== 1 ? "s" : ""} available in our store.`
+                  : q
+                    ? "Found these products matching your search."
+                    : "Discover our complete range of farm-fresh groceries and essentials."}
               </p>
             </div>
           </div>
@@ -300,9 +439,67 @@ export default async function ShopPage(props: Props) {
                 <SortDropdown />
               </div>
             </div>
+            {/* Missing ingredients box for AI recipe search */}
+            {isAiSearch && unmatchedTerms.length > 0 && (
+              <div className="mb-6 rounded-xl border border-amber-200/60 bg-amber-50/50 dark:border-amber-500/20 dark:bg-amber-950/20 p-5">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center shrink-0">
+                    <ShoppingBag className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">
+                      Some ingredients are not available yet
+                    </h3>
+                    <p className="text-xs text-amber-600/80 dark:text-amber-400/70 mb-3">
+                      These products will be available soon. We&apos;re always adding new items!
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {unmatchedTerms.map((term) => (
+                        <span
+                          key={term}
+                          className="inline-flex items-center px-3 py-1.5 rounded-lg bg-amber-100/80 dark:bg-amber-900/30 text-xs font-medium text-amber-700 dark:text-amber-300 border border-amber-200/50 dark:border-amber-600/30"
+                        >
+                          {term}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Pantry staples section for recipe search */}
+            {isRecipeSearch && pantryStaples.length > 0 && (
+              <div className="mb-6 rounded-xl border border-sky-200/60 bg-sky-50/50 dark:border-sky-500/20 dark:bg-sky-950/20 p-5">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-900/40 flex items-center justify-center shrink-0">
+                    <span className="text-lg">🏠</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold text-sky-800 dark:text-sky-300 mb-1">
+                      Pantry staples you&apos;ll also need
+                    </h3>
+                    <p className="text-xs text-sky-600/80 dark:text-sky-400/70 mb-3">
+                      Common items you probably already have at home
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {pantryStaples.map((item) => (
+                        <span
+                          key={item}
+                          className="inline-flex items-center px-3 py-1.5 rounded-lg bg-sky-100/80 dark:bg-sky-900/30 text-xs font-medium text-sky-700 dark:text-sky-300 border border-sky-200/50 dark:border-sky-600/30"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <ProductGrid
               products={displayProducts}
-              searchQuery={q}
+              searchQuery={q && !searchParams?.ai ? q : undefined}
               sortBy={sort}
               categories={categories}
               maxPrice={maxPrice}

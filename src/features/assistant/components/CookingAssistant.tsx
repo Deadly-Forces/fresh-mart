@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
@@ -10,7 +10,7 @@ import {
   Command,
   ArrowRight,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { LazyMotion, domAnimation, m, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -183,6 +183,7 @@ export function CookingAssistant() {
   const showHero = messages.length === 0;
 
   return (
+    <LazyMotion features={domAnimation}>
     <div
       className={`w-full max-w-5xl mx-auto flex flex-col relative ${styles.container}`}
     >
@@ -201,7 +202,7 @@ export function CookingAssistant() {
 
       <AnimatePresence mode="wait">
         {showHero ? (
-          <motion.div
+          <m.div
             key="hero"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -210,7 +211,7 @@ export function CookingAssistant() {
             className="flex-1 flex flex-col"
           >
             {/* Hero header */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -226,12 +227,12 @@ export function CookingAssistant() {
               <p className="text-sm text-white/40 max-w-md mx-auto font-mono">
                 Precision recipes. Real inventory. Zero guesswork.
               </p>
-            </motion.div>
+            </m.div>
 
             {/* Bento Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
               {SUGGESTIONS.map((s, i) => (
-                <motion.div
+                <m.div
                   key={s.title}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -266,12 +267,12 @@ export function CookingAssistant() {
                       </div>
                     </div>
                   </TiltCard>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key="chat"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -281,7 +282,7 @@ export function CookingAssistant() {
             <ScrollArea className="h-[calc(100vh-20rem)]" ref={scrollRef}>
               <div className="flex flex-col gap-1 p-6">
                 {messages.map((message, i) => (
-                  <motion.div
+                  <m.div
                     key={i}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -313,11 +314,11 @@ export function CookingAssistant() {
                     >
                       {message.content}
                     </div>
-                  </motion.div>
+                  </m.div>
                 ))}
 
                 {isLoading && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="flex gap-3 py-3"
@@ -333,16 +334,16 @@ export function CookingAssistant() {
                         Composing recipe...
                       </span>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
               </div>
             </ScrollArea>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
       {/* Command Bar */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
@@ -404,7 +405,8 @@ export function CookingAssistant() {
             Inventory-aware recipes
           </span>
         </div>
-      </motion.div>
+      </m.div>
     </div>
+    </LazyMotion>
   );
 }

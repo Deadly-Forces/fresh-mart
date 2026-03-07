@@ -62,6 +62,7 @@ const nextConfig: NextConfig = {
     // Tree-shake barrel-file libraries (huge win for lucide-react, radix, etc.)
     optimizePackageImports: [
       "lucide-react",
+      "framer-motion",
       "embla-carousel-react",
       "@radix-ui/react-accordion",
       "@radix-ui/react-avatar",

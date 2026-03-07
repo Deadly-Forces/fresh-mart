@@ -47,7 +47,7 @@ export async function Navbar() {
         {/* Right: Search + Actions */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <Suspense
-            fallback={<div className="hidden md:block w-[240px] lg:w-[320px] h-9" />}
+            fallback={<div className="hidden md:block w-[280px] lg:w-[400px] h-11" />}
           >
             <SearchBar />
           </Suspense>

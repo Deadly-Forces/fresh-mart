@@ -17,7 +17,9 @@ export function OrderSummaryPanel({
   isExpressDelivery = false,
   onAutoDiscountChange,
 }: OrderSummaryPanelProps) {
-  const { items, getTotal, appliedPromo } = useCartStore();
+  const items = useCartStore((s) => s.items);
+  const getTotal = useCartStore((s) => s.getTotal);
+  const appliedPromo = useCartStore((s) => s.appliedPromo);
   const [mounted, setMounted] = useState(false);
   const [autoDiscounts, setAutoDiscounts] = useState<AutoDiscount[]>([]);
   const [autoTotal, setAutoTotal] = useState(0);

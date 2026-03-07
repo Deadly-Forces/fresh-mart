@@ -1,7 +1,8 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useState, type FormEvent } from "react";
+import { DefaultChatTransport } from "ai";
+import { useState, useRef, useEffect, useMemo, type FormEvent } from "react";
 import { MessageCircle, X, Send, Bot, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -9,15 +10,24 @@ import ReactMarkdown from "react-markdown";
 
 export function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
-    const [input, setInput] = useState("");
-    const { messages, sendMessage, status } = useChat();
+    const [inputText, setInputText] = useState("");
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const transport = useMemo(() => new DefaultChatTransport({ api: "/api/chat" }), []);
+    const { messages, sendMessage, status } = useChat({ transport });
+
     const isLoading = status === "streaming" || status === "submitted";
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (!input.trim() || isLoading) return;
-        sendMessage({ text: input });
-        setInput("");
+        const trimmed = inputText.trim();
+        if (!trimmed || isLoading) return;
+        sendMessage({ text: trimmed } as any);
+        setInputText("");
     };
 
     return (
@@ -49,7 +59,7 @@ export function Chatbot() {
                         {messages.length === 0 && (
                             <div className="text-center text-muted-foreground text-sm py-10">
                                 <Bot className="w-10 h-10 mx-auto opacity-50 mb-3" />
-                                <p>Hi there! I'm your AI shopping assistant.</p>
+                                <p>Hi there! I&apos;m your AI shopping assistant.</p>
                                 <p>I can help you find products, plan meals, or check your orders.</p>
                             </div>
                         )}
@@ -83,9 +93,9 @@ export function Chatbot() {
                                             return (
                                                 <div key={toolPart.toolCallId} className="text-xs text-muted-foreground mt-2 italic bg-muted p-2 rounded-md border">
                                                     {toolPart.state === "call" || toolPart.state === "input-available" ? (
-                                                        <span className="flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Executing {toolPart.toolName}...</span>
+                                                        <span className="flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Searching products...</span>
                                                     ) : (
-                                                        <span>✓ Finished {toolPart.toolName}</span>
+                                                        <span>✓ Done</span>
                                                     )}
                                                 </div>
                                             );
@@ -102,23 +112,21 @@ export function Chatbot() {
                                     <Bot className="w-5 h-5 text-emerald-600 animate-pulse" />
                                 </div>
                                 <div className="px-4 py-3 rounded-2xl bg-background border shadow-sm rounded-bl-none flex items-center gap-1">
-                                    {/* Using empty divs, ignoring inline styles warning */}
-                                    {/* eslint-disable react/forbid-dom-props */}
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: "0ms" }} />
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: "150ms" }} />
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: "300ms" }} />
-                                    {/* eslint-enable react/forbid-dom-props */}
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" />
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce delay-150" />
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce delay-300" />
                                 </div>
                             </div>
                         )}
+                        <div ref={messagesEndRef} />
                     </div>
 
                     {/* Input */}
                     <form onSubmit={handleSubmit} className="p-3 border-t bg-background">
                         <div className="relative">
                             <input
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
+                                value={inputText}
+                                onChange={(e) => setInputText(e.target.value)}
                                 placeholder="Ask me anything..."
                                 className="w-full pl-4 pr-12 py-3 rounded-full border bg-muted/50 focus:bg-background focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-shadow text-sm"
                                 disabled={isLoading}
@@ -127,7 +135,7 @@ export function Chatbot() {
                                 type="submit"
                                 size="icon"
                                 className="absolute right-1 top-1 bottom-1 h-auto rounded-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50"
-                                disabled={isLoading || !input?.trim()}
+                                disabled={isLoading || !inputText.trim()}
                                 title="Send message"
                             >
                                 <Send className="w-4 h-4 ml-0.5" />

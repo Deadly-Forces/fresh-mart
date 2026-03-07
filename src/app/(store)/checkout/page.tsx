@@ -39,8 +39,11 @@ export default function CheckoutPage() {
     setAutoDiscountAmount(amount);
   }, []);
 
-  const { items, getTotal, clearCart, appliedPromo, removeItem } =
-    useCartStore();
+  const items = useCartStore((s) => s.items);
+  const getTotal = useCartStore((s) => s.getTotal);
+  const clearCart = useCartStore((s) => s.clearCart);
+  const appliedPromo = useCartStore((s) => s.appliedPromo);
+  const removeItem = useCartStore((s) => s.removeItem);
 
   // UUID validation regex
   const isValidUUID = (id: string) =>

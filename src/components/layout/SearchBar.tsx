@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Sparkles, Loader2, Camera } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 export function SearchBar({ mobile = false }: { mobile?: boolean }) {
   const router = useRouter();
@@ -33,8 +32,10 @@ export function SearchBar({ mobile = false }: { mobile?: boolean }) {
       if (res.ok) {
         const data = await res.json();
         if (data.products && data.products.length > 0) {
-          const combinedQuery = data.products.join(" ");
-          router.push(`/shop?q=${encodeURIComponent(combinedQuery)}&ai=true`);
+          const combinedQuery = data.products.join(",");
+          const recipeFlag = data.isRecipe ? "&recipe=true" : "";
+          const titleParam = data.isRecipe ? `&title=${encodeURIComponent(query.trim())}` : "";
+          router.push(`/shop?q=${encodeURIComponent(combinedQuery)}&ai=true${recipeFlag}${titleParam}`);
         } else {
           router.push(`/shop?q=${encodeURIComponent(query.trim())}`);
         }
@@ -66,7 +67,7 @@ export function SearchBar({ mobile = false }: { mobile?: boolean }) {
         if (res.ok) {
           const data = await res.json();
           if (data.products && data.products.length > 0) {
-            const combinedQuery = data.products.join(" ");
+            const combinedQuery = data.products.join(",");
             router.push(`/shop?q=${encodeURIComponent(combinedQuery)}&ai=true`);
           }
         }
@@ -80,11 +81,30 @@ export function SearchBar({ mobile = false }: { mobile?: boolean }) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Detect if the query is a natural-language/contextual phrase that benefits from AI expansion
+  const isContextualQuery = (q: string): boolean => {
+    const lower = q.toLowerCase().trim();
+    // Contextual signals: filler words, recipe-related words, or multi-word queries with no obvious product name
+    const contextualPatterns = [
+      /\bfor\b/, /\bwith\b/, /\brecipe\b/, /\bingredients?\b/, /\bmake\b/,
+      /\bcook\b/, /\bdish\b/, /\bmeal\b/, /\blunch\b/, /\bdinner\b/, /\bbreakfast\b/,
+      /\bsnack\b/, /\bhealthy\b/, /\bvegan\b/, /\bvegetarian\b/, /\blike\b/,
+    ];
+    return contextualPatterns.some((p) => p.test(lower));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/shop?q=${encodeURIComponent(query.trim())}`);
+    const trimmed = query.trim();
+    if (!trimmed) return;
+
+    // Auto-upgrade contextual queries to AI-powered search
+    if (isContextualQuery(trimmed)) {
+      await handleMagicSearch();
+      return;
     }
+
+    router.push(`/shop?q=${encodeURIComponent(trimmed)}`);
   };
 
   const isLoading = isMagicLoading || isImageLoading;
@@ -94,25 +114,32 @@ export function SearchBar({ mobile = false }: { mobile?: boolean }) {
       onSubmit={handleSubmit}
       className={cn(
         "relative group",
-        mobile ? "flex w-full" : "hidden md:flex w-[240px] lg:w-[320px]", // slightly wider for icons
+        mobile ? "flex w-full" : "hidden md:flex w-[280px] lg:w-[400px]",
       )}
     >
-      <div className="relative flex-1 flex w-full">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+      <div
+        className={cn(
+          "relative flex-1 flex items-center w-full rounded-2xl border border-border/50 bg-secondary/40 px-4 transition-[border-color,box-shadow] duration-200",
+          "focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10",
+          mobile ? "h-12" : "h-11",
+        )}
+      >
+        {/* Search icon */}
+        <Search className="w-[18px] h-[18px] text-muted-foreground shrink-0 mr-3" />
+
+        {/* Input */}
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search products or paste recipe..."
-          className={cn(
-            "w-full pl-9 pr-[5.5rem] rounded-lg border border-border/60 bg-secondary/50 text-sm placeholder:text-muted-foreground/70",
-            "focus:bg-background focus:border-primary/40 focus:ring-2 focus:ring-primary/10 focus:outline-none transition-all",
-            mobile ? "h-10" : "h-9",
-          )}
+          placeholder="Search products or paste a link..."
+          className="w-full bg-transparent border-none text-foreground text-[15px] font-light placeholder:text-muted-foreground/60 focus:outline-none focus:ring-0"
           disabled={isLoading}
         />
-        <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
-          {/* File Upload Hidden Input */}
+
+        {/* Action icons */}
+        <div className="flex items-center gap-3 ml-2 shrink-0">
+          {/* Hidden file input */}
           <input
             type="file"
             accept="image/*"
@@ -122,41 +149,38 @@ export function SearchBar({ mobile = false }: { mobile?: boolean }) {
             title="Upload Image"
             aria-label="Upload Image"
           />
-          {/* Camera Button */}
-          <Button
+
+          {/* Visual search (camera) */}
+          <button
             type="button"
-            variant="ghost"
-            size="sm"
             onClick={() => fileInputRef.current?.click()}
             disabled={isLoading}
-            className="h-7 w-7 p-0 text-muted-foreground hover:text-primary hover:bg-primary/10"
-            title="Search with Image (Visual Search)"
+            className="p-0.5 text-muted-foreground hover:text-foreground transition-colors duration-200 disabled:opacity-40"
+            title="Search by image"
             aria-label="Search with Image"
           >
             {isImageLoading ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />
+              <Loader2 className="w-[18px] h-[18px] animate-spin text-primary" />
             ) : (
-              <Camera className="w-3.5 h-3.5" />
+              <Camera className="w-[18px] h-[18px]" />
             )}
-          </Button>
+          </button>
 
-          {/* AI Magic Button */}
-          <Button
+          {/* AI search (sparkles) */}
+          <button
             type="button"
-            variant="ghost"
-            size="sm"
             onClick={handleMagicSearch}
             disabled={isLoading || !query.trim()}
-            className="h-7 px-2 text-xs text-amber-500 hover:text-amber-600 hover:bg-amber-100/50"
-            title="AI Magic Search (Recipe to Ingredients)"
+            className="p-0.5 text-amber-500 hover:text-amber-400 transition-colors duration-200 disabled:opacity-40"
+            title="AI Search Assistant"
+            aria-label="AI Magic Search"
           >
             {isMagicLoading ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <Loader2 className="w-[18px] h-[18px] animate-spin" />
             ) : (
-              <Sparkles className="w-3.5 h-3.5 mr-1" />
+              <Sparkles className="w-[18px] h-[18px]" />
             )}
-            <span className="sr-only sm:not-sr-only">AI</span>
-          </Button>
+          </button>
         </div>
       </div>
     </form>

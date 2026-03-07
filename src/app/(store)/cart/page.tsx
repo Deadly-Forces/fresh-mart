@@ -29,16 +29,14 @@ interface CartInsight {
 }
 
 export default function CartPage() {
-  const {
-    items,
-    removeItem,
-    updateQuantity,
-    getTotal,
-    clearCart,
-    appliedPromo,
-    applyPromo,
-    removePromo,
-  } = useCartStore();
+  const items = useCartStore((s) => s.items);
+  const removeItem = useCartStore((s) => s.removeItem);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const getTotal = useCartStore((s) => s.getTotal);
+  const clearCart = useCartStore((s) => s.clearCart);
+  const appliedPromo = useCartStore((s) => s.appliedPromo);
+  const applyPromo = useCartStore((s) => s.applyPromo);
+  const removePromo = useCartStore((s) => s.removePromo);
   const [promoInput, setPromoInput] = useState("");
   const [isApplyingPromo, setIsApplyingPromo] = useState(false);
   const [autoDiscounts, setAutoDiscounts] = useState<AutoDiscount[]>([]);

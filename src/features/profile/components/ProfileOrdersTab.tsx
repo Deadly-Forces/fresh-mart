@@ -172,7 +172,7 @@ export function ProfileOrdersTab({ orders }: ProfileOrdersTabProps) {
   const handleDownloadInvoice = async (order: UserOrder) => {
     try {
       const { generateInvoice } = await import("@/features/orders/utils/generateInvoice");
-      generateInvoice(order);
+      await generateInvoice(order);
       toast.success("Invoice downloaded!");
     } catch {
       toast.error("Failed to generate invoice.");

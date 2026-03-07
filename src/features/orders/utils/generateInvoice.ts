@@ -1,8 +1,11 @@
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import type { UserOrder } from "@/types";
 
-export function generateInvoice(order: UserOrder) {
+export async function generateInvoice(order: UserOrder) {
+  const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+    import("jspdf"),
+    import("jspdf-autotable"),
+  ]);
+
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
 

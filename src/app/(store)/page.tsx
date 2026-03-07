@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Truck, Leaf, ShieldCheck, Sparkles } from "lucide-react";
@@ -6,8 +8,12 @@ import { TrustBar } from "@/features/home/components/TrustBar";
 import { CategoryGrid } from "@/features/home/components/CategoryGrid";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { PopularSearches } from "@/features/home/components/PopularSearches";
-import { HeroBackground } from "@/features/home/components/HeroBackground";
 import { createClient } from "@/lib/supabase/server";
+
+const HeroBackground = dynamic(
+  () => import("@/features/home/components/HeroBackground").then((m) => m.HeroBackground),
+  { loading: () => null },
+);
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
@@ -153,7 +159,9 @@ export default async function HomePage() {
       <TrustBar />
 
       {/* ─── Categories Grid ─── */}
-      <CategoryGrid />
+      <Suspense fallback={<div className="py-16 md:py-24" />}>
+        <CategoryGrid />
+      </Suspense>
 
       {/* ─── Featured Products ─── */}
       <section className="py-16 md:py-24 section-soft">

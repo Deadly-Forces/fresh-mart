@@ -60,7 +60,8 @@ export function ProductDetailClient({
   }, []);
 
   const addItem = useCartStore((state) => state.addItem);
-  const { toggleItem, isInWishlist } = useWishlistStore();
+  const toggleItem = useWishlistStore((s) => s.toggleItem);
+  const isInWishlist = useWishlistStore((s) => s.isInWishlist);
 
   const isLiked = mounted && product ? isInWishlist(product.id) : false;
 

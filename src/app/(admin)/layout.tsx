@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { adminNavItems } from "@/config/navigation";
+import { AdminChatbot } from "@/features/assistant/components/AdminChatbot";
 
 export default function AdminLayout({
   children,
@@ -95,6 +96,7 @@ export default function AdminLayout({
         {/* Main */}
         <main className="flex-1 p-6">{children}</main>
       </div>
+      <AdminChatbot />
     </div>
   );
 }
