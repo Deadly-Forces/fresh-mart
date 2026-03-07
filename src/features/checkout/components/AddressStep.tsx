@@ -11,7 +11,7 @@ import {
   getUserAddressesAction,
   addAddressAction,
 } from "@/features/checkout/actions/addressActions";
-import { checkServiceability } from "@/utils/serviceability";
+import { checkServiceability } from "@/features/checkout/utils/serviceability";
 import { toast } from "sonner";
 
 interface AddressStepProps {

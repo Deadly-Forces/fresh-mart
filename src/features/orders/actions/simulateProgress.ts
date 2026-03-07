@@ -43,7 +43,11 @@ export function simulateOrderProgress(order: any) {
   if (!order) return order;
 
   // Never override manual staff stages or cancelled
-  if (["packed", "out_for_delivery", "delivered", "cancelled"].includes(order.status)) {
+  if (
+    ["packed", "out_for_delivery", "delivered", "cancelled"].includes(
+      order.status,
+    )
+  ) {
     return order;
   }
 
@@ -55,7 +59,12 @@ export function simulateOrderProgress(order: any) {
   const newIdx = STATUS_ORDER.indexOf(newStatus as any);
 
   // Only advance to confirmed at most (newIdx <= 2)
-  if (currentIdx !== -1 && newIdx !== -1 && newIdx > currentIdx && newIdx <= 2) {
+  if (
+    currentIdx !== -1 &&
+    newIdx !== -1 &&
+    newIdx > currentIdx &&
+    newIdx <= 2
+  ) {
     return {
       ...order,
       status: newStatus,
@@ -90,7 +99,7 @@ export async function syncOrderStatuses() {
 
     for (const order of activeOrders) {
       const { status: expectedStatus, paymentStatus: expectedPayment } =
-        getExpectedStatus(order.created_at);
+        getExpectedStatus(order.created_at || new Date().toISOString());
 
       const currentIdx = STATUS_ORDER.indexOf(order.status as any);
       const expectedIdx = STATUS_ORDER.indexOf(expectedStatus as any);

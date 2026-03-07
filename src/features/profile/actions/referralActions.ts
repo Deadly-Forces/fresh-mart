@@ -19,7 +19,9 @@ export async function getReferralDataAction() {
       .from("profiles")
       .select("referral_code")
       .eq("id", user.id)
-      .single()) as unknown as { data: { referral_code: string | null } | null };
+      .single()) as unknown as {
+      data: { referral_code: string | null } | null;
+    };
 
     // Get referrals made by this user
     const { data: referrals } = await supabase
@@ -31,7 +33,7 @@ export async function getReferralDataAction() {
         reward_points,
         created_at,
         referred:referred_id (name, email)
-      `
+      `,
       )
       .eq("referrer_id", user.id)
       .order("created_at", { ascending: false });
@@ -42,7 +44,7 @@ export async function getReferralDataAction() {
         .reduce(
           (sum: number, r: Record<string, unknown>) =>
             sum + ((r.reward_points as number) || 0),
-          0
+          0,
         ) ?? 0;
 
     return {
@@ -89,11 +91,13 @@ export async function applyReferralCodeAction(code: string) {
     }
 
     // Find the referrer by code
-    const { data: referrer } = await supabase
+    const { data: referrer } = (await supabase
       .from("profiles")
       .select("id, referral_code")
       .eq("referral_code", sanitizedCode)
-      .maybeSingle() as { data: { id: string; referral_code: string | null } | null };
+      .maybeSingle()) as {
+      data: { id: string; referral_code: string | null } | null;
+    };
 
     if (!referrer) {
       return { error: "Referral code not found." };
@@ -143,7 +147,9 @@ export async function applyReferralCodeAction(code: string) {
             if (data) {
               supabase
                 .from("profiles")
-                .update({ loyalty_points: (data.loyalty_points || 0) + bonusPoints })
+                .update({
+                  loyalty_points: (data.loyalty_points || 0) + bonusPoints,
+                })
                 .eq("id", referrer.id);
             }
           });
@@ -166,7 +172,8 @@ export async function applyReferralCodeAction(code: string) {
     await supabase
       .from("profiles")
       .update({
-        loyalty_points: ((currentProfile?.loyalty_points as number) || 0) + bonusPoints,
+        loyalty_points:
+          ((currentProfile?.loyalty_points as number) || 0) + bonusPoints,
       })
       .eq("id", user.id);
 

@@ -266,15 +266,24 @@ export default async function AdminAnalyticsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border">
-              <th className="py-2 text-left font-medium text-muted-foreground text-xs">#</th>
-              <th className="py-2 text-left font-medium text-muted-foreground text-xs">Product</th>
-              <th className="py-2 text-left font-medium text-muted-foreground text-xs">Wishlist Count</th>
+              <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                #
+              </th>
+              <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                Product
+              </th>
+              <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                Wishlist Count
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
             {topWishlisted.length === 0 ? (
               <tr>
-                <td colSpan={3} className="py-6 text-center text-muted-foreground text-sm">
+                <td
+                  colSpan={3}
+                  className="py-6 text-center text-muted-foreground text-sm"
+                >
                   No wishlist data yet.
                 </td>
               </tr>

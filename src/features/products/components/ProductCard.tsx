@@ -7,8 +7,8 @@ import { Star, ShoppingCart, Minus, Plus, Heart, Sparkles } from "lucide-react";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useCartStore } from "@/store/cartStore";
-import { useWishlistStore } from "@/store/wishlistStore";
+import { useCartStore } from "@/features/cart/store/useCartStore";
+import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
 import { toast } from "sonner";
 
 interface ProductCardProps {

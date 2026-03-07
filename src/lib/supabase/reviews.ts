@@ -1,7 +1,12 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { stripHtml, sanitizeString, isValidUUID, rateLimit } from "@/lib/security";
+import {
+  stripHtml,
+  sanitizeString,
+  isValidUUID,
+  rateLimit,
+} from "@/lib/security";
 
 export interface ReviewWithProfile {
   id: string;
@@ -24,7 +29,12 @@ export async function fetchProductReviews(productId: string): Promise<{
   ratingBreakdown: Record<number, number>;
 }> {
   if (!isValidUUID(productId)) {
-    return { reviews: [], averageRating: 0, totalCount: 0, ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } };
+    return {
+      reviews: [],
+      averageRating: 0,
+      totalCount: 0,
+      ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+    };
   }
 
   const supabase = await createClient();
@@ -49,7 +59,7 @@ export async function fetchProductReviews(productId: string): Promise<{
   const reviews = data || [];
 
   // Fetch profile names for all reviewers
-  const userIds = [...new Set(reviews.map((r) => r.user_id))];
+  const userIds = [...new Set(reviews.map((r) => r.user_id).filter(Boolean))] as string[];
   let profileMap: Record<string, string> = {};
   if (userIds.length > 0) {
     const { data: profiles } = await supabase
@@ -63,7 +73,12 @@ export async function fetchProductReviews(productId: string): Promise<{
 
   const mapped: ReviewWithProfile[] = reviews.map((r) => ({
     ...r,
-    reviewer_name: profileMap[r.user_id] || "Anonymous",
+    user_id: r.user_id || "",
+    product_id: r.product_id || "",
+    rating: r.rating || 0,
+    created_at: r.created_at || new Date().toISOString(),
+    is_approved: r.is_approved || false,
+    reviewer_name: profileMap[r.user_id || ""] || "Anonymous",
   }));
 
   // Only count approved reviews for stats
@@ -72,9 +87,9 @@ export async function fetchProductReviews(productId: string): Promise<{
   const averageRating =
     totalCount > 0
       ? Math.round(
-          (approvedReviews.reduce((sum, r) => sum + r.rating, 0) / totalCount) *
-            10,
-        ) / 10
+        (approvedReviews.reduce((sum, r) => sum + (r.rating || 0), 0) / totalCount) *
+        10,
+      ) / 10
       : 0;
 
   const ratingBreakdown: Record<number, number> = {
@@ -85,7 +100,8 @@ export async function fetchProductReviews(productId: string): Promise<{
     5: 0,
   };
   for (const r of approvedReviews) {
-    ratingBreakdown[r.rating] = (ratingBreakdown[r.rating] || 0) + 1;
+    const rating = r.rating || 0;
+    ratingBreakdown[rating] = (ratingBreakdown[rating] || 0) + 1;
   }
 
   return { reviews: mapped, averageRating, totalCount, ratingBreakdown };
@@ -112,7 +128,10 @@ export async function submitReview(data: {
 
   // Rate limit: 5 reviews per minute per user
   if (!rateLimit(`review:${user.id}`, 5, 60_000)) {
-    return { success: false, error: "Too many reviews submitted. Please wait." };
+    return {
+      success: false,
+      error: "Too many reviews submitted. Please wait.",
+    };
   }
 
   // Validate product ID format
@@ -136,7 +155,8 @@ export async function submitReview(data: {
   if (!sanitizedComment || sanitizedComment.length < 10) {
     return {
       success: false,
-      error: "Review comment must be at least 10 characters after sanitization.",
+      error:
+        "Review comment must be at least 10 characters after sanitization.",
     };
   }
 
@@ -242,7 +262,7 @@ export async function fetchAllReviews(
   if (!reviews || reviews.length === 0) return [];
 
   // Fetch profiles
-  const userIds = [...new Set(reviews.map((r) => r.user_id))];
+  const userIds = [...new Set(reviews.map((r) => r.user_id).filter(Boolean))] as string[];
   const { data: profiles } = await supabase
     .from("profiles")
     .select("id, name, email")
@@ -255,7 +275,7 @@ export async function fetchAllReviews(
   );
 
   // Fetch product names
-  const productIds = [...new Set(reviews.map((r) => r.product_id))];
+  const productIds = [...new Set(reviews.map((r) => r.product_id).filter(Boolean))] as string[];
   const { data: products } = await supabase
     .from("products")
     .select("id, name")
@@ -266,15 +286,15 @@ export async function fetchAllReviews(
 
   return reviews.map((r) => ({
     id: r.id,
-    rating: r.rating,
+    rating: r.rating || 0,
     comment: r.comment,
-    is_approved: r.is_approved,
-    created_at: r.created_at,
-    product_name: productMap[r.product_id] || "Unknown Product",
-    product_id: r.product_id,
-    reviewer_name: profileMap[r.user_id]?.name || "Anonymous",
-    reviewer_email: profileMap[r.user_id]?.email || null,
-    user_id: r.user_id,
+    is_approved: r.is_approved || false,
+    created_at: r.created_at || new Date().toISOString(),
+    product_name: productMap[r.product_id || ""] || "Unknown Product",
+    product_id: r.product_id || "",
+    reviewer_name: profileMap[r.user_id || ""]?.name || "Anonymous",
+    reviewer_email: profileMap[r.user_id || ""]?.email || null,
+    user_id: r.user_id || "",
   }));
 }
 

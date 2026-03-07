@@ -30,7 +30,9 @@ export default async function AdminReferralsPage() {
           <p className="text-xs text-muted-foreground">Total Referrals</p>
         </div>
         <div className="bg-card border border-amber-200 dark:border-amber-800 rounded-card p-4 text-center">
-          <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{stats!.pending}</p>
+          <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+            {stats!.pending}
+          </p>
           <p className="text-xs text-muted-foreground">Pending</p>
         </div>
         <div className="bg-card border border-emerald-200 dark:border-emerald-800 rounded-card p-4 text-center">

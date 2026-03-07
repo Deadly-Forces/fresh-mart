@@ -114,20 +114,65 @@ export default async function ShopPage(props: Props) {
     categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
   });
 
-  /* Count the products that will be shown (approximate for display) */
+  /* Calculate products to show */
   let displayProducts = productsList;
+  let semanticMatches: any[] | null = null;
+
   if (q) {
     let ql = q.toLowerCase().trim();
-    if (ql.endsWith("s") && ql.length > 3) {
-      ql = ql.slice(0, -1);
+    const isAi = searchParams?.ai === "true";
+
+    // 1. Try Semantic Search first
+    try {
+      const { generateEmbedding } = await import("@/lib/embeddings/generate");
+      const embedding = await generateEmbedding(ql);
+
+      const { data: matches } = await supabase.rpc("match_products", {
+        query_embedding: `[${embedding.join(",")}]`,
+        match_threshold: 0.15, // Keep threshold low to capture more, filter will refine
+        match_count: 50,
+      });
+
+      if (matches && matches.length > 0) {
+        semanticMatches = matches;
+      }
+    } catch (err) {
+      console.error(
+        "Semantic search failed, falling back to keyword text search",
+        err,
+      );
     }
-    displayProducts = displayProducts.filter((p) => {
-      const nameMatch = p.name.toLowerCase().includes(ql);
-      const catMatch =
-        p.categorySlug && p.categorySlug.toLowerCase().includes(ql);
-      const brandMatch = p.brand && p.brand.toLowerCase().includes(ql);
-      return nameMatch || catMatch || brandMatch;
-    });
+
+    if (semanticMatches && semanticMatches.length > 0) {
+      // Create a map of ID -> similarity score
+      const scoreMap = new Map(
+        semanticMatches.map((m) => [m.id, m.similarity]),
+      );
+
+      // Filter the in-memory displayProducts to only those returned by semantic search
+      // and sort them by similarity score
+      displayProducts = displayProducts
+        .filter((p) => scoreMap.has(p.id))
+        .sort((a, b) => (scoreMap.get(b.id) || 0) - (scoreMap.get(a.id) || 0));
+    } else {
+      // Fallback: Keyword search
+      if (ql.endsWith("s") && ql.length > 3) {
+        ql = ql.slice(0, -1);
+      }
+
+      // If Magic Search passed multiple space-separated words, we should check if ANY word matches
+      const terms = ql.split(" ").filter(Boolean);
+
+      displayProducts = displayProducts.filter((p) => {
+        return terms.some((term) => {
+          const nameMatch = p.name.toLowerCase().includes(term);
+          const catMatch =
+            p.categorySlug && p.categorySlug.toLowerCase().includes(term);
+          const brandMatch = p.brand && p.brand.toLowerCase().includes(term);
+          return nameMatch || catMatch || brandMatch;
+        });
+      });
+    }
   }
   if (categories.length > 0) {
     const catSet = new Set(categories);

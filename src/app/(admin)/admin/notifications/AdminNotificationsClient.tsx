@@ -138,9 +138,7 @@ export function AdminNotificationsClient({
           </p>
         </div>
         <div className="rounded-xl border bg-card p-4 col-span-2 md:col-span-1">
-          <p className="text-xs text-muted-foreground font-medium">
-            Read Rate
-          </p>
+          <p className="text-xs text-muted-foreground font-medium">Read Rate</p>
           <p className="text-2xl font-bold mt-1">
             {totalSent > 0
               ? `${Math.round(((totalSent - unreadCount) / totalSent) * 100)}%`
@@ -330,7 +328,10 @@ export function AdminNotificationsClient({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-medium text-sm">{n.title}</span>
-                      <Badge variant={config.badgeVariant} className="text-[10px] px-1.5 py-0 h-4">
+                      <Badge
+                        variant={config.badgeVariant}
+                        className="text-[10px] px-1.5 py-0 h-4"
+                      >
                         {config.label}
                       </Badge>
                       {n.isRead ? (

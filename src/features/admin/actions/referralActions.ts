@@ -19,7 +19,8 @@ async function requireAdmin() {
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") throw new Error("Forbidden: Admin access required.");
+  if (profile?.role !== "admin")
+    throw new Error("Forbidden: Admin access required.");
 
   return { supabase, user };
 }
@@ -59,8 +60,12 @@ export async function getAdminReferralsDataAction() {
       referrerName: usersMap[r.referrer_id]?.name || "Unknown",
       referrerEmail: usersMap[r.referrer_id]?.email || "N/A",
       referredId: r.referred_id,
-      referredName: r.referred_id ? usersMap[r.referred_id]?.name || "Unknown" : null,
-      referredEmail: r.referred_id ? usersMap[r.referred_id]?.email || "N/A" : null,
+      referredName: r.referred_id
+        ? usersMap[r.referred_id]?.name || "Unknown"
+        : null,
+      referredEmail: r.referred_id
+        ? usersMap[r.referred_id]?.email || "N/A"
+        : null,
       referralCode: r.referral_code,
       status: r.status,
       rewardPoints: r.reward_points || 0,
@@ -69,8 +74,10 @@ export async function getAdminReferralsDataAction() {
 
     const stats = {
       total: (referrals || []).length,
-      pending: (referrals || []).filter((r: any) => r.status === "pending").length,
-      completed: (referrals || []).filter((r: any) => r.status === "completed").length,
+      pending: (referrals || []).filter((r: any) => r.status === "pending")
+        .length,
+      completed: (referrals || []).filter((r: any) => r.status === "completed")
+        .length,
       totalRewardPoints: (referrals || [])
         .filter((r: any) => r.status === "completed")
         .reduce((s: number, r: any) => s + Number(r.reward_points || 0), 0),

@@ -5,7 +5,13 @@ import { revalidatePath } from "next/cache";
 import { rateLimit, isValidUUID, sanitizeString } from "@/lib/security";
 import { z } from "zod";
 
-const returnStatusSchema = z.enum(["pending", "manual_review", "approved", "rejected", "refunded"]);
+const returnStatusSchema = z.enum([
+  "pending",
+  "manual_review",
+  "approved",
+  "rejected",
+  "refunded",
+]);
 
 /** Verify that the current user is authenticated and has admin role */
 async function requireAdmin() {
@@ -39,10 +45,13 @@ export async function getAdminReturnRequestsAction() {
   try {
     const { supabase } = await requireAdmin();
 
-    const { data: requests, error } = await supabase
+    const { data: requests, error } = (await supabase
       .from("return_requests")
       .select("*")
-      .order("created_at", { ascending: false }) as { data: any[]; error: any };
+      .order("created_at", { ascending: false })) as {
+      data: any[];
+      error: any;
+    };
 
     if (error) {
       console.error("Error fetching return requests:", error);
@@ -103,9 +112,7 @@ export async function updateReturnRequestAction(
       return { error: "Invalid status." };
     }
 
-    const sanitizedNotes = adminNotes
-      ? sanitizeString(adminNotes, 1000)
-      : null;
+    const sanitizedNotes = adminNotes ? sanitizeString(adminNotes, 1000) : null;
 
     const { supabase } = await requireAdmin();
 
@@ -119,10 +126,10 @@ export async function updateReturnRequestAction(
       updateData.refund_amount = refundAmount;
     }
 
-    const { error } = await supabase
+    const { error } = (await supabase
       .from("return_requests")
       .update(updateData)
-      .eq("id", requestId) as { error: any };
+      .eq("id", requestId)) as { error: any };
 
     if (error) {
       console.error("Error updating return request:", error);
@@ -132,11 +139,11 @@ export async function updateReturnRequestAction(
     // If status is refunded, award loyalty points as refund credit
     if (validation.data === "refunded" && refundAmount && refundAmount > 0) {
       // Get the return request to find the user
-      const { data: request } = await supabase
+      const { data: request } = (await supabase
         .from("return_requests")
         .select("user_id, order_id")
         .eq("id", requestId)
-        .single() as { data: any; error: any };
+        .single()) as { data: any; error: any };
 
       if (request) {
         const refundPoints = Math.floor(refundAmount);
@@ -149,20 +156,22 @@ export async function updateReturnRequestAction(
             order_id: request.order_id,
           } as any);
 
-          await supabase.rpc("increment_loyalty_points" as any, {
-            p_user_id: request.user_id,
-            p_points: refundPoints,
-          }).then(({ error: rpcError }) => {
-            // If RPC doesn't exist, fall back to direct update
-            if (rpcError) {
-              return supabase
-                .from("profiles")
-                .update({
-                  loyalty_points: refundPoints,
-                } as any)
-                .eq("id", request.user_id);
-            }
-          });
+          await supabase
+            .rpc("increment_loyalty_points" as any, {
+              p_user_id: request.user_id,
+              p_points: refundPoints,
+            })
+            .then(({ error: rpcError }) => {
+              // If RPC doesn't exist, fall back to direct update
+              if (rpcError) {
+                return supabase
+                  .from("profiles")
+                  .update({
+                    loyalty_points: refundPoints,
+                  } as any)
+                  .eq("id", request.user_id);
+              }
+            });
         }
       }
     }

@@ -87,11 +87,7 @@ export function UserMenu({ email, name, avatarUrl }: UserMenuProps) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild className="rounded-lg py-2.5 px-3">
-            <form
-              action="/api/auth/signout"
-              method="post"
-              className="w-full"
-            >
+            <form action="/api/auth/signout" method="post" className="w-full">
               <button className="w-full text-left flex items-center gap-2.5 text-destructive cursor-pointer text-sm">
                 <LogOut className="w-4 h-4" />
                 Sign Out

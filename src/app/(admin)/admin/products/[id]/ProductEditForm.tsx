@@ -8,7 +8,10 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Save, Plus, X, GripVertical, Heart } from "lucide-react";
 import Link from "next/link";
-import { updateProductAction, updateProductImagesAction } from "@/features/admin/actions/productActions";
+import {
+  updateProductAction,
+  updateProductImagesAction,
+} from "@/features/admin/actions/productActions";
 
 interface ProductEditFormProps {
   product: {
@@ -130,7 +133,8 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
           <h2 className="font-heading text-lg">Edit Product</h2>
           {wishlistCount > 0 && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 text-sm font-medium">
-              <Heart className="w-4 h-4 fill-current" /> {wishlistCount} wishlisted
+              <Heart className="w-4 h-4 fill-current" /> {wishlistCount}{" "}
+              wishlisted
             </span>
           )}
         </div>
@@ -169,7 +173,7 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
             <div className="space-y-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="price">Price (₹)</Label>
               <Input
                 id="price"
                 type="number"
@@ -181,7 +185,7 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="comparePrice">Compare Price ($)</Label>
+              <Label htmlFor="comparePrice">Compare Price (₹)</Label>
               <Input
                 id="comparePrice"
                 type="number"
@@ -241,14 +245,22 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
                   }
                 }}
               />
-              <Button type="button" variant="outline" size="sm" onClick={addImage}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addImage}
+              >
                 <Plus className="w-4 h-4" />
               </Button>
             </div>
             {images.length > 0 && (
               <div className="flex flex-wrap gap-3">
                 {images.map((url, i) => (
-                  <div key={`${url}-${i}`} className="relative group border rounded-md p-1">
+                  <div
+                    key={`${url}-${i}`}
+                    className="relative group border rounded-md p-1"
+                  >
                     <img
                       src={url}
                       alt={`Product image ${i + 1}`}
@@ -274,7 +286,9 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
                       >
                         ←
                       </button>
-                      <span className="text-[10px] text-muted-foreground">{i + 1}</span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {i + 1}
+                      </span>
                       <button
                         type="button"
                         onClick={() => moveImage(i, i + 1)}
@@ -301,7 +315,8 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
               {isImagesPending ? "Saving Images..." : "Save Images"}
             </Button>
             <p className="text-xs text-muted-foreground">
-              Add image URLs and reorder with arrows. Up to 10 images. Save images separately.
+              Add image URLs and reorder with arrows. Up to 10 images. Save
+              images separately.
             </p>
           </div>
 

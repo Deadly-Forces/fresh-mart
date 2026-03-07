@@ -4,8 +4,7 @@ import { CategoryStrip } from "@/components/layout/CategoryStrip";
 import { Footer } from "@/components/layout/Footer";
 import { CartSyncProvider } from "@/components/providers/CartSyncProvider";
 import { WishlistSyncProvider } from "@/components/providers/WishlistSyncProvider";
-
-export const dynamic = "force-dynamic";
+import { ChatWidget } from "@/components/store/ChatWidget";
 
 function NavbarFallback() {
   return (
@@ -42,6 +41,7 @@ export default function StoreLayout({
       </div>
       <main className="flex-1 bg-background">{children}</main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 }

@@ -3,7 +3,7 @@
  * Handles push events and notification clicks
  */
 
-const CACHE_NAME = "fresh-mart-v1";
+const CACHE_NAME = "fresh-mart-v2";
 
 // Install event - cache essential assets
 self.addEventListener("install", (event) => {
@@ -11,13 +11,13 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
-        "/", // homepage
         "/manifest.json",
         "/icons/icon-192x192.png",
         "/icons/icon-512x512.png",
-        // Add more static assets as needed
+        // Do NOT cache "/" — it is a dynamically streamed page
+        // and caching it conflicts with React's streaming runtime.
       ]);
-    })
+    }),
   );
   self.skipWaiting();
 });
@@ -32,7 +32,7 @@ self.addEventListener("activate", (event) => {
           .filter((name) => name !== CACHE_NAME)
           .map((name) => caches.delete(name)),
       );
-    })
+    }),
   );
   self.clients.claim();
 });
@@ -59,7 +59,7 @@ self.addEventListener("fetch", (event) => {
             return response;
           });
         });
-      })
+      }),
     );
   }
 });

@@ -9,10 +9,10 @@ import { AddressStep } from "@/features/checkout/components/AddressStep";
 import { DeliveryStep } from "@/features/checkout/components/DeliveryStep";
 import { PaymentStep } from "@/features/checkout/components/PaymentStep";
 import { OrderSummaryPanel } from "@/features/checkout/components/OrderSummaryPanel";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/features/cart/store/useCartStore";
 import { placeOrderAction } from "@/features/checkout/actions/orderActions";
 import { getUserAddressesAction } from "@/features/checkout/actions/addressActions";
-import { checkServiceability } from "@/utils/serviceability";
+import { checkServiceability } from "@/features/checkout/utils/serviceability";
 import { toast } from "sonner";
 
 const steps: Step[] = [
@@ -106,11 +106,15 @@ export default function CheckoutPage() {
       }));
 
       const cartTotal = getTotal();
-      const isFreeDelivery = cartTotal >= 50;
-      const deliveryFee = cartTotal > 0 && !isFreeDelivery ? 4.99 : 0;
-      const expressFee = isExpressDelivery ? 3.99 : 0;
-      const totalDiscount = (appliedPromo?.discountAmount || 0) + autoDiscountAmount;
-      const finalTotal = Math.max(0, cartTotal + deliveryFee + expressFee - totalDiscount);
+      const isFreeDelivery = cartTotal >= 499;
+      const deliveryFee = cartTotal > 0 && !isFreeDelivery ? 49 : 0;
+      const expressFee = isExpressDelivery ? 49 : 0;
+      const totalDiscount =
+        (appliedPromo?.discountAmount || 0) + autoDiscountAmount;
+      const finalTotal = Math.max(
+        0,
+        cartTotal + deliveryFee + expressFee - totalDiscount,
+      );
 
       const result = await placeOrderAction(
         selectedAddress,
@@ -119,7 +123,8 @@ export default function CheckoutPage() {
         finalTotal,
         formattedItems,
         substitutionPref,
-        appliedPromo?.code || (autoDiscountAmount > 0 ? "AUTO_DISCOUNT" : undefined),
+        appliedPromo?.code ||
+          (autoDiscountAmount > 0 ? "AUTO_DISCOUNT" : undefined),
         totalDiscount,
       );
 

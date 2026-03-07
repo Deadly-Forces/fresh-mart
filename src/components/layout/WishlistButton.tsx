@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import { useWishlistStore } from "@/store/wishlistStore";
+import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
 import { useEffect, useState } from "react";
 
 export function WishlistButton() {

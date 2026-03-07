@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/features/cart/store/useCartStore";
 import { useEffect, useState, useCallback } from "react";
 import { Loader2, Gift, Sparkles } from "lucide-react";
 import {
@@ -63,7 +63,10 @@ export function OrderSummaryPanel({
   const expressFee = isExpressDelivery ? 49 : 0;
   const promoDiscount = appliedPromo?.discountAmount || 0;
   const totalDiscount = promoDiscount + autoTotal;
-  const total = Math.max(0, subtotal + deliveryFee + expressFee - totalDiscount);
+  const total = Math.max(
+    0,
+    subtotal + deliveryFee + expressFee - totalDiscount,
+  );
 
   return (
     <div className="w-full lg:w-[35%] lg:sticky lg:top-[140px] lg:self-start">
@@ -129,7 +132,9 @@ export function OrderSummaryPanel({
                     )}
                     {d.label}
                   </span>
-                  <span className="text-sm font-medium">-₹{d.amount.toFixed(2)}</span>
+                  <span className="text-sm font-medium">
+                    -₹{d.amount.toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>

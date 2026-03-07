@@ -92,7 +92,7 @@ export function ReferralTab() {
       toast.error(result.error);
     } else {
       toast.success(
-        `Referral applied! You earned ${result.pointsEarned} bonus points!`
+        `Referral applied! You earned ${result.pointsEarned} bonus points!`,
       );
       setApplyCode("");
       loadData();
@@ -242,11 +242,13 @@ export function ReferralTab() {
             <Check className="w-5 h-5 text-emerald-500" />
           </div>
           <p className="text-2xl font-heading font-bold text-emerald-600">
-            {referrals.filter((r) => r.status === "rewarded" || r.status === "completed").length}
+            {
+              referrals.filter(
+                (r) => r.status === "rewarded" || r.status === "completed",
+              ).length
+            }
           </p>
-          <p className="text-xs text-muted-foreground font-medium">
-            Completed
-          </p>
+          <p className="text-xs text-muted-foreground font-medium">Completed</p>
         </div>
         <div className="bg-card border border-border rounded-xl p-5 text-center">
           <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center mx-auto mb-3">
@@ -281,7 +283,8 @@ export function ReferralTab() {
                     </div>
                     <div>
                       <p className="text-sm font-semibold">
-                        {(ref.referred as { name: string | null } | null)?.name || "Friend"}
+                        {(ref.referred as { name: string | null } | null)
+                          ?.name || "Friend"}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {new Date(ref.created_at).toLocaleDateString("en-IN", {

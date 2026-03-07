@@ -60,10 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (orderId && typeof orderId !== "string") {
-      return NextResponse.json(
-        { error: "Invalid order ID" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Invalid order ID" }, { status: 400 });
     }
 
     // Build notification payload

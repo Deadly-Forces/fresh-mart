@@ -1,6 +1,55 @@
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: ""
+  });
+  const [aiResponse, setAiResponse] = useState<any>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.message || !formData.email) {
+      toast.error("Please fill in your email and message.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setAiResponse(null);
+    try {
+      // Assuming a generic user ID for unauthenticated contact form submissions, 
+      // or we could fetch the real one. Passing a dummy UUID for now.
+      const res = await fetch("/api/ai/support-triage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: formData.message,
+          userId: "00000000-0000-0000-0000-000000000000" // Mock or anonymous user
+        })
+      });
+      const data = await res.json();
+
+      if (data.success && data.triage) {
+        setAiResponse(data.triage);
+        toast.success("Message sent successfully!");
+        setFormData({ firstName: "", lastName: "", email: "", message: "" });
+      } else {
+        toast.error("Failed to send message.");
+      }
+    } catch (e) {
+      toast.error("An error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="overflow-hidden">
       {/* Hero */}
@@ -79,6 +128,26 @@ export default function ContactPage() {
                 ))}
               </div>
             </div>
+
+            {/* AI Response Box (if available) */}
+            {aiResponse && (
+              <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 animate-in fade-in slide-in-from-bottom-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Bot className="w-5 h-5 text-primary" />
+                  <h3 className="font-semibold text-primary">Automated Support Assistant</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">
+                  {aiResponse.draft_response}
+                </p>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="px-2 py-1 bg-background rounded border text-muted-foreground">Category: {aiResponse.category.replace(/_/g, " ")}</span>
+                  {aiResponse.priority === "urgent" && <span className="px-2 py-1 bg-destructive/10 text-destructive rounded border border-destructive/20 font-medium">Priority: Urgent</span>}
+                </div>
+                {aiResponse.suggested_action === "escalate_to_human" && (
+                  <p className="text-xs text-primary mt-3 font-medium">Your request has been escalated to our human support team. We will reach back out shortly.</p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Contact Form */}
@@ -86,12 +155,14 @@ export default function ContactPage() {
             <div className="absolute -inset-1 bg-gradient-to-r from-primary/10 via-emerald-500/10 to-teal-500/10 rounded-[1.75rem] blur-sm" />
             <div className="relative bg-card border border-border/50 rounded-3xl p-8 shadow-aesthetic">
               <h2 className="font-bold text-2xl mb-6">Send a Message</h2>
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">First Name</label>
                     <input
                       type="text"
+                      value={formData.firstName}
+                      onChange={e => setFormData({ ...formData, firstName: e.target.value })}
                       className="w-full h-12 px-4 rounded-xl border border-border/60 bg-background/80 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all text-sm"
                       placeholder="John"
                     />
@@ -100,6 +171,8 @@ export default function ContactPage() {
                     <label className="text-sm font-medium">Last Name</label>
                     <input
                       type="text"
+                      value={formData.lastName}
+                      onChange={e => setFormData({ ...formData, lastName: e.target.value })}
                       className="w-full h-12 px-4 rounded-xl border border-border/60 bg-background/80 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all text-sm"
                       placeholder="Doe"
                     />
@@ -109,6 +182,9 @@ export default function ContactPage() {
                   <label className="text-sm font-medium">Email</label>
                   <input
                     type="email"
+                    required
+                    value={formData.email}
+                    onChange={e => setFormData({ ...formData, email: e.target.value })}
                     className="w-full h-12 px-4 rounded-xl border border-border/60 bg-background/80 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all text-sm"
                     placeholder="rajesh@example.com"
                   />
@@ -116,15 +192,19 @@ export default function ContactPage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Message</label>
                   <textarea
+                    required
+                    value={formData.message}
+                    onChange={e => setFormData({ ...formData, message: e.target.value })}
                     className="w-full p-4 rounded-xl border border-border/60 bg-background/80 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all min-h-[120px] text-sm"
                     placeholder="How can we help you?"
                   ></textarea>
                 </div>
                 <button
-                  type="button"
-                  className="w-full h-12 bg-gradient-to-r from-primary to-emerald-500 hover:shadow-glow text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full h-12 bg-gradient-to-r from-primary to-emerald-500 hover:shadow-glow text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all duration-300 disabled:opacity-70"
                 >
-                  Send Message <Send className="w-4 h-4" />
+                  {isSubmitting ? "Sending..." : <>Send Message <Send className="w-4 h-4" /></>}
                 </button>
               </form>
             </div>

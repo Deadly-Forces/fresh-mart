@@ -101,10 +101,16 @@ export default async function AdminPickerPage() {
   });
 
   const pendingList = pending.map(mapPendingOrder);
-  const packedList = packed.map(mapPackedOrder).filter((o) => o.status === "packed");
+  const packedList = packed
+    .map(mapPackedOrder)
+    .filter((o) => o.status === "packed");
 
-  const pendingCount = pendingList.filter((o) => o.status === "processing").length;
-  const confirmedCount = pendingList.filter((o) => o.status === "confirmed").length;
+  const pendingCount = pendingList.filter(
+    (o) => o.status === "processing",
+  ).length;
+  const confirmedCount = pendingList.filter(
+    (o) => o.status === "confirmed",
+  ).length;
 
   return (
     <div className="space-y-6">
@@ -190,16 +196,18 @@ export default async function AdminPickerPage() {
             {pendingList.map((order) => (
               <div
                 key={order.id}
-                className={`bg-card border rounded-card shadow-sm overflow-hidden hover:shadow-md transition-shadow ${order.isUrgent
+                className={`bg-card border rounded-card shadow-sm overflow-hidden hover:shadow-md transition-shadow ${
+                  order.isUrgent
                     ? "border-red-200 dark:border-red-500/20"
                     : "border-border"
-                  }`}
+                }`}
               >
                 <div
-                  className={`h-1 ${order.isUrgent
+                  className={`h-1 ${
+                    order.isUrgent
                       ? "bg-gradient-to-r from-red-500 to-red-400"
                       : "bg-gradient-to-r from-primary to-emerald-500"
-                    }`}
+                  }`}
                 />
                 <div className="p-5">
                   {/* Header */}
@@ -219,10 +227,11 @@ export default async function AdminPickerPage() {
                     <div className="flex items-center gap-2">
                       <StatusBadge status={order.status} />
                       <span
-                        className={`text-[10px] font-bold px-2 py-1 rounded-pill flex items-center gap-1 ${order.isUrgent
+                        className={`text-[10px] font-bold px-2 py-1 rounded-pill flex items-center gap-1 ${
+                          order.isUrgent
                             ? "bg-red-500/10 text-red-500"
                             : "bg-muted text-muted-foreground"
-                          }`}
+                        }`}
                       >
                         <Timer className="w-3 h-3" />
                         {order.minutesAgo}m ago
@@ -337,7 +346,10 @@ export default async function AdminPickerPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <StatusBadge status={o.status} />
-                        <DeliveryCountdown createdAt={o.createdAt} status={o.status} />
+                        <DeliveryCountdown
+                          createdAt={o.createdAt}
+                          status={o.status}
+                        />
                       </div>
                     </td>
                   </tr>

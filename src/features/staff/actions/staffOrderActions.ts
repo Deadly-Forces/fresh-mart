@@ -7,28 +7,28 @@ import { revalidatePath } from "next/cache";
 //  Shared helper — verify role and get current user
 // ─────────────────────────────────────────────────────────────
 async function getAuthedStaff(requiredRole: "picker" | "delivery") {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const {
-        data: { user },
-        error: authError,
-    } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
-    if (authError || !user) {
-        return { error: "Unauthorized", supabase: null, user: null };
-    }
+  if (authError || !user) {
+    return { error: "Unauthorized", supabase: null, user: null };
+  }
 
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("role, name")
-        .eq("id", user.id)
-        .single();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, name")
+    .eq("id", user.id)
+    .single();
 
-    if (!profile || profile.role !== requiredRole) {
-        return { error: "Forbidden", supabase: null, user: null };
-    }
+  if (!profile || profile.role !== requiredRole) {
+    return { error: "Forbidden", supabase: null, user: null };
+  }
 
-    return { error: null, supabase, user, profile };
+  return { error: null, supabase, user, profile };
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -41,13 +41,13 @@ async function getAuthedStaff(requiredRole: "picker" | "delivery") {
  * Includes all order_items with product snapshots.
  */
 export async function getPickerOrdersAction() {
-    const { error, supabase } = await getAuthedStaff("picker");
-    if (error || !supabase) return { error, orders: [] };
+  const { error, supabase } = await getAuthedStaff("picker");
+  if (error || !supabase) return { error, orders: [] };
 
-    const { data, error: fetchError } = await supabase
-        .from("orders")
-        .select(
-            `
+  const { data, error: fetchError } = await supabase
+    .from("orders")
+    .select(
+      `
             id,
             status,
             total,
@@ -64,13 +64,13 @@ export async function getPickerOrdersAction() {
                 product_snapshot
             )
         `,
-        )
-        .in("status", ["processing", "confirmed", "packed"])
-        .order("created_at", { ascending: true });
+    )
+    .in("status", ["processing", "confirmed", "packed"])
+    .order("created_at", { ascending: true });
 
-    if (fetchError) return { error: fetchError.message, orders: [] };
+  if (fetchError) return { error: fetchError.message, orders: [] };
 
-    return { error: null, orders: data || [] };
+  return { error: null, orders: data || [] };
 }
 
 /**
@@ -78,20 +78,20 @@ export async function getPickerOrdersAction() {
  * Validates only pickers can call this.
  */
 export async function markOrderPackedAction(orderId: string) {
-    const { error, supabase } = await getAuthedStaff("picker");
-    if (error || !supabase) return { error };
+  const { error, supabase } = await getAuthedStaff("picker");
+  if (error || !supabase) return { error };
 
-    const { error: updateError } = await supabase
-        .from("orders")
-        .update({ status: "packed", updated_at: new Date().toISOString() })
-        .eq("id", orderId)
-        .in("status", ["processing", "confirmed"]); // guard: only valid transitions
+  const { error: updateError } = await supabase
+    .from("orders")
+    .update({ status: "packed", updated_at: new Date().toISOString() })
+    .eq("id", orderId)
+    .in("status", ["processing", "confirmed"]); // guard: only valid transitions
 
-    if (updateError) return { error: updateError.message };
+  if (updateError) return { error: updateError.message };
 
-    revalidatePath("/picker");
-    revalidatePath("/admin/orders");
-    return { error: null };
+  revalidatePath("/picker");
+  revalidatePath("/admin/orders");
+  return { error: null };
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -103,13 +103,13 @@ export async function markOrderPackedAction(orderId: string) {
  * Includes address and customer info.
  */
 export async function getRiderOrdersAction() {
-    const { error, supabase } = await getAuthedStaff("delivery");
-    if (error || !supabase) return { error, orders: [] };
+  const { error, supabase } = await getAuthedStaff("delivery");
+  if (error || !supabase) return { error, orders: [] };
 
-    const { data, error: fetchError } = await supabase
-        .from("orders")
-        .select(
-            `
+  const { data, error: fetchError } = await supabase
+    .from("orders")
+    .select(
+      `
             id,
             status,
             total,
@@ -125,59 +125,62 @@ export async function getRiderOrdersAction() {
                 product_snapshot
             )
         `,
-        )
-        .in("status", ["packed", "out_for_delivery", "delivered"])
-        .order("created_at", { ascending: true });
+    )
+    .in("status", ["packed", "out_for_delivery", "delivered"])
+    .order("created_at", { ascending: true });
 
-    if (fetchError) return { error: fetchError.message, orders: [] };
+  if (fetchError) return { error: fetchError.message, orders: [] };
 
-    // Return only today's and recent orders (last 24h)
-    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const recent = (data || []).filter((o) => o.created_at >= cutoff);
+  // Return only today's and recent orders (last 24h)
+  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const recent = (data || []).filter((o) => o.created_at && o.created_at >= cutoff);
 
-    return { error: null, orders: recent };
+  return { error: null, orders: recent };
 }
 
 /**
  * Rider accepts an order — status: packed → out_for_delivery.
  */
 export async function acceptDeliveryAction(orderId: string) {
-    const { error, supabase } = await getAuthedStaff("delivery");
-    if (error || !supabase) return { error };
+  const { error, supabase } = await getAuthedStaff("delivery");
+  if (error || !supabase) return { error };
 
-    const { error: updateError } = await supabase
-        .from("orders")
-        .update({ status: "out_for_delivery", updated_at: new Date().toISOString() })
-        .eq("id", orderId)
-        .eq("status", "packed"); // must be packed to accept
+  const { error: updateError } = await supabase
+    .from("orders")
+    .update({
+      status: "out_for_delivery",
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", orderId)
+    .eq("status", "packed"); // must be packed to accept
 
-    if (updateError) return { error: updateError.message };
+  if (updateError) return { error: updateError.message };
 
-    revalidatePath("/rider");
-    revalidatePath("/admin/orders");
-    return { error: null };
+  revalidatePath("/rider");
+  revalidatePath("/admin/orders");
+  return { error: null };
 }
 
 /**
  * Rider marks an order as delivered — status: out_for_delivery → delivered.
  */
 export async function markDeliveredAction(orderId: string) {
-    const { error, supabase } = await getAuthedStaff("delivery");
-    if (error || !supabase) return { error };
+  const { error, supabase } = await getAuthedStaff("delivery");
+  if (error || !supabase) return { error };
 
-    const { error: updateError } = await supabase
-        .from("orders")
-        .update({
-            status: "delivered",
-            updated_at: new Date().toISOString(),
-            payment_status: "paid", // COD is paid on delivery
-        })
-        .eq("id", orderId)
-        .eq("status", "out_for_delivery");
+  const { error: updateError } = await supabase
+    .from("orders")
+    .update({
+      status: "delivered",
+      updated_at: new Date().toISOString(),
+      payment_status: "paid", // COD is paid on delivery
+    })
+    .eq("id", orderId)
+    .eq("status", "out_for_delivery");
 
-    if (updateError) return { error: updateError.message };
+  if (updateError) return { error: updateError.message };
 
-    revalidatePath("/rider");
-    revalidatePath("/admin/orders");
-    return { error: null };
+  revalidatePath("/rider");
+  revalidatePath("/admin/orders");
+  return { error: null };
 }

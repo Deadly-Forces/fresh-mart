@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useWishlistStore } from "@/store/wishlistStore";
+import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
 
 /**
  * Syncs the Zustand wishlist store with the server-side wishlist table
@@ -17,7 +17,10 @@ export function WishlistSyncProvider() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if ((event === "INITIAL_SESSION" || event === "SIGNED_IN") && session?.user) {
+      if (
+        (event === "INITIAL_SESSION" || event === "SIGNED_IN") &&
+        session?.user
+      ) {
         await setAuthenticated(true);
       } else if (event === "SIGNED_OUT") {
         setAuthenticated(false);

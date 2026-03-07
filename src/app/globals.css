@@ -132,6 +132,10 @@
   .w-progress {
     width: var(--progress);
   }
+
+  .w-progress-offset {
+    width: calc(var(--progress) - 32px);
+  }
 }
 
 @layer components {

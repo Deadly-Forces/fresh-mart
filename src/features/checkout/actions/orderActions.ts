@@ -238,6 +238,15 @@ export async function placeOrderAction(
       }
     }
 
+    // --- TRIGGER AI FRAUD DETECTION ---
+    try {
+      const { analyzeOrderFraud } = await import("@/lib/ai/fraudDetection");
+      // Run the fraud analysis asynchronously in the background so it doesn't block the user
+      analyzeOrderFraud(orderId).catch(console.error);
+    } catch (e) {
+      console.error("Failed to trigger fraud analysis:", e);
+    }
+
     return { success: true, orderId };
   } catch (err: any) {
     console.error("Error in placeOrderAction:", err);

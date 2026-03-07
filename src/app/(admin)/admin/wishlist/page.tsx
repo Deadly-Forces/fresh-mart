@@ -11,7 +11,9 @@ export default async function AdminWishlistPage() {
   // Fetch all wishlist entries with product name and user profile
   const { data: wishlistData } = await supabase
     .from("wishlist")
-    .select("id, product_id, user_id, created_at, products:product_id ( name, price, image_url )")
+    .select(
+      "id, product_id, user_id, created_at, products:product_id ( name, price, image_url )",
+    )
     .order("created_at", { ascending: false });
 
   const entries = wishlistData || [];
@@ -22,7 +24,10 @@ export default async function AdminWishlistPage() {
   const uniqueUsers = new Set(entries.map((e: any) => e.user_id)).size;
 
   // Aggregate by product
-  const productCounts: Record<string, { name: string; price: number; image_url: string | null; count: number }> = {};
+  const productCounts: Record<
+    string,
+    { name: string; price: number; image_url: string | null; count: number }
+  > = {};
   entries.forEach((e: any) => {
     const pid = e.product_id;
     const product = e.products as any;
@@ -42,7 +47,9 @@ export default async function AdminWishlistPage() {
     .sort((a, b) => b.count - a.count);
 
   // Recent 20 wishlist additions with user info
-  const recentUserIds = [...new Set(entries.slice(0, 20).map((e: any) => e.user_id))];
+  const recentUserIds = [
+    ...new Set(entries.slice(0, 20).map((e: any) => e.user_id)),
+  ];
   let profileMap: Record<string, string> = {};
   if (recentUserIds.length > 0) {
     const { data: profiles } = await supabase
@@ -51,7 +58,10 @@ export default async function AdminWishlistPage() {
       .in("id", recentUserIds);
     if (profiles) {
       profileMap = Object.fromEntries(
-        profiles.map((p: any) => [p.id, p.name || p.email?.split("@")[0] || "Unknown"]),
+        profiles.map((p: any) => [
+          p.id,
+          p.name || p.email?.split("@")[0] || "Unknown",
+        ]),
       );
     }
   }
@@ -63,9 +73,24 @@ export default async function AdminWishlistPage() {
   }));
 
   const kpis = [
-    { label: "Total Wishlisted", value: totalEntries, icon: Heart, color: "text-red-500" },
-    { label: "Unique Products", value: uniqueProducts, icon: Package, color: "text-blue-500" },
-    { label: "Users with Wishlists", value: uniqueUsers, icon: Users, color: "text-green-500" },
+    {
+      label: "Total Wishlisted",
+      value: totalEntries,
+      icon: Heart,
+      color: "text-red-500",
+    },
+    {
+      label: "Unique Products",
+      value: uniqueProducts,
+      icon: Package,
+      color: "text-blue-500",
+    },
+    {
+      label: "Users with Wishlists",
+      value: uniqueUsers,
+      icon: Users,
+      color: "text-green-500",
+    },
     {
       label: "Avg per User",
       value: uniqueUsers > 0 ? (totalEntries / uniqueUsers).toFixed(1) : "0",
@@ -86,7 +111,10 @@ export default async function AdminWishlistPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {kpis.map((kpi) => (
-          <div key={kpi.label} className="bg-card border border-border rounded-card p-4">
+          <div
+            key={kpi.label}
+            className="bg-card border border-border rounded-card p-4"
+          >
             <div className="flex items-center gap-2 mb-2">
               <kpi.icon className={`w-4 h-4 ${kpi.color}`} />
               <span className="text-xs text-muted-foreground">{kpi.label}</span>
@@ -116,16 +144,27 @@ export default async function AdminWishlistPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th className="py-2 text-left font-medium text-muted-foreground text-xs">#</th>
-                <th className="py-2 text-left font-medium text-muted-foreground text-xs">Product</th>
-                <th className="py-2 text-left font-medium text-muted-foreground text-xs">Price</th>
-                <th className="py-2 text-left font-medium text-muted-foreground text-xs">Wishlist Count</th>
+                <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                  #
+                </th>
+                <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                  Product
+                </th>
+                <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                  Price
+                </th>
+                <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                  Wishlist Count
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {productList.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="py-6 text-center text-muted-foreground text-sm">
+                  <td
+                    colSpan={4}
+                    className="py-6 text-center text-muted-foreground text-sm"
+                  >
                     No wishlist data yet.
                   </td>
                 </tr>
@@ -163,15 +202,24 @@ export default async function AdminWishlistPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th className="py-2 text-left font-medium text-muted-foreground text-xs">User</th>
-                <th className="py-2 text-left font-medium text-muted-foreground text-xs">Product</th>
-                <th className="py-2 text-left font-medium text-muted-foreground text-xs">Added</th>
+                <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                  User
+                </th>
+                <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                  Product
+                </th>
+                <th className="py-2 text-left font-medium text-muted-foreground text-xs">
+                  Added
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {recentActivity.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="py-6 text-center text-muted-foreground text-sm">
+                  <td
+                    colSpan={3}
+                    className="py-6 text-center text-muted-foreground text-sm"
+                  >
                     No recent activity.
                   </td>
                 </tr>

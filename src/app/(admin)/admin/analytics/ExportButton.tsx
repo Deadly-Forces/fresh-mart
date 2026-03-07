@@ -10,7 +10,12 @@ interface ExportButtonProps {
   rows: string[][];
 }
 
-export function ExportButton({ label = "Export", fileName, headers, rows }: ExportButtonProps) {
+export function ExportButton({
+  label = "Export",
+  fileName,
+  headers,
+  rows,
+}: ExportButtonProps) {
   const handleExport = () => {
     const escape = (val: string) => `"${val.replace(/"/g, '""')}"`;
     const csvHeader = headers.map(escape).join(",");
@@ -26,7 +31,12 @@ export function ExportButton({ label = "Export", fileName, headers, rows }: Expo
   };
 
   return (
-    <Button variant="outline" size="sm" className="gap-1" onClick={handleExport}>
+    <Button
+      variant="outline"
+      size="sm"
+      className="gap-1"
+      onClick={handleExport}
+    >
       <Download className="w-4 h-4" /> {label}
     </Button>
   );

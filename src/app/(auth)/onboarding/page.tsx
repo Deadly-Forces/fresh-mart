@@ -48,16 +48,19 @@ export default function OnboardingPage() {
       } catch {}
     } else {
       // Pre-fill name from auth if available (use getSession to avoid lock contention)
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        const user = session?.user;
-        if (user?.user_metadata?.full_name) {
-          setState((s) => ({
-            ...s,
-            name: user.user_metadata.full_name,
-            avatarUrl: user.user_metadata.avatar_url || "",
-          }));
-        }
-      }).catch(() => {});
+      supabase.auth
+        .getSession()
+        .then(({ data: { session } }) => {
+          const user = session?.user;
+          if (user?.user_metadata?.full_name) {
+            setState((s) => ({
+              ...s,
+              name: user.user_metadata.full_name,
+              avatarUrl: user.user_metadata.avatar_url || "",
+            }));
+          }
+        })
+        .catch(() => {});
     }
   }, [supabase.auth]);
 

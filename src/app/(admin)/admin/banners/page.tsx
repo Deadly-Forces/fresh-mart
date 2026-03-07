@@ -22,17 +22,17 @@ export default async function AdminBannersPage() {
       [
         b.starts_at
           ? new Date(b.starts_at).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
           : null,
         b.ends_at
           ? new Date(b.ends_at).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
           : null,
       ]
         .filter(Boolean)
@@ -49,4 +49,3 @@ export default async function AdminBannersPage() {
     </div>
   );
 }
-

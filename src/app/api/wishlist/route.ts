@@ -112,10 +112,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { error } = await supabase.from("wishlist").upsert(
-      { user_id: user.id, product_id: productId },
-      { onConflict: "user_id,product_id" },
-    );
+    const { error } = await supabase
+      .from("wishlist")
+      .upsert(
+        { user_id: user.id, product_id: productId },
+        { onConflict: "user_id,product_id" },
+      );
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

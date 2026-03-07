@@ -3,7 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Menu, User, LogOut, LayoutDashboard, Leaf } from "lucide-react";
+import {
+  Menu,
+  User,
+  LogOut,
+  LayoutDashboard,
+  Leaf,
+  ChefHat,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./SearchBar";
 import {
@@ -71,6 +78,14 @@ export function MobileMenu({ user, profile }: MobileMenuProps) {
 
         {/* Mobile nav links */}
         <nav className="flex-1 overflow-y-auto px-4 py-3">
+          <Link
+            href="/assistant"
+            className="flex items-center gap-3 px-3 py-3 rounded-lg text-[15px] font-medium text-primary hover:text-primary hover:bg-secondary transition-colors"
+          >
+            <ChefHat className="w-5 h-5" />
+            Cooking Assistant
+          </Link>
+          <div className="h-px bg-border/50 my-2 mx-3" />
           <Link
             href="/category/fruits"
             className="flex items-center px-3 py-3 rounded-lg text-[15px] font-medium text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"

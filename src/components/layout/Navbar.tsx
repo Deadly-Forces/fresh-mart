@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User, Leaf } from "lucide-react";
+import { User, Leaf, ChefHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { Suspense } from "react";
@@ -47,10 +47,18 @@ export async function Navbar() {
         {/* Right: Search + Actions */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <Suspense
-            fallback={<div className="hidden md:block w-[220px] h-9" />}
+            fallback={<div className="hidden md:block w-[240px] lg:w-[320px] h-9" />}
           >
             <SearchBar />
           </Suspense>
+
+          <Link
+            href="/assistant"
+            className="flex items-center justify-center h-9 w-9 rounded-lg hover:bg-secondary transition-colors text-primary"
+            aria-label="Cooking Assistant"
+          >
+            <ChefHat className="w-5 h-5" />
+          </Link>
 
           <WishlistButton />
 

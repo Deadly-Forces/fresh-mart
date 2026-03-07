@@ -97,6 +97,8 @@ export default async function ProfilePage({
 
   const profileData = {
     ...profile,
+    created_at: profile.created_at || new Date().toISOString(),
+    updated_at: profile.updated_at || new Date().toISOString(),
     dietary_pref: profile.dietary_preference,
     notifications: true as boolean | null,
     address: address
@@ -115,11 +117,13 @@ export default async function ProfilePage({
   return (
     <section className="min-h-screen pt-[72px]">
       <div className="container mx-auto px-4 py-6 max-w-5xl">
-        <Suspense fallback={
-          <div className="w-full h-64 flex items-center justify-center">
-            <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="w-full h-64 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+            </div>
+          }
+        >
           <ProfileDashboard
             profile={profileData}
             email={user.email || ""}

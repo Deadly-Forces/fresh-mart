@@ -319,8 +319,11 @@ export function HeroBackground() {
       className="absolute inset-0 overflow-hidden pointer-events-none z-[1]"
       aria-hidden="true"
     >
-      {/* Particle styles generated from static data */}
-      <style dangerouslySetInnerHTML={{ __html: particleCSS }} />
+      {/* Particle styles */}
+      <style
+        dangerouslySetInnerHTML={{ __html: particleCSS }}
+        suppressHydrationWarning
+      />
 
       {/* ── Slow gradient orbs ── */}
       <div className="absolute w-[600px] h-[600px] top-[-10%] left-[15%] rounded-full bg-gradient-to-br from-emerald-500/20 via-emerald-400/10 to-transparent blur-3xl animate-hero-orb-1" />

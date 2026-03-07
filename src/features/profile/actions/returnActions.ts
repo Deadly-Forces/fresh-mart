@@ -52,7 +52,10 @@ export async function createReturnRequestAction(formData: FormData) {
       return { error: "Invalid order ID." };
     }
 
-    if (!reason || !VALID_REASONS.includes(reason as (typeof VALID_REASONS)[number])) {
+    if (
+      !reason ||
+      !VALID_REASONS.includes(reason as (typeof VALID_REASONS)[number])
+    ) {
       return { error: "Please select a valid reason." };
     }
 

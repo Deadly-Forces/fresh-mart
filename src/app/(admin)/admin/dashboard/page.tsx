@@ -15,8 +15,9 @@ import Link from "next/link";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
-import { syncOrderStatuses } from "@/lib/orders/simulateProgress";
+import { syncOrderStatuses } from "@/features/orders/actions/simulateProgress";
 import { RevenueChartClient } from "@/components/admin/RevenueChartClient";
+import { MarketingGenerator } from "@/components/admin/MarketingGenerator";
 
 export const dynamic = "force-dynamic";
 
@@ -90,19 +91,19 @@ export default async function AdminDashboardPage() {
   let totalReferrals = 0;
 
   try {
-    const { count } = await supabase
+    const { count } = (await supabase
       .from("return_requests" as any)
       .select("*", { count: "exact", head: true })
-      .eq("status", "pending") as { count: number | null };
+      .eq("status", "pending")) as { count: number | null };
     pendingReturns = count || 0;
   } catch (err) {
     console.warn("Return requests count fetch failed:", err);
   }
 
   try {
-    const { data: ltData } = await supabase
+    const { data: ltData } = (await supabase
       .from("loyalty_transactions" as any)
-      .select("points") as { data: any[] | null };
+      .select("points")) as { data: any[] | null };
     totalLoyaltyPoints = (ltData || [])
       .filter((t: any) => t.points > 0)
       .reduce((s: number, t: any) => s + Number(t.points), 0);
@@ -111,9 +112,9 @@ export default async function AdminDashboardPage() {
   }
 
   try {
-    const { count } = await supabase
+    const { count } = (await supabase
       .from("referrals" as any)
-      .select("*", { count: "exact", head: true }) as { count: number | null };
+      .select("*", { count: "exact", head: true })) as { count: number | null };
     totalReferrals = count || 0;
   } catch (err) {
     console.warn("Referrals count fetch failed:", err);
@@ -155,18 +156,18 @@ export default async function AdminDashboardPage() {
   const revenueChange =
     lastWeekRevenue > 0
       ? (((thisWeekRevenue - lastWeekRevenue) / lastWeekRevenue) * 100).toFixed(
-        1,
-      )
+          1,
+        )
       : thisWeekRevenue > 0
         ? "+100"
         : "0";
   const ordersChange =
     lastWeekOrders.length > 0
       ? (
-        ((thisWeekOrders.length - lastWeekOrders.length) /
-          lastWeekOrders.length) *
-        100
-      ).toFixed(1)
+          ((thisWeekOrders.length - lastWeekOrders.length) /
+            lastWeekOrders.length) *
+          100
+        ).toFixed(1)
       : thisWeekOrders.length > 0
         ? "+100"
         : "0";
@@ -291,7 +292,10 @@ export default async function AdminDashboardPage() {
     `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
   // --- Daily: last 7 days ---
-  const dailyMap = new Map<string, { date: Date; revenue: number; orders: number }>();
+  const dailyMap = new Map<
+    string,
+    { date: Date; revenue: number; orders: number }
+  >();
   for (let i = 6; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
     const key = toLocalDateKey(d);
@@ -316,17 +320,38 @@ export default async function AdminDashboardPage() {
   }));
 
   // --- Weekly: last 12 weeks (each ending on today's weekday) ---
-  const weeklyMap = new Map<number, { start: Date; end: Date; revenue: number; orders: number }>();
+  const weeklyMap = new Map<
+    number,
+    { start: Date; end: Date; revenue: number; orders: number }
+  >();
   for (let i = 11; i >= 0; i--) {
-    const weekEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i * 7);
-    const weekStart = new Date(weekEnd.getFullYear(), weekEnd.getMonth(), weekEnd.getDate() - 6);
+    const weekEnd = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() - i * 7,
+    );
+    const weekStart = new Date(
+      weekEnd.getFullYear(),
+      weekEnd.getMonth(),
+      weekEnd.getDate() - 6,
+    );
     weeklyMap.set(i, { start: weekStart, end: weekEnd, revenue: 0, orders: 0 });
   }
   for (const o of deliveredOrders) {
     const orderDate = new Date(o.created_at);
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const orderDayStart = new Date(orderDate.getFullYear(), orderDate.getMonth(), orderDate.getDate());
-    const diffDays = Math.floor((todayStart.getTime() - orderDayStart.getTime()) / (24 * 60 * 60 * 1000));
+    const todayStart = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+    );
+    const orderDayStart = new Date(
+      orderDate.getFullYear(),
+      orderDate.getMonth(),
+      orderDate.getDate(),
+    );
+    const diffDays = Math.floor(
+      (todayStart.getTime() - orderDayStart.getTime()) / (24 * 60 * 60 * 1000),
+    );
     const weekIdx = Math.floor(diffDays / 7);
     if (weekIdx >= 0 && weekIdx <= 11 && weeklyMap.has(weekIdx)) {
       const entry = weeklyMap.get(weekIdx)!;
@@ -508,6 +533,9 @@ export default async function AdminDashboardPage() {
             </div>
           )}
         </div>
+
+        {/* AI Marketing Generator */}
+        <MarketingGenerator />
       </div>
     </div>
   );

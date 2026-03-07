@@ -115,12 +115,18 @@ export default async function AdminProductsPage({
 
       {/* Top Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <Suspense fallback={
-          <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input placeholder="Search products..." className="pl-9 h-10" disabled />
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="relative w-full sm:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="Search products..."
+                className="pl-9 h-10"
+                disabled
+              />
+            </div>
+          }
+        >
           <ProductSearchInput />
         </Suspense>
         <div className="flex gap-2">

@@ -38,7 +38,7 @@ export default async function EditProductPage({
     compare_price: product.compare_price ? Number(product.compare_price) : null,
     stock: product.stock || 0,
     unit: product.unit,
-    is_active: product.is_active,
+    is_active: product.is_active ?? false,
     images: product.images || [],
     category_name: (product.categories as any)?.name || null,
     wishlistCount: wishlistCount || 0,

@@ -73,7 +73,9 @@ export function NotificationsList({
     let channel: ReturnType<typeof supabase.channel> | null = null;
 
     async function subscribe() {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
       userIdRef.current = user.id;
 
@@ -81,22 +83,42 @@ export function NotificationsList({
         .channel("notifications-list-live")
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "notifications",
+            filter: `user_id=eq.${user.id}`,
+          },
           (payload) => {
             const newN = payload.new as Notification;
             setNotifications((prev) => [newN, ...prev]);
             // Flag as "new" for animation, clear after 2s
             setNewIds((prev) => new Set(prev).add(newN.id));
-            setTimeout(() => setNewIds((prev) => { const s = new Set(prev); s.delete(newN.id); return s; }), 2000);
-          }
+            setTimeout(
+              () =>
+                setNewIds((prev) => {
+                  const s = new Set(prev);
+                  s.delete(newN.id);
+                  return s;
+                }),
+              2000,
+            );
+          },
         )
         .on(
           "postgres_changes",
-          { event: "UPDATE", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "notifications",
+            filter: `user_id=eq.${user.id}`,
+          },
           (payload) => {
             const updated = payload.new as Notification;
-            setNotifications((prev) => prev.map((n) => n.id === updated.id ? { ...n, ...updated } : n));
-          }
+            setNotifications((prev) =>
+              prev.map((n) => (n.id === updated.id ? { ...n, ...updated } : n)),
+            );
+          },
         )
         .on(
           "postgres_changes",
@@ -104,7 +126,7 @@ export function NotificationsList({
           (payload) => {
             const deleted = payload.old as { id: string };
             setNotifications((prev) => prev.filter((n) => n.id !== deleted.id));
-          }
+          },
         )
         .subscribe();
     }
@@ -123,10 +145,7 @@ export function NotificationsList({
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
     );
-    await supabase
-      .from("notifications")
-      .update({ is_read: true })
-      .eq("id", id);
+    await supabase.from("notifications").update({ is_read: true }).eq("id", id);
     startTransition(() => router.refresh());
   }
 
@@ -204,7 +223,8 @@ export function NotificationsList({
                 notification.is_read
                   ? "bg-background border-border/50"
                   : "bg-primary/[0.02] border-primary/20",
-                isNew && "animate-in slide-in-from-top-2 shadow-md ring-1 ring-primary/30",
+                isNew &&
+                  "animate-in slide-in-from-top-2 shadow-md ring-1 ring-primary/30",
               )}
             >
               {/* Unread dot */}

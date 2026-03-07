@@ -58,25 +58,41 @@ export function ReferralsClient({ referrals }: { referrals: Referral[] }) {
           <tbody className="divide-y divide-border">
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
+                <td
+                  colSpan={6}
+                  className="px-4 py-10 text-center text-muted-foreground"
+                >
                   No referrals found.
                 </td>
               </tr>
             ) : (
               filtered.map((r) => (
-                <tr key={r.id} className="hover:bg-secondary/10 transition-colors">
+                <tr
+                  key={r.id}
+                  className="hover:bg-secondary/10 transition-colors"
+                >
                   <td className="px-4 py-3">
-                    <p className="font-medium text-foreground">{r.referrerName}</p>
-                    <p className="text-xs text-muted-foreground">{r.referrerEmail}</p>
+                    <p className="font-medium text-foreground">
+                      {r.referrerName}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {r.referrerEmail}
+                    </p>
                   </td>
                   <td className="px-4 py-3">
                     {r.referredName ? (
                       <>
-                        <p className="font-medium text-foreground">{r.referredName}</p>
-                        <p className="text-xs text-muted-foreground">{r.referredEmail}</p>
+                        <p className="font-medium text-foreground">
+                          {r.referredName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {r.referredEmail}
+                        </p>
                       </>
                     ) : (
-                      <span className="text-xs text-muted-foreground italic">Not yet used</span>
+                      <span className="text-xs text-muted-foreground italic">
+                        Not yet used
+                      </span>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -89,12 +105,17 @@ export function ReferralsClient({ referrals }: { referrals: Referral[] }) {
                   </td>
                   <td className="px-4 py-3 text-right">
                     {r.rewardPoints > 0 ? (
-                      <span className="font-semibold text-emerald-600">+{r.rewardPoints}</span>
+                      <span className="font-semibold text-emerald-600">
+                        +{r.rewardPoints}
+                      </span>
                     ) : (
                       <span className="text-muted-foreground text-xs">—</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right text-xs text-muted-foreground" suppressHydrationWarning>
+                  <td
+                    className="px-4 py-3 text-right text-xs text-muted-foreground"
+                    suppressHydrationWarning
+                  >
                     {new Date(r.createdAt).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",

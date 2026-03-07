@@ -1,0 +1,46 @@
+.tiltCard {
+  transform-style: preserve-3d;
+  transform: var(
+    --card-transform,
+    perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)
+  );
+}
+
+.spotlight {
+  background: radial-gradient(
+    400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(16, 185, 129, 0.12),
+    transparent 60%
+  );
+}
+
+.container {
+  min-height: calc(100vh - 14rem);
+}
+
+.meshGradient1 {
+  animation-duration: 8s;
+}
+
+.meshGradient2 {
+  animation-duration: 12s;
+}
+
+.meshGradient3 {
+  animation-duration: 10s;
+}
+
+.commandBarBorder {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.3),
+    rgba(255, 255, 255, 0.05),
+    rgba(16, 185, 129, 0.15)
+  );
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+}

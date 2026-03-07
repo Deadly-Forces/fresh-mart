@@ -28,7 +28,9 @@ export default async function PickerDashboard() {
     return (
       <div className="flex flex-col items-center justify-center h-48 gap-3 text-center">
         <Package className="w-10 h-10 text-destructive/40" />
-        <p className="text-sm text-destructive font-medium">Failed to load orders</p>
+        <p className="text-sm text-destructive font-medium">
+          Failed to load orders
+        </p>
         <p className="text-xs text-muted-foreground">{error}</p>
       </div>
     );

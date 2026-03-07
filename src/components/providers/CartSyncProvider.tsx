@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useCartStore, type CartItem } from "@/store/cartStore";
+import { useCartStore, type CartItem } from "@/features/cart/store/useCartStore";
 
 /**
  * Syncs the Zustand cart (localStorage) with the server-side cart_items table
@@ -49,9 +49,7 @@ export function CartSyncProvider() {
           id: item.id as string,
           productId: item.product_id as string,
           variantId: (item.variant_id as string) ?? undefined,
-          name: variant
-            ? `${product.name} - ${variant.name}`
-            : product.name,
+          name: variant ? `${product.name} - ${variant.name}` : product.name,
           image: product.images?.[0] ?? "",
           price: variant?.price ?? product.price,
           unit: product.unit ?? undefined,
@@ -127,7 +125,10 @@ export function CartSyncProvider() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if ((event === "INITIAL_SESSION" || event === "SIGNED_IN") && session?.user) {
+      if (
+        (event === "INITIAL_SESSION" || event === "SIGNED_IN") &&
+        session?.user
+      ) {
         userId.current = session.user.id;
         await syncOnLogin(session.user.id);
       } else if (event === "SIGNED_OUT") {

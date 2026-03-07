@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Save, Plus, X } from "lucide-react";
+import { ArrowLeft, Save, Plus, X, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { createProductAction } from "@/features/admin/actions/productActions";
 
@@ -28,6 +28,8 @@ export function AddProductForm({ categories }: AddProductFormProps) {
   const [newImageUrl, setNewImageUrl] = useState("");
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   const generateSlug = (value: string) => {
@@ -66,6 +68,58 @@ export function AddProductForm({ categories }: AddProductFormProps) {
 
   const removeImage = (index: number) => {
     setImages(images.filter((_, i) => i !== index));
+  };
+
+  const handleAutoFillClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAutoFillFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 4 * 1024 * 1024) {
+      setError("AI analysis requires images under 4MB.");
+      return;
+    }
+
+    setIsAiLoading(true);
+    setError("");
+
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64 = reader.result as string;
+
+        const res = await fetch("/api/ai/auto-catalog", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            image: base64,
+            categories
+          })
+        });
+
+        if (!res.ok) {
+          setError("Failed to auto-catalog the product from image.");
+          setIsAiLoading(false);
+          return;
+        }
+
+        const data = await res.json();
+
+        if (data.name) handleNameChange(data.name);
+        if (data.description) setDescription(data.description);
+        if (data.price) setPrice(data.price);
+        if (data.unit) setUnit(data.unit);
+        if (data.categoryId) setCategoryId(data.categoryId);
+        setIsAiLoading(false);
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      setError("An error occurred during AI analysis.");
+      setIsAiLoading(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -114,7 +168,26 @@ export function AddProductForm({ categories }: AddProductFormProps) {
       </div>
 
       <div className="bg-card border border-border rounded-card p-6">
-        <h2 className="font-heading text-lg mb-6">Add New Product</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-heading text-lg">Add New Product</h2>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleAutoFillClick}
+            disabled={isAiLoading}
+            className="gap-2 bg-primary/10 text-primary hover:bg-primary/20"
+          >
+            <Sparkles className="w-4 h-4" />
+            {isAiLoading ? "Analyzing Image..." : "Auto-Fill with AI"}
+          </Button>
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/jpeg, image/png, image/webp"
+            onChange={handleAutoFillFileChange}
+          />
+        </div>
 
         {error && (
           <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
@@ -250,7 +323,12 @@ export function AddProductForm({ categories }: AddProductFormProps) {
                   }
                 }}
               />
-              <Button type="button" variant="outline" size="sm" onClick={addImage}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addImage}
+              >
                 <Plus className="w-4 h-4" />
               </Button>
             </div>

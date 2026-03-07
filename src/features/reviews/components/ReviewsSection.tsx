@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Star, AlertCircle } from "lucide-react";
+import { Star, AlertCircle, Sparkles } from "lucide-react";
 import { ReviewCard } from "./ReviewCard";
 import { ReviewForm } from "./ReviewForm";
 import {
@@ -23,6 +23,8 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
   >({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reviewSummary, setReviewSummary] = useState<string | null>(null);
+  const [isSummaryLoading, setIsSummaryLoading] = useState(true);
 
   const loadReviews = useCallback(async () => {
     try {
@@ -51,6 +53,24 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
     };
     checkAuth();
   }, [loadReviews]);
+
+  useEffect(() => {
+    async function fetchSummary() {
+      setIsSummaryLoading(true);
+      try {
+        const res = await fetch(`/api/ai/review-summary?productId=${productId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setReviewSummary(data.summary || null);
+        }
+      } catch (err) {
+        console.error("Failed to load review summary", err);
+      } finally {
+        setIsSummaryLoading(false);
+      }
+    }
+    fetchSummary();
+  }, [productId, reviews.length]); // Refetch when review count changes
 
   const approvedReviews = reviews.filter((r) => r.is_approved);
   const pendingReviews = reviews.filter((r) => !r.is_approved);
@@ -90,7 +110,10 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
                 <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full bg-warning rounded-full transition-all duration-500 w-progress"
-                    ref={(el) => { if (el) el.style.setProperty('--progress', `${percentage}%`); }}
+                    ref={(el) => {
+                      if (el)
+                        el.style.setProperty("--progress", `${percentage}%`);
+                    }}
                   />
                 </div>
                 <span className="text-xs text-muted-foreground w-6 text-right">
@@ -101,6 +124,28 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
           })}
         </div>
       </div>
+
+      {/* AI Review Summary */}
+      {isSummaryLoading ? (
+        <div className="mb-8 p-4 bg-primary/5 border border-primary/20 rounded-lg animate-pulse">
+          <div className="h-4 bg-primary/20 rounded w-1/3 mb-2" />
+          <div className="h-4 bg-primary/20 rounded w-full mb-2" />
+          <div className="h-4 bg-primary/20 rounded w-2/3" />
+        </div>
+      ) : reviewSummary ? (
+        <div className="mb-8 p-5 bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-3 opacity-20">
+            <Sparkles className="w-12 h-12 text-primary" />
+          </div>
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <h3 className="text-sm font-semibold text-primary">AI Review Summary</h3>
+          </div>
+          <p className="text-sm text-foreground leading-relaxed relative z-10 font-medium">
+            {reviewSummary}
+          </p>
+        </div>
+      ) : null}
 
       {/* Review Form */}
       <div className="mb-8">

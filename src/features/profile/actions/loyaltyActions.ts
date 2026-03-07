@@ -66,14 +66,16 @@ export async function redeemPointsAction(points: number) {
       .eq("id", user.id)
       .single();
 
-    if (!profile || profile.loyalty_points < points) {
+    const currentPoints = profile?.loyalty_points ?? 0;
+
+    if (!profile || currentPoints < points) {
       return { error: "Insufficient points balance." };
     }
 
     // Deduct points
     const { error: updateError } = await supabase
       .from("profiles")
-      .update({ loyalty_points: profile.loyalty_points - points })
+      .update({ loyalty_points: currentPoints - points })
       .eq("id", user.id);
 
     if (updateError) {
@@ -88,10 +90,26 @@ export async function redeemPointsAction(points: number) {
       description: `Redeemed ${points} points for ₹${(points / 10).toFixed(2)} discount`,
     });
 
+    const code = `LP-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    const discountAmount = points / 10;
+
+    // Create a real coupon for the user to use at checkout
+    await supabase.from("coupons").insert({
+      code,
+      type: "flat",
+      value: discountAmount,
+      min_order: 0,
+      max_uses: 1,
+      is_active: true,
+      per_user_limit: 1,
+      description: `Loyalty discount for ${points} points`,
+    });
+
     return {
       success: true,
-      newBalance: profile.loyalty_points - points,
-      discount: points / 10,
+      newBalance: currentPoints - points,
+      discount: discountAmount,
+      code,
     };
   } catch (error) {
     console.error("redeemPointsAction error:", error);

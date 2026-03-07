@@ -1,6 +1,6 @@
 "use client";
 
-import { useWishlistStore } from "@/store/wishlistStore";
+import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
 import { ProductGrid } from "@/features/products/components/ProductGrid";
 import Link from "next/link";
 import { ChevronRight, Heart } from "lucide-react";

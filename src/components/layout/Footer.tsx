@@ -16,7 +16,9 @@ import {
 
 export function Footer() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [message, setMessage] = useState("");
 
   async function handleSubscribe(e: FormEvent) {
@@ -86,7 +88,10 @@ export function Footer() {
                 Fresh deals and new arrivals straight to your inbox.
               </p>
             </div>
-            <form onSubmit={handleSubscribe} className="flex flex-col w-full md:w-auto max-w-md gap-2">
+            <form
+              onSubmit={handleSubscribe}
+              className="flex flex-col w-full md:w-auto max-w-md gap-2"
+            >
               <div className="flex gap-2">
                 <input
                   id="newsletter-email"
@@ -107,18 +112,15 @@ export function Footer() {
                   {status === "loading" && (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   )}
-                  {status === "success" && (
-                    <CheckCircle2 className="w-4 h-4" />
-                  )}
+                  {status === "success" && <CheckCircle2 className="w-4 h-4" />}
                   {status === "success" ? "Subscribed!" : "Subscribe"}
                 </button>
               </div>
               {message && (
                 <p
-                  className={`text-xs flex items-center gap-1.5 transition-all ${status === "success"
-                      ? "text-emerald-500"
-                      : "text-red-500"
-                    }`}
+                  className={`text-xs flex items-center gap-1.5 transition-all ${
+                    status === "success" ? "text-emerald-500" : "text-red-500"
+                  }`}
                 >
                   {status === "success" ? (
                     <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />

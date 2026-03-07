@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
-import { PushPrompt } from "@/components/notifications/PushPrompt";
+import { PushPrompt } from "@/features/notifications/components/PushPrompt";
+import { Chatbot } from "@/features/assistant/components/Chatbot";
 import "./globals.css";
 
 const inter = Inter({
@@ -30,8 +31,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${inter.variable} font-body antialiased`} suppressHydrationWarning>
-
+      <body
+        className={`${inter.variable} font-body antialiased`}
+        suppressHydrationWarning
+      >
         {children}
         <Toaster
           richColors
@@ -44,6 +47,7 @@ export default function RootLayout({
           }}
         />
         <PushPrompt />
+        <Chatbot />
       </body>
     </html>
   );

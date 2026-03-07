@@ -260,7 +260,9 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Max Discount (₹)</label>
+                  <label className="text-sm font-medium">
+                    Max Discount (₹)
+                  </label>
                   <input
                     name="max_discount"
                     type="number"
@@ -304,8 +306,8 @@ export function CouponManager({ coupons }: { coupons: Coupon[] }) {
                   defaultValue={
                     editingCoupon?.rawExpiresAt
                       ? new Date(editingCoupon.rawExpiresAt)
-                        .toISOString()
-                        .slice(0, 16)
+                          .toISOString()
+                          .slice(0, 16)
                       : ""
                   }
                   className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm"

@@ -50,32 +50,59 @@ import { getProfileAddressesAction } from "@/features/profile/actions/addressAct
 import { UserOrder } from "@/types";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/features/cart/store/useCartStore";
 import dynamic from "next/dynamic";
 
 const DeliveryCountdown = dynamic(
-  () => import("@/components/ui/DeliveryCountdown").then((m) => m.DeliveryCountdown),
-  { ssr: false }
+  () =>
+    import("@/components/ui/DeliveryCountdown").then(
+      (m) => m.DeliveryCountdown,
+    ),
+  { ssr: false },
 );
 
 const DynamicProfileOrdersTab = dynamic(
   () => import("./ProfileOrdersTab").then((m) => m.ProfileOrdersTab),
-  { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
+  {
+    loading: () => (
+      <div className="p-8 text-center text-muted-foreground">
+        <Loader2 className="w-6 h-6 animate-spin mx-auto" />
+      </div>
+    ),
+  },
 );
 
 const DynamicLoyaltyRewardsTab = dynamic(
   () => import("./LoyaltyRewardsTab").then((m) => m.LoyaltyRewardsTab),
-  { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
+  {
+    loading: () => (
+      <div className="p-8 text-center text-muted-foreground">
+        <Loader2 className="w-6 h-6 animate-spin mx-auto" />
+      </div>
+    ),
+  },
 );
 
 const DynamicReferralTab = dynamic(
   () => import("./ReferralTab").then((m) => m.ReferralTab),
-  { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
+  {
+    loading: () => (
+      <div className="p-8 text-center text-muted-foreground">
+        <Loader2 className="w-6 h-6 animate-spin mx-auto" />
+      </div>
+    ),
+  },
 );
 
 const DynamicReturnRefundTab = dynamic(
   () => import("./ReturnRefundTab").then((m) => m.ReturnRefundTab),
-  { loading: () => <div className="p-8 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div> }
+  {
+    loading: () => (
+      <div className="p-8 text-center text-muted-foreground">
+        <Loader2 className="w-6 h-6 animate-spin mx-auto" />
+      </div>
+    ),
+  },
 );
 
 interface ProfileData {
@@ -119,8 +146,6 @@ interface DefaultAddress {
   pincode: string | null;
   is_default: boolean | null;
 }
-
-
 
 export function ProfileDashboard({
   profile,
@@ -214,7 +239,20 @@ export function ProfileDashboard({
 
   // Use UTC methods for deterministic server/client output (avoids timezone hydration mismatch)
   const _d = new Date(profile.created_at);
-  const _months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const _months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const formattedDate = `${_months[_d.getUTCMonth()]} ${_d.getUTCDate()}, ${_d.getUTCFullYear()}`;
 
   const [memberDays, setMemberDays] = useState<number | null>(null);
@@ -222,7 +260,7 @@ export function ProfileDashboard({
     setMemberDays(
       Math.floor(
         (Date.now() - new Date(profile.created_at).getTime()) /
-        (1000 * 60 * 60 * 24),
+          (1000 * 60 * 60 * 24),
       ),
     );
   }, [profile.created_at]);
@@ -248,9 +286,7 @@ export function ProfileDashboard({
   const deliveredOrders = orders.filter((o) => o.status === "delivered").length;
 
   return (
-    <div
-      className="animate-in fade-in slide-in-from-bottom-4 duration-500"
-    >
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* ═══════════════════════════════════════════════ */}
       {/* PROFILE HEADER CARD                            */}
       {/* ═══════════════════════════════════════════════ */}
@@ -523,7 +559,9 @@ export function ProfileDashboard({
             onSubmit={async (e) => {
               e.preventDefault();
               const formData = new FormData(e.currentTarget);
-              const nameInput = document.getElementById("name") as HTMLInputElement;
+              const nameInput = document.getElementById(
+                "name",
+              ) as HTMLInputElement;
               if (nameInput) {
                 formData.set("name", nameInput.value);
               }
@@ -740,14 +778,15 @@ export function ProfileDashboard({
                     ) : (
                       <div className="flex items-center gap-3">
                         <span
-                          className={`w-3 h-3 rounded-full shadow-lg ${profile.dietary_pref === "veg"
-                            ? "bg-green-500 shadow-green-500/40"
-                            : profile.dietary_pref === "non-veg"
-                              ? "bg-red-500 shadow-red-500/40"
-                              : profile.dietary_pref === "vegan"
-                                ? "bg-emerald-500 shadow-emerald-500/40"
-                                : "bg-blue-500 shadow-blue-500/40"
-                            }`}
+                          className={`w-3 h-3 rounded-full shadow-lg ${
+                            profile.dietary_pref === "veg"
+                              ? "bg-green-500 shadow-green-500/40"
+                              : profile.dietary_pref === "non-veg"
+                                ? "bg-red-500 shadow-red-500/40"
+                                : profile.dietary_pref === "vegan"
+                                  ? "bg-emerald-500 shadow-emerald-500/40"
+                                  : "bg-blue-500 shadow-blue-500/40"
+                          }`}
                         />
                         <p className="font-bold capitalize text-xl">
                           {profile.dietary_pref || "Not specified"}
@@ -814,7 +853,9 @@ export function ProfileDashboard({
           value="orders"
           className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
-          {activeTab === "orders" && <DynamicProfileOrdersTab orders={orders} />}
+          {activeTab === "orders" && (
+            <DynamicProfileOrdersTab orders={orders} />
+          )}
         </TabsContent>
 
         {/* ═══════ REWARDS TAB ═══════ */}
@@ -838,7 +879,9 @@ export function ProfileDashboard({
           value="returns"
           className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500"
         >
-          {activeTab === "returns" && <DynamicReturnRefundTab orders={orders} />}
+          {activeTab === "returns" && (
+            <DynamicReturnRefundTab orders={orders} />
+          )}
         </TabsContent>
       </Tabs>
     </div>

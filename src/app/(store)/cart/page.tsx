@@ -2,10 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, X, ShoppingBag, ArrowRight, Trash2, Gift, Sparkles } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  X,
+  ShoppingBag,
+  ArrowRight,
+  Trash2,
+  Gift,
+  Sparkles,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useCartStore } from "@/store/cartStore";
+import { useCartStore } from "@/features/cart/store/useCartStore";
 import { useState, useEffect, useCallback } from "react";
 import { validatePromoCodeAction } from "@/features/checkout/actions/promoActions";
 import {
@@ -13,6 +22,11 @@ import {
   type AutoDiscount,
 } from "@/features/checkout/actions/autoDiscountActions";
 import { toast } from "sonner";
+
+interface CartInsight {
+  insight: string;
+  type: "positive" | "suggestion" | "warning";
+}
 
 export default function CartPage() {
   const {
@@ -30,6 +44,10 @@ export default function CartPage() {
   const [autoDiscounts, setAutoDiscounts] = useState<AutoDiscount[]>([]);
   const [autoTotal, setAutoTotal] = useState(0);
   const [isFirstOrder, setIsFirstOrder] = useState(false);
+
+  // AI Insight State
+  const [insight, setInsight] = useState<CartInsight | null>(null);
+  const [isFetchingInsight, setIsFetchingInsight] = useState(false);
 
   const subtotal = getTotal();
   const deliveryFee = subtotal >= 499 ? 0 : 49;
@@ -53,6 +71,38 @@ export default function CartPage() {
   useEffect(() => {
     fetchAutoDiscounts();
   }, [fetchAutoDiscounts]);
+
+  useEffect(() => {
+    // Only fetch insight if there are items and we haven't already fetched one for this exact cart state
+    // We'll use a simple debounce/check to prevent spamming the API
+    const fetchInsight = async () => {
+      if (items.length === 0) {
+        setInsight(null);
+        return;
+      }
+
+      setIsFetchingInsight(true);
+      try {
+        const response = await fetch("/api/ai/cart-analysis", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setInsight(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch cart insight:", error);
+      } finally {
+        setIsFetchingInsight(false);
+      }
+    };
+
+    const timeoutId = setTimeout(fetchInsight, 1500); // 1.5s debounce
+    return () => clearTimeout(timeoutId);
+  }, [items]);
 
   if (items.length === 0) {
     return (
@@ -175,6 +225,45 @@ export default function CartPage() {
               <h3 className="text-lg font-bold text-foreground mb-5">
                 Order Summary
               </h3>
+
+              {/* AI Cart Insight */}
+              {(insight || isFetchingInsight) && (
+                <div
+                  className={`mb-5 p-4 rounded-xl border text-sm flex items-start gap-3 transition-colors ${
+                    isFetchingInsight
+                      ? "bg-muted/50 border-muted animate-pulse text-muted-foreground"
+                      : insight?.type === "positive"
+                        ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                        : insight?.type === "warning"
+                          ? "bg-amber-50 border-amber-200 text-amber-800"
+                          : "bg-indigo-50 border-indigo-200 text-indigo-800"
+                  }`}
+                >
+                  <Sparkles
+                    className={`w-5 h-5 shrink-0 mt-0.5 ${
+                      isFetchingInsight
+                        ? "text-muted-foreground"
+                        : insight?.type === "positive"
+                          ? "text-emerald-500"
+                          : insight?.type === "warning"
+                            ? "text-amber-500"
+                            : "text-indigo-500"
+                    }`}
+                  />
+                  <div>
+                    <span className="font-semibold block mb-0.5">
+                      {isFetchingInsight
+                        ? "Analyzing your cart..."
+                        : "Fresh Insight"}
+                    </span>
+                    <p className="leading-snug">
+                      {isFetchingInsight
+                        ? "Our AI is checking your groceries for healthy tips."
+                        : insight?.insight}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">

@@ -19,7 +19,8 @@ async function requireAdmin() {
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") throw new Error("Forbidden: Admin access required.");
+  if (profile?.role !== "admin")
+    throw new Error("Forbidden: Admin access required.");
 
   return { supabase, user };
 }
@@ -37,7 +38,9 @@ export async function getAdminLoyaltyDataAction() {
     if (error) return { error: error.message };
 
     // Gather unique user ids
-    const userIds = [...new Set((transactions || []).map((t: any) => t.user_id))];
+    const userIds = [
+      ...new Set((transactions || []).map((t: any) => t.user_id)),
+    ];
     let usersMap: Record<string, any> = {};
     if (userIds.length > 0) {
       const { data: profiles } = await supabase

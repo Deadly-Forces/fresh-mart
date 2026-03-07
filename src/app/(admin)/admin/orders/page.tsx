@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
-import { simulateOrderList, syncOrderStatuses } from "@/lib/orders/simulateProgress";
+import {
+  simulateOrderList,
+  syncOrderStatuses,
+} from "@/features/orders/actions/simulateProgress";
 import { OrdersClient } from "./OrdersClient";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +17,9 @@ export default async function AdminOrdersPage() {
   try {
     const { data, error } = await supabase
       .from("orders")
-      .select("id, total, subtotal, discount_amount, applied_promocode, status, payment_status, created_at, user_id, order_items(id)")
+      .select(
+        "id, total, subtotal, discount_amount, applied_promocode, status, payment_status, created_at, user_id, order_items(id)",
+      )
       .order("created_at", { ascending: false });
     if (!error) {
       ordersData = data;
@@ -74,4 +79,3 @@ export default async function AdminOrdersPage() {
     </div>
   );
 }
-

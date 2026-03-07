@@ -493,7 +493,8 @@ export async function updateOrderStatusAction(
             message: statusMessages[statusValidation.data] ?? null,
           })
           .then(({ error: notifErr }) => {
-            if (notifErr) console.error("Error inserting notification:", notifErr);
+            if (notifErr)
+              console.error("Error inserting notification:", notifErr);
           });
 
         // Send push notification (non-blocking)
@@ -510,7 +511,12 @@ export async function updateOrderStatusAction(
             sendOrderNotification(
               orderId,
               userId,
-              pushStatus as "confirmed" | "picked" | "out_for_delivery" | "delivered" | "cancelled",
+              pushStatus as
+                | "confirmed"
+                | "picked"
+                | "out_for_delivery"
+                | "delivered"
+                | "cancelled",
             ).catch((err) => console.error("Push notification error:", err)),
           );
         }
@@ -540,13 +546,16 @@ export async function sendAdminNotificationAction(data: {
   try {
     const titleVal = sanitizeString(stripHtml(data.title));
     const messageVal = sanitizeString(stripHtml(data.message)) ?? "";
-    if (!titleVal || titleVal.length > 200) return { error: "Title is required (max 200 chars)." };
-    if (messageVal && messageVal.length > 1000) return { error: "Message too long (max 1000 chars)." };
+    if (!titleVal || titleVal.length > 200)
+      return { error: "Title is required (max 200 chars)." };
+    if (messageVal && messageVal.length > 1000)
+      return { error: "Message too long (max 1000 chars)." };
 
     const typeVal = notificationTypeSchema.safeParse(data.type);
     if (!typeVal.success) return { error: "Invalid notification type." };
 
-    if (data.userId && !isValidUUID(data.userId)) return { error: "Invalid user ID." };
+    if (data.userId && !isValidUUID(data.userId))
+      return { error: "Invalid user ID." };
 
     const { supabase } = await requireAdmin();
 
@@ -563,8 +572,11 @@ export async function sendAdminNotificationAction(data: {
       // Also send push notification if promo type
       if (typeVal.data === "promo") {
         import("@/lib/push/actions").then(({ sendPromoNotification }) =>
-          sendPromoNotification({ title: titleVal, body: messageVal, tag: `admin-${Date.now()}` })
-            .catch((err) => console.error("Push error:", err)),
+          sendPromoNotification({
+            title: titleVal,
+            body: messageVal,
+            tag: `admin-${Date.now()}`,
+          }).catch((err) => console.error("Push error:", err)),
         );
       }
 
@@ -592,8 +604,11 @@ export async function sendAdminNotificationAction(data: {
       // Also send push notification for promo broadcasts
       if (typeVal.data === "promo" || typeVal.data === "system") {
         import("@/lib/push/actions").then(({ sendPromoNotification }) =>
-          sendPromoNotification({ title: titleVal, body: messageVal, tag: `admin-broadcast-${Date.now()}` })
-            .catch((err) => console.error("Push error:", err)),
+          sendPromoNotification({
+            title: titleVal,
+            body: messageVal,
+            tag: `admin-broadcast-${Date.now()}`,
+          }).catch((err) => console.error("Push error:", err)),
         );
       }
 

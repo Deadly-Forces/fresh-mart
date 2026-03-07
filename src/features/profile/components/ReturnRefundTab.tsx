@@ -64,10 +64,30 @@ const STATUS_CONFIG: Record<
   string,
   { label: string; icon: typeof Clock; color: string; bg: string }
 > = {
-  pending: { label: "Under Review", icon: Clock, color: "text-amber-600", bg: "bg-amber-500/10" },
-  approved: { label: "Approved", icon: CheckCircle2, color: "text-blue-600", bg: "bg-blue-500/10" },
-  rejected: { label: "Rejected", icon: XCircle, color: "text-red-500", bg: "bg-red-500/10" },
-  refunded: { label: "Refunded", icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-500/10" },
+  pending: {
+    label: "Under Review",
+    icon: Clock,
+    color: "text-amber-600",
+    bg: "bg-amber-500/10",
+  },
+  approved: {
+    label: "Approved",
+    icon: CheckCircle2,
+    color: "text-blue-600",
+    bg: "bg-blue-500/10",
+  },
+  rejected: {
+    label: "Rejected",
+    icon: XCircle,
+    color: "text-red-500",
+    bg: "bg-red-500/10",
+  },
+  refunded: {
+    label: "Refunded",
+    icon: CheckCircle2,
+    color: "text-emerald-600",
+    bg: "bg-emerald-500/10",
+  },
 };
 
 export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
@@ -100,7 +120,7 @@ export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
 
   // Eligible orders: delivered + no existing return request
   const eligibleOrders = deliveredOrders.filter(
-    (o) => !ordersWithReturn.has(o.id)
+    (o) => !ordersWithReturn.has(o.id),
   );
 
   const handleSubmit = async () => {
@@ -157,8 +177,8 @@ export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
                   Returns & Refunds
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Request returns for delivered orders within 24 hours of delivery.
-                  We&apos;ll review and process your refund quickly.
+                  Request returns for delivered orders within 24 hours of
+                  delivery. We&apos;ll review and process your refund quickly.
                 </p>
               </div>
             </div>
@@ -207,20 +227,20 @@ export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
                 key={req.id}
                 className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md"
               >
-                <div className={`h-1 ${
-                  req.status === "refunded"
-                    ? "bg-gradient-to-r from-emerald-400 to-green-500"
-                    : req.status === "rejected"
-                      ? "bg-gradient-to-r from-red-400 to-red-500"
-                      : req.status === "approved"
-                        ? "bg-gradient-to-r from-blue-400 to-blue-500"
-                        : "bg-gradient-to-r from-amber-400 to-yellow-500"
-                }`} />
+                <div
+                  className={`h-1 ${
+                    req.status === "refunded"
+                      ? "bg-gradient-to-r from-emerald-400 to-green-500"
+                      : req.status === "rejected"
+                        ? "bg-gradient-to-r from-red-400 to-red-500"
+                        : req.status === "approved"
+                          ? "bg-gradient-to-r from-blue-400 to-blue-500"
+                          : "bg-gradient-to-r from-amber-400 to-yellow-500"
+                  }`}
+                />
                 <button
                   className="w-full p-5 flex items-center justify-between gap-4 text-left"
-                  onClick={() =>
-                    setExpandedId(isExpanded ? null : req.id)
-                  }
+                  onClick={() => setExpandedId(isExpanded ? null : req.id)}
                 >
                   <div className="flex items-center gap-4 min-w-0">
                     <div
@@ -343,28 +363,23 @@ export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
                   <SelectValue placeholder="Select a reason" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="damaged">
-                    📦 Damaged Items
-                  </SelectItem>
+                  <SelectItem value="damaged">📦 Damaged Items</SelectItem>
                   <SelectItem value="wrong_item">
                     🔄 Wrong Item Received
                   </SelectItem>
-                  <SelectItem value="quality">
-                    ⚠️ Quality Issues
-                  </SelectItem>
-                  <SelectItem value="missing_item">
-                    ❌ Missing Items
-                  </SelectItem>
-                  <SelectItem value="other">
-                    📝 Other
-                  </SelectItem>
+                  <SelectItem value="quality">⚠️ Quality Issues</SelectItem>
+                  <SelectItem value="missing_item">❌ Missing Items</SelectItem>
+                  <SelectItem value="other">📝 Other</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm font-semibold">
-                Description <span className="text-muted-foreground font-normal">(optional)</span>
+                Description{" "}
+                <span className="text-muted-foreground font-normal">
+                  (optional)
+                </span>
               </Label>
               <Textarea
                 placeholder="Describe the issue in detail..."

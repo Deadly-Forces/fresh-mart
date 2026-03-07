@@ -15,7 +15,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-import { simulateOrderList } from "@/lib/orders/simulateProgress";
+import { simulateOrderList } from "@/features/orders/actions/simulateProgress";
 
 export const dynamic = "force-dynamic";
 
@@ -85,8 +85,8 @@ export default async function AdminRiderPage() {
     return {
       id: o.id,
       shortId: o.id.slice(0, 8).toUpperCase(),
-      customer: profileMap[o.user_id]?.name || 'Unknown',
-      phone: profileMap[o.user_id]?.phone || 'N/A',
+      customer: profileMap[o.user_id]?.name || "Unknown",
+      phone: profileMap[o.user_id]?.phone || "N/A",
       address: addressMap[o.address_id] || null,
       items: Array.isArray(o.order_items) ? o.order_items.length : 0,
       total: Number(o.total || 0),
@@ -96,13 +96,13 @@ export default async function AdminRiderPage() {
   };
 
   const packedList = simOrders
-    .filter((o: any) => o.status === 'packed')
+    .filter((o: any) => o.status === "packed")
     .map(mapOrder);
   const activeList = simOrders
-    .filter((o: any) => o.status === 'out_for_delivery')
+    .filter((o: any) => o.status === "out_for_delivery")
     .map(mapOrder);
   const deliveredList = simOrders
-    .filter((o: any) => o.status === 'delivered')
+    .filter((o: any) => o.status === "delivered")
     .map(mapOrder);
 
   return (
@@ -129,27 +129,39 @@ export default async function AdminRiderPage() {
             <div className="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center">
               <Package className="w-4 h-4 text-amber-600" />
             </div>
-            <span className="text-sm font-medium text-muted-foreground">Awaiting Pickup</span>
+            <span className="text-sm font-medium text-muted-foreground">
+              Awaiting Pickup
+            </span>
           </div>
-          <p className="text-3xl font-heading font-bold text-amber-600">{packedList.length}</p>
+          <p className="text-3xl font-heading font-bold text-amber-600">
+            {packedList.length}
+          </p>
         </div>
         <div className="bg-card border border-border rounded-card p-5">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center">
               <Navigation2 className="w-4 h-4 text-blue-600" />
             </div>
-            <span className="text-sm font-medium text-muted-foreground">Active Deliveries</span>
+            <span className="text-sm font-medium text-muted-foreground">
+              Active Deliveries
+            </span>
           </div>
-          <p className="text-3xl font-heading font-bold text-blue-600">{activeList.length}</p>
+          <p className="text-3xl font-heading font-bold text-blue-600">
+            {activeList.length}
+          </p>
         </div>
         <div className="bg-card border border-border rounded-card p-5">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             </div>
-            <span className="text-sm font-medium text-muted-foreground">Delivered</span>
+            <span className="text-sm font-medium text-muted-foreground">
+              Delivered
+            </span>
           </div>
-          <p className="text-3xl font-heading font-bold text-emerald-600">{deliveredList.length}</p>
+          <p className="text-3xl font-heading font-bold text-emerald-600">
+            {deliveredList.length}
+          </p>
         </div>
       </div>
 
@@ -163,7 +175,9 @@ export default async function AdminRiderPage() {
         {activeList.length === 0 ? (
           <div className="bg-card border border-border rounded-card p-12 text-center">
             <Truck className="w-12 h-12 text-muted-foreground/20 mx-auto mb-4" />
-            <p className="text-muted-foreground font-medium">No active deliveries</p>
+            <p className="text-muted-foreground font-medium">
+              No active deliveries
+            </p>
             <p className="text-xs text-muted-foreground mt-1">
               Orders marked for delivery will appear here
             </p>
@@ -189,7 +203,10 @@ export default async function AdminRiderPage() {
                     </div>
                     <div className="flex flex-col items-end gap-1.5">
                       <StatusBadge status={order.status} />
-                      <DeliveryCountdown createdAt={order.createdAt} status={order.status} />
+                      <DeliveryCountdown
+                        createdAt={order.createdAt}
+                        status={order.status}
+                      />
                     </div>
                   </div>
 
@@ -239,31 +256,55 @@ export default async function AdminRiderPage() {
 
         {deliveredList.length === 0 ? (
           <div className="bg-card border border-border rounded-card p-8 text-center">
-            <p className="text-muted-foreground text-sm">No deliveries completed yet</p>
+            <p className="text-muted-foreground text-sm">
+              No deliveries completed yet
+            </p>
           </div>
         ) : (
           <div className="bg-card border border-border rounded-card overflow-hidden">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-secondary/50 border-b border-border">
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">Order ID</th>
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">Customer</th>
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">Items</th>
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">Total</th>
-                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">Status</th>
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
+                    Order ID
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
+                    Customer
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
+                    Items
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
+                    Total
+                  </th>
+                  <th className="px-4 py-3 text-left font-semibold text-muted-foreground text-xs">
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {deliveredList.map((o) => (
-                  <tr key={o.id} className="hover:bg-secondary/30 transition-colors">
-                    <td className="px-4 py-3 font-medium text-primary">#{o.shortId}</td>
+                  <tr
+                    key={o.id}
+                    className="hover:bg-secondary/30 transition-colors"
+                  >
+                    <td className="px-4 py-3 font-medium text-primary">
+                      #{o.shortId}
+                    </td>
                     <td className="px-4 py-3">{o.customer}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{o.items}</td>
-                    <td className="px-4 py-3 font-semibold">₹{o.total.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {o.items}
+                    </td>
+                    <td className="px-4 py-3 font-semibold">
+                      ₹{o.total.toFixed(2)}
+                    </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <StatusBadge status={o.status} />
-                        <DeliveryCountdown createdAt={o.createdAt} status={o.status} />
+                        <DeliveryCountdown
+                          createdAt={o.createdAt}
+                          status={o.status}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -271,7 +312,8 @@ export default async function AdminRiderPage() {
               </tbody>
             </table>
             <div className="px-4 py-3 border-t border-border bg-secondary/30 text-xs text-muted-foreground">
-              {deliveredList.length} delivery{deliveredList.length !== 1 ? "ies" : "y"} completed
+              {deliveredList.length} delivery
+              {deliveredList.length !== 1 ? "ies" : "y"} completed
             </div>
           </div>
         )}

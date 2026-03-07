@@ -12,7 +12,11 @@ interface ProgressBarProps {
  * Thin client wrapper that sets a dynamic width via CSS custom property,
  * avoiding inline `style` props on the element.
  */
-export function ProgressBar({ value, className = "", children }: ProgressBarProps) {
+export function ProgressBar({
+  value,
+  className = "",
+  children,
+}: ProgressBarProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

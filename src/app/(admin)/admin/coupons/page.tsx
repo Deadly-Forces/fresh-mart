@@ -24,10 +24,10 @@ export default async function AdminCouponsPage() {
     uses: `${c.used_count || 0}/${c.max_uses || "∞"}`,
     expiry: c.expires_at
       ? new Date(c.expires_at).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })
       : "No expiry",
     active: c.is_active,
     rawMaxUses: c.max_uses ?? null,

@@ -1,45 +1,33 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/server";
 
-export function CategoryGrid() {
-  const [categories, setCategories] = useState<any[]>([]);
+export async function CategoryGrid() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("categories")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .limit(5);
 
-  useEffect(() => {
-    async function fetchCategories() {
-      const supabase = createClient();
-      const { data } = await supabase
-        .from("categories")
-        .select("*")
-        .order("sort_order", { ascending: true })
-        .limit(5);
-
-      if (data) {
-        // Map the default images for the first 5 categories specifically for aesthetic purposes
-        const mapped = data.map((c, i) => {
-          const fallbackImages = [
-            "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=1200&q=80",
-            "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&q=80",
-            "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&q=80",
-            "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&q=80",
-            "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=800&q=80",
-          ];
-          return {
-            ...c,
-            image: c.image_url || fallbackImages[i % fallbackImages.length],
-            desc: "Farm fresh organic selection",
-            span: i === 0 ? "md:col-span-2 md:row-span-2" : "",
-          };
-        });
-        setCategories(mapped);
-      }
-    }
-    fetchCategories();
-  }, []);
+  const categories = data
+    ? data.map((c, i) => {
+        const fallbackImages = [
+          "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=1200&q=80",
+          "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&q=80",
+          "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&q=80",
+          "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&q=80",
+          "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=800&q=80",
+        ];
+        return {
+          ...c,
+          image: c.image_url || fallbackImages[i % fallbackImages.length],
+          desc: "Farm fresh organic selection",
+          span: i === 0 ? "md:col-span-2 md:row-span-2" : "",
+        };
+      })
+    : [];
 
   return (
     <section className="py-16 md:py-24 section-soft">

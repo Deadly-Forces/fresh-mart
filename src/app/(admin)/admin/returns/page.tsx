@@ -8,10 +8,10 @@ export default async function AdminReturnsPage() {
   const supabase = await createClient();
 
   // Fetch all return requests
-  const { data: requestsData } = await supabase
+  const { data: requestsData } = (await supabase
     .from("return_requests")
     .select("*")
-    .order("created_at", { ascending: false }) as { data: any[]; error: any };
+    .order("created_at", { ascending: false })) as { data: any[]; error: any };
 
   const requests = requestsData || [];
 
@@ -66,9 +66,12 @@ export default async function AdminReturnsPage() {
   const stats = {
     total: enrichedRequests.length,
     pending: enrichedRequests.filter((r: any) => r.status === "pending").length,
-    approved: enrichedRequests.filter((r: any) => r.status === "approved").length,
-    refunded: enrichedRequests.filter((r: any) => r.status === "refunded").length,
-    rejected: enrichedRequests.filter((r: any) => r.status === "rejected").length,
+    approved: enrichedRequests.filter((r: any) => r.status === "approved")
+      .length,
+    refunded: enrichedRequests.filter((r: any) => r.status === "refunded")
+      .length,
+    rejected: enrichedRequests.filter((r: any) => r.status === "rejected")
+      .length,
   };
 
   return (
@@ -84,19 +87,27 @@ export default async function AdminReturnsPage() {
           <p className="text-xs text-muted-foreground">Total Requests</p>
         </div>
         <div className="bg-card border border-amber-200 dark:border-amber-800 rounded-card p-4 text-center">
-          <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{stats.pending}</p>
+          <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+            {stats.pending}
+          </p>
           <p className="text-xs text-muted-foreground">Pending</p>
         </div>
         <div className="bg-card border border-blue-200 dark:border-blue-800 rounded-card p-4 text-center">
-          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.approved}</p>
+          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            {stats.approved}
+          </p>
           <p className="text-xs text-muted-foreground">Approved</p>
         </div>
         <div className="bg-card border border-emerald-200 dark:border-emerald-800 rounded-card p-4 text-center">
-          <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{stats.refunded}</p>
+          <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+            {stats.refunded}
+          </p>
           <p className="text-xs text-muted-foreground">Refunded</p>
         </div>
         <div className="bg-card border border-red-200 dark:border-red-800 rounded-card p-4 text-center">
-          <p className="text-2xl font-bold text-red-600 dark:text-red-400">{stats.rejected}</p>
+          <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+            {stats.rejected}
+          </p>
           <p className="text-xs text-muted-foreground">Rejected</p>
         </div>
       </div>
