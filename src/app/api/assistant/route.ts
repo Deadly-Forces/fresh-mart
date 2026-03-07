@@ -3,13 +3,15 @@ import products from "@/features/products/utils/products.json";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
-// Waterfall of free models — tried in order until one succeeds
+// Waterfall of free models — tried in order until one succeeds (not rate-limited)
+// All IDs verified as available on OpenRouter free tier
 const MODEL_WATERFALL = [
   process.env.OPENROUTER_MODEL,
-  "meta-llama/llama-4-scout:free",
   "google/gemma-3-4b-it:free",
   "mistralai/mistral-7b-instruct:free",
-  "nousresearch/hermes-3-llama-3.1-8b:free",
+  "qwen/qwen-2.5-7b-instruct:free",
+  "meta-llama/llama-3.2-3b-instruct:free",
+  "microsoft/phi-3-mini-128k-instruct:free",
 ].filter(Boolean) as string[];
 
 // Deduplicate while preserving order
@@ -75,8 +77,8 @@ export async function POST(req: Request) {
         const data = await response.json();
         return NextResponse.json(data);
       }
-      // Only retry on rate-limit (429) or server errors (5xx) — not on client errors
-      if (response.status !== 429 && response.status < 500) {
+      // Retry on rate-limit (429), model-not-found (404), or server errors (5xx)
+      if (response.status !== 429 && response.status !== 404 && response.status < 500) {
         const errorData = await response.text();
         console.error(`Model ${model} returned client error:`, errorData);
         return NextResponse.json(

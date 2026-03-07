@@ -81,26 +81,12 @@ export function Chatbot() {
                                     )}
                                 >
                                     {m.parts.map((part, i) => {
-                                        if (part.type === "text") {
-                                            return m.role === "user" ? (
-                                                <span key={i}>{part.text}</span>
-                                            ) : (
-                                                <ReactMarkdown key={i}>{part.text}</ReactMarkdown>
-                                            );
-                                        }
-                                        if (part.type.startsWith("tool-") || part.type === "dynamic-tool") {
-                                            const toolPart = part as { toolCallId: string; toolName: string; state: string };
-                                            return (
-                                                <div key={toolPart.toolCallId} className="text-xs text-muted-foreground mt-2 italic bg-muted p-2 rounded-md border">
-                                                    {toolPart.state === "call" || toolPart.state === "input-available" ? (
-                                                        <span className="flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Searching products...</span>
-                                                    ) : (
-                                                        <span>✓ Done</span>
-                                                    )}
-                                                </div>
-                                            );
-                                        }
-                                        return null;
+                                        if (part.type !== "text") return null;
+                                        return m.role === "user" ? (
+                                            <span key={i}>{part.text}</span>
+                                        ) : (
+                                            <ReactMarkdown key={i}>{part.text}</ReactMarkdown>
+                                        );
                                     })}
                                 </div>
                             </div>
