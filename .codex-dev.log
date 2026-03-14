@@ -1,0 +1,813 @@
+
+> fresh-mart@0.1.0 dev
+> cross-env NODE_OPTIONS=--dns-result-order=ipv4first next dev
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.200.182.3:3000
+- Environments: .env.local
+- Experiments (use with caution):
+  ┬╖ optimizePackageImports
+  Γ£ô webpackMemoryOptimizations
+
+Γ£ô Starting...
+Γ£ô Ready in 1607ms
+ GET / 200 in 2.8s (compile: 451ms, proxy.ts: 191ms, render: 2.2s)
+ GET / 200 in 1141ms (compile: 10ms, proxy.ts: 17ms, render: 1115ms)
+ GET /api/wishlist 200 in 617ms (compile: 230ms, proxy.ts: 33ms, render: 354ms)
+ GET /cart 200 in 807ms (compile: 760ms, proxy.ts: 10ms, render: 37ms)
+ POST /cart 200 in 717ms (compile: 7ms, proxy.ts: 17ms, render: 694ms)
+ POST /cart 200 in 970ms (compile: 6ms, proxy.ts: 9ms, render: 954ms)
+ POST /cart 200 in 348ms (compile: 6ms, proxy.ts: 9ms, render: 333ms)
+ POST /cart 200 in 353ms (compile: 9ms, proxy.ts: 7ms, render: 337ms)
+ GET /shop 200 in 1663ms (compile: 411ms, proxy.ts: 4ms, render: 1248ms)
+ GET / 200 in 494ms (compile: 5ms, proxy.ts: 6ms, render: 482ms)
+ POST /api/ai/cart-analysis 200 in 16.5s (compile: 165ms, proxy.ts: 6ms, render: 16.3s)
+ GET /admin 307 in 1239ms (compile: 653ms, proxy.ts: 276ms, render: 310ms)
+ GET /admin/dashboard 200 in 2.7s (compile: 1073ms, proxy.ts: 140ms, render: 1471ms)
+ GET /admin/products 200 in 1658ms (compile: 677ms, proxy.ts: 201ms, render: 780ms)
+ GET /admin/products 200 in 923ms (compile: 10ms, proxy.ts: 214ms, render: 699ms)
+ GET /admin/products 200 in 978ms (compile: 7ms, proxy.ts: 306ms, render: 665ms)
+ GET /admin/products 200 in 934ms (compile: 8ms, proxy.ts: 248ms, render: 678ms)
+ GET /admin/products 200 in 1013ms (compile: 4ms, proxy.ts: 325ms, render: 683ms)
+ GET /admin/products 200 in 952ms (compile: 8ms, proxy.ts: 325ms, render: 619ms)
+ GET /admin/products 200 in 825ms (compile: 6ms, proxy.ts: 179ms, render: 640ms)
+ GET /admin/categories 200 in 970ms (compile: 490ms, proxy.ts: 275ms, render: 205ms)
+ GET /admin/products 200 in 876ms (compile: 5ms, proxy.ts: 198ms, render: 674ms)
+ GET /admin/products 200 in 918ms (compile: 7ms, proxy.ts: 180ms, render: 731ms)
+ GET /admin/products 200 in 945ms (compile: 6ms, proxy.ts: 273ms, render: 665ms)
+ GET /admin/products 200 in 925ms (compile: 6ms, proxy.ts: 285ms, render: 635ms)
+ GET /admin/products 200 in 946ms (compile: 9ms, proxy.ts: 262ms, render: 676ms)
+ GET /admin/products 200 in 961ms (compile: 5ms, proxy.ts: 313ms, render: 642ms)
+ GET /admin/products 200 in 755ms (compile: 5ms, proxy.ts: 184ms, render: 565ms)
+ GET /admin/products 200 in 819ms (compile: 5ms, proxy.ts: 188ms, render: 627ms)
+ GET /admin/products 200 in 912ms (compile: 8ms, proxy.ts: 184ms, render: 720ms)
+ GET /admin/products 200 in 954ms (compile: 8ms, proxy.ts: 326ms, render: 620ms)
+ GET /admin/products 200 in 903ms (compile: 5ms, proxy.ts: 274ms, render: 624ms)
+ GET /admin/products 200 in 784ms (compile: 5ms, proxy.ts: 162ms, render: 617ms)
+ GET /admin/products 200 in 860ms (compile: 4ms, proxy.ts: 185ms, render: 671ms)
+ GET /admin/products 200 in 935ms (compile: 5ms, proxy.ts: 295ms, render: 635ms)
+ GET /admin/products 200 in 908ms (compile: 6ms, proxy.ts: 269ms, render: 632ms)
+ GET /admin/products 200 in 890ms (compile: 8ms, proxy.ts: 270ms, render: 612ms)
+ GET /admin/products 200 in 886ms (compile: 7ms, proxy.ts: 242ms, render: 637ms)
+ GET /admin/products 200 in 909ms (compile: 5ms, proxy.ts: 283ms, render: 621ms)
+ GET /admin/products 200 in 878ms (compile: 6ms, proxy.ts: 246ms, render: 626ms)
+ GET /admin/products 200 in 925ms (compile: 5ms, proxy.ts: 257ms, render: 663ms)
+ GET /admin/products 200 in 885ms (compile: 6ms, proxy.ts: 244ms, render: 635ms)
+ GET /admin/products 200 in 853ms (compile: 8ms, proxy.ts: 216ms, render: 628ms)
+ GET /admin/products 200 in 899ms (compile: 8ms, proxy.ts: 173ms, render: 718ms)
+ GET /admin/products 200 in 903ms (compile: 5ms, proxy.ts: 271ms, render: 626ms)
+ GET /admin/products 200 in 852ms (compile: 5ms, proxy.ts: 208ms, render: 638ms)
+ GET /admin/dashboard 200 in 1338ms (compile: 5ms, proxy.ts: 274ms, render: 1059ms)
+ GET /admin/products 200 in 853ms (compile: 10ms, proxy.ts: 235ms, render: 607ms)
+ GET /admin/products 200 in 680ms (compile: 6ms, proxy.ts: 114ms, render: 560ms)
+ GET /admin/products 200 in 789ms (compile: 6ms, proxy.ts: 156ms, render: 627ms)
+ GET /admin/picker 200 in 1631ms (compile: 996ms, proxy.ts: 221ms, render: 413ms)
+ GET /admin/products 200 in 641ms (compile: 18ms, proxy.ts: 121ms, render: 502ms)
+ GET /admin/products 200 in 753ms (compile: 7ms, proxy.ts: 176ms, render: 570ms)
+ GET /admin/products 200 in 699ms (compile: 7ms, proxy.ts: 167ms, render: 525ms)
+ GET /admin/products 200 in 688ms (compile: 6ms, proxy.ts: 164ms, render: 517ms)
+ GET /admin/picker 200 in 561ms (compile: 3ms, proxy.ts: 125ms, render: 433ms)
+ GET /admin/products 200 in 744ms (compile: 5ms, proxy.ts: 179ms, render: 560ms)
+ GET /admin/rider 200 in 1229ms (compile: 719ms, proxy.ts: 179ms, render: 332ms)
+ GET /admin/notifications 200 in 1128ms (compile: 789ms, proxy.ts: 111ms, render: 227ms)
+ GET /admin/loyalty 200 in 1551ms (compile: 820ms, proxy.ts: 387ms, render: 343ms)
+ GET /admin/referrals 200 in 1639ms (compile: 743ms, proxy.ts: 385ms, render: 511ms)
+ GET /admin/reviews 200 in 1073ms (compile: 740ms, proxy.ts: 102ms, render: 231ms)
+ GET /admin/users 200 in 1141ms (compile: 873ms, proxy.ts: 100ms, render: 168ms)
+ GET /admin/coupons 200 in 1367ms (compile: 848ms, proxy.ts: 410ms, render: 109ms)
+ GET /admin/analytics 200 in 908ms (compile: 367ms, proxy.ts: 121ms, render: 420ms)
+ GET /admin/dashboard 200 in 1356ms (compile: 7ms, proxy.ts: 172ms, render: 1177ms)
+ GET / 200 in 819ms (compile: 9ms, proxy.ts: 10ms, render: 800ms)
+ GET /api/wishlist 200 in 244ms (compile: 9ms, proxy.ts: 58ms, render: 177ms)
+ GET /assistant 200 in 819ms (compile: 669ms, proxy.ts: 119ms, render: 31ms)
+ GET /assistant 200 in 715ms (compile: 7ms, proxy.ts: 585ms, render: 123ms)
+ POST /api/assistant 200 in 56s (compile: 70ms, proxy.ts: 9ms, render: 56s)
+ GET /api/wishlist 200 in 481ms (compile: 5ms, proxy.ts: 7ms, render: 470ms)
+ GET / 200 in 929ms (compile: 4ms, proxy.ts: 6ms, render: 919ms)
+ GET /assistant 200 in 160ms (compile: 9ms, proxy.ts: 123ms, render: 28ms)
+ POST /api/assistant 200 in 10.0s (compile: 4ms, proxy.ts: 8ms, render: 10.0s)
+  Reload env: .env.local
+Γ£ô Compiled in 3ms
+ΓÜá Fast Refresh had to perform a full reload when ./node_modules/next/dist/client/image-component.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '748826666'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '2267476041'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '4269996420'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '3455487303'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '4269996420'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '3455487303'
+}
+ GET / 200 in 567ms (compile: 97ms, proxy.ts: 61ms, render: 410ms)
+ GET / 200 in 311ms (compile: 49ms, proxy.ts: 12ms, render: 251ms)
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '748826666'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '2267476041'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at proxy (src\proxy.ts:46:38)
+  44 |   });
+  45 |
+> 46 |   const supabase = createServerClient(
+     |                                      ^
+  47 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  48 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  49 |     {
+ GET / 200 in 482ms (compile: 12ms, proxy.ts: 10ms, render: 459ms)
+ GET /manifest.json 404 in 414ms (compile: -125689┬╡s, proxy.ts: 392ms, render: 148ms)
+  Reload env: .env.local
+ GET / 404 in 694ms (compile: 14ms, proxy.ts: 39ms, render: 641ms)
+ GET / 200 in 1155ms (compile: 277ms, proxy.ts: 67ms, render: 811ms)
+ GET / 200 in 297ms (compile: 11ms, proxy.ts: 209ms, render: 77ms)
+ GET / 200 in 499ms (compile: 73ms, proxy.ts: 53ms, render: 373ms)
+ GET /api/wishlist 200 in 603ms (compile: 50ms, proxy.ts: 3ms, render: 550ms)
+ GET / 200 in 1542ms (compile: 148ms, proxy.ts: 45ms, render: 1349ms)
+  Reload env: .env.local
+ΓÜá Fast Refresh had to perform a full reload when ./node_modules/next/dist/client/image-component.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+Γ£ô Compiled in 2ms
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '748826666'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '2267476041'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '4269996420'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '3455487303'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '4269996420'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '3455487303'
+}
+ GET / 200 in 305ms (compile: 35ms, proxy.ts: 11ms, render: 258ms)
+ GET / 200 in 562ms (compile: 101ms, proxy.ts: 45ms, render: 416ms)
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async Navbar (src\components\layout\Navbar.tsx:15:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '3787307337'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src\lib\supabase\server.ts:8:28)
+    at async HomePage (src\app\(store)\page.tsx:21:20)
+   6 |   const cookieStore = await cookies();
+   7 |
+>  8 |   return createServerClient<Database>(
+     |                            ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  10 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  11 |     { {
+  digest: '4193165386'
+}
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at proxy (src\proxy.ts:46:38)
+  44 |   });
+  45 |
+> 46 |   const supabase = createServerClient(
+     |                                      ^
+  47 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  48 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  49 |     {
+ GET /manifest.json 404 in 112ms (compile: -10829┬╡s, proxy.ts: 109ms, render: 14ms)
+ GET / 200 in 578ms (compile: 10ms, proxy.ts: 9ms, render: 559ms)
+Γ¿» Error: Your project's URL and Key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at proxy (src\proxy.ts:46:38)
+  44 |   });
+  45 |
+> 46 |   const supabase = createServerClient(
+     |                                      ^
+  47 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  48 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  49 |     {
+ GET /manifest.json 404 in 60ms (compile: -10116┬╡s, proxy.ts: 58ms, render: 12ms)
+  Reload env: .env.local
+Γ£ô Compiled in 2ms
+ GET / 200 in 818ms (compile: 88ms, proxy.ts: 52ms, render: 679ms)
+ GET / 200 in 645ms (compile: 4ms, proxy.ts: 37ms, render: 604ms)
+ GET / 200 in 670ms (compile: 4ms, proxy.ts: 47ms, render: 619ms)
+ GET / 200 in 576ms (compile: 4ms, proxy.ts: 34ms, render: 538ms)
+ GET / 200 in 599ms (compile: 4ms, proxy.ts: 34ms, render: 561ms)
+ GET / 200 in 739ms (compile: 5ms, proxy.ts: 42ms, render: 692ms)
+ GET / 200 in 772ms (compile: 4ms, proxy.ts: 5ms, render: 763ms)
+ GET / 200 in 743ms (compile: 22ms, proxy.ts: 19ms, render: 703ms)
+ GET / 200 in 721ms (compile: 5ms, proxy.ts: 18ms, render: 698ms)
+ GET / 200 in 688ms (compile: 7ms, proxy.ts: 43ms, render: 637ms)
+ GET / 200 in 680ms (compile: 9ms, proxy.ts: 57ms, render: 614ms)
+ GET / 200 in 573ms (compile: 8ms, proxy.ts: 9ms, render: 556ms)
+ GET / 200 in 427ms (compile: 5ms, proxy.ts: 4ms, render: 418ms)
+ GET / 200 in 342ms (compile: 5ms, proxy.ts: 11ms, render: 327ms)
+ GET / 200 in 245ms (compile: 17ms, proxy.ts: 12ms, render: 216ms)
+ GET / 200 in 168ms (compile: 4ms, proxy.ts: 36ms, render: 128ms)
+  Reload env: .env.local
+ GET / 200 in 298ms (compile: 86ms, proxy.ts: 45ms, render: 168ms)
+  Reload env: .env.local
+ GET / 200 in 371ms (compile: 94ms, proxy.ts: 110ms, render: 167ms)
+Γ¿» Error: Invalid src prop (https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Starr_070730-7911_Lactuca_sativa.jpg/960px-Starr_070730-7911_Lactuca_sativa.jpg) on `next/image`, hostname "upload.wikimedia.org" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    at ignore-listed frames {
+  digest: '526932704@E231'
+}
+ GET /api/wishlist 200 in 590ms (compile: 146ms, proxy.ts: 22ms, render: 422ms)
+ GET / 200 in 2.0s (compile: 21ms, proxy.ts: 53ms, render: 1963ms)
+ΓÜá Fast Refresh had to perform a full reload when ./node_modules/next/dist/client/image-component.js changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+Γ£ô Compiled in 2.4s
+ GET / 200 in 497ms (compile: 6ms, proxy.ts: 7ms, render: 484ms)
+ GET / 200 in 419ms (compile: 42ms, proxy.ts: 8ms, render: 369ms)
+ GET / 200 in 2.3s (compile: 1590ms, proxy.ts: 116ms, render: 623ms)
+ GET / 200 in 265ms (compile: 60ms, proxy.ts: 34ms, render: 170ms)
+ GET /api/wishlist 200 in 399ms (compile: 76ms, proxy.ts: 14ms, render: 310ms)
+ GET / 200 in 2.0s (compile: 7ms, proxy.ts: 8ms, render: 2.0s)
+ GET /api/wishlist 200 in 332ms (compile: 6ms, proxy.ts: 8ms, render: 317ms)
+ GET / 200 in 889ms (compile: 6ms, proxy.ts: 7ms, render: 876ms)
+ GET /api/wishlist 200 in 191ms (compile: 16ms, proxy.ts: 17ms, render: 157ms)
+ GET /login 200 in 2.7s (compile: 2.3s, proxy.ts: 9ms, render: 320ms)
+ GET /category/vegetables 200 in 5.2s (compile: 4.0s, proxy.ts: 22ms, render: 1188ms)
+ GET /api/wishlist 200 in 281ms (compile: 5ms, proxy.ts: 14ms, render: 262ms)
+ GET /category/vegetables 200 in 1703ms (compile: 25ms, proxy.ts: 8ms, render: 1670ms)
+ GET /admin/products/images 200 in 2.1s (compile: 1191ms, proxy.ts: 239ms, render: 697ms)
+ GET /admin/products 200 in 1690ms (compile: 224ms, proxy.ts: 431ms, render: 1036ms)
+ GET /admin/dashboard 200 in 1373ms (compile: 82ms, proxy.ts: 197ms, render: 1094ms)
+ GET /admin/products 200 in 1365ms (compile: 8ms, proxy.ts: 428ms, render: 928ms)
+ GET /admin/products 200 in 1152ms (compile: 8ms, proxy.ts: 364ms, render: 780ms)
+ GET /admin/products 200 in 1089ms (compile: 8ms, proxy.ts: 318ms, render: 763ms)
+ GET /admin/products 200 in 1063ms (compile: 9ms, proxy.ts: 321ms, render: 732ms)
+Γ£ô Compiled in 243ms
+ GET /admin/products 404 in 684ms (compile: 301ms, proxy.ts: 301ms, render: 82ms)
+ GET /category/vegetables 200 in 237ms (compile: 45ms, proxy.ts: 18ms, render: 174ms)
+ GET /admin/products 200 in 1030ms (compile: 12ms, proxy.ts: 274ms, render: 745ms)
+ GET /admin/products 200 in 2.2s (compile: 145ms, proxy.ts: 443ms, render: 1626ms)
+ GET /admin/products 200 in 686ms (compile: 7ms, proxy.ts: 153ms, render: 525ms)
+ GET /admin/dashboard 200 in 1344ms (compile: 6ms, proxy.ts: 189ms, render: 1150ms)
+ GET /admin/products 200 in 850ms (compile: 6ms, proxy.ts: 129ms, render: 715ms)
+ GET /admin/products 200 in 752ms (compile: 6ms, proxy.ts: 174ms, render: 573ms)
+ GET /admin/products 200 in 790ms (compile: 7ms, proxy.ts: 220ms, render: 563ms)
+ GET /admin/products 200 in 849ms (compile: 6ms, proxy.ts: 204ms, render: 639ms)
+ GET /admin/products 200 in 909ms (compile: 9ms, proxy.ts: 186ms, render: 714ms)
+ GET /admin/products 200 in 851ms (compile: 7ms, proxy.ts: 193ms, render: 651ms)
+ GET /admin/products 200 in 770ms (compile: 6ms, proxy.ts: 190ms, render: 575ms)
+ GET /admin/products 200 in 704ms (compile: 7ms, proxy.ts: 175ms, render: 522ms)
+ GET /admin/products 200 in 718ms (compile: 6ms, proxy.ts: 175ms, render: 536ms)
+ GET /admin/products 200 in 727ms (compile: 6ms, proxy.ts: 177ms, render: 544ms)
+ GET /admin/products 200 in 631ms (compile: 3ms, proxy.ts: 185ms, render: 443ms)
+ GET /admin/products 200 in 589ms (compile: 4ms, proxy.ts: 182ms, render: 403ms)
+ GET /admin/products 200 in 1272ms (compile: 3ms, proxy.ts: 837ms, render: 432ms)
+ GET /login 200 in 37ms (compile: 3ms, proxy.ts: 3ms, render: 31ms)
+ GET /admin/products 200 in 570ms (compile: 5ms, proxy.ts: 184ms, render: 381ms)
+ GET /admin/products 200 in 707ms (compile: 3ms, proxy.ts: 161ms, render: 543ms)
+ GET /admin/products 200 in 554ms (compile: 4ms, proxy.ts: 159ms, render: 391ms)
+ GET /admin/products 200 in 738ms (compile: 5ms, proxy.ts: 178ms, render: 555ms)
+ GET /admin/products 200 in 1127ms (compile: 7ms, proxy.ts: 198ms, render: 922ms)
+ GET /admin/products 200 in 1891ms (compile: 11ms, proxy.ts: 226ms, render: 1655ms)
+ GET /admin/products 200 in 1967ms (compile: 15ms, proxy.ts: 459ms, render: 1492ms)
+ GET /admin/products 200 in 1165ms (compile: 14ms, proxy.ts: 288ms, render: 863ms)
+ GET /admin/products 200 in 900ms (compile: 9ms, proxy.ts: 312ms, render: 578ms)
+ GET /admin/products 200 in 1553ms (compile: 9ms, proxy.ts: 133ms, render: 1411ms)
+ GET /admin/categories 200 in 1737ms (compile: 737ms, proxy.ts: 236ms, render: 765ms)
+ GET /admin/products 200 in 2.4s (compile: 8ms, proxy.ts: 1392ms, render: 994ms)
+ GET /admin/products 200 in 1312ms (compile: 12ms, proxy.ts: 203ms, render: 1098ms)
+ GET /admin/products 200 in 1697ms (compile: 12ms, proxy.ts: 341ms, render: 1345ms)
+ GET /admin/products 200 in 1875ms (compile: 14ms, proxy.ts: 403ms, render: 1458ms)
+ GET /admin/products 200 in 2.9s (compile: 15ms, proxy.ts: 231ms, render: 2.7s)
+ GET /admin/products 200 in 5.3s (compile: 8ms, proxy.ts: 255ms, render: 5.0s)
+ GET /admin/products 200 in 5.9s (compile: 11ms, proxy.ts: 162ms, render: 5.7s)
+ GET /admin/products 200 in 5.4s (compile: 260ms, proxy.ts: 293ms, render: 4.9s)
+ GET /admin/products 200 in 4.7s (compile: 187ms, proxy.ts: 693ms, render: 3.8s)
+ GET /admin/products 200 in 3.2s (compile: 340ms, proxy.ts: 503ms, render: 2.4s)
+ GET /admin/products 200 in 3.3s (compile: 11ms, proxy.ts: 672ms, render: 2.6s)
+ GET /admin/products 200 in 1968ms (compile: 40ms, proxy.ts: 381ms, render: 1548ms)
+ GET /admin/products 200 in 2.5s (compile: 67ms, proxy.ts: 560ms, render: 1828ms)
+ GET /admin/products 200 in 3.8s (compile: 23ms, proxy.ts: 678ms, render: 3.1s)
+ GET /admin/products 200 in 3.8s (compile: 15ms, proxy.ts: 577ms, render: 3.2s)
+Γ£ô Finished filesystem cache database compaction in 10.3s
+ GET /admin/products 200 in 1675ms (compile: 21ms, proxy.ts: 201ms, render: 1454ms)
+ GET /admin/products 200 in 1852ms (compile: 22ms, proxy.ts: 428ms, render: 1401ms)
+ GET /admin/products 200 in 1871ms (compile: 171ms, proxy.ts: 257ms, render: 1443ms)
+ GET /admin/products 200 in 1908ms (compile: 22ms, proxy.ts: 528ms, render: 1358ms)
+ GET /admin/products 200 in 1469ms (compile: 13ms, proxy.ts: 563ms, render: 892ms)
+Γùï Compiling /admin/products/[id] ...
+ GET /admin/products/620a7037-5654-40e7-99da-6310b602cf19 200 in 6.4s (compile: 5.4s, proxy.ts: 642ms, render: 339ms)
+ GET /admin/products 200 in 2.0s (compile: 8ms, proxy.ts: 704ms, render: 1304ms)
+ GET /admin/products 200 in 1337ms (compile: 7ms, proxy.ts: 218ms, render: 1113ms)
+ GET /admin/products 200 in 1175ms (compile: 87ms, proxy.ts: 414ms, render: 674ms)
+ GET /admin/products 200 in 1011ms (compile: 4ms, proxy.ts: 290ms, render: 717ms)
+ GET /admin/products 200 in 1001ms (compile: 7ms, proxy.ts: 298ms, render: 696ms)
+ GET /admin/products 200 in 1363ms (compile: 6ms, proxy.ts: 652ms, render: 705ms)
+ GET /admin/products 200 in 968ms (compile: 6ms, proxy.ts: 266ms, render: 695ms)
+ GET /admin/products 200 in 1029ms (compile: 7ms, proxy.ts: 309ms, render: 712ms)
+ GET /admin/products 200 in 1219ms (compile: 8ms, proxy.ts: 360ms, render: 852ms)
+ GET /admin/products 200 in 1043ms (compile: 6ms, proxy.ts: 272ms, render: 765ms)
+ GET /admin/products 200 in 905ms (compile: 7ms, proxy.ts: 233ms, render: 665ms)
+ GET /admin/products 200 in 989ms (compile: 6ms, proxy.ts: 327ms, render: 655ms)
+ GET /admin/products 200 in 1005ms (compile: 6ms, proxy.ts: 324ms, render: 675ms)
+ GET /admin/products 200 in 970ms (compile: 7ms, proxy.ts: 267ms, render: 696ms)
+ GET /admin/products 200 in 1017ms (compile: 6ms, proxy.ts: 338ms, render: 673ms)
+ GET /admin/products 200 in 1032ms (compile: 4ms, proxy.ts: 338ms, render: 690ms)
+ GET /admin/products 200 in 1039ms (compile: 5ms, proxy.ts: 350ms, render: 684ms)
+ GET /admin/products 200 in 999ms (compile: 6ms, proxy.ts: 278ms, render: 716ms)
+ GET /admin/products 200 in 992ms (compile: 7ms, proxy.ts: 308ms, render: 678ms)
+ GET /admin/products 200 in 1026ms (compile: 5ms, proxy.ts: 296ms, render: 725ms)
+ GET /admin/products 200 in 1254ms (compile: 9ms, proxy.ts: 342ms, render: 903ms)
+ GET /admin/products 200 in 1118ms (compile: 7ms, proxy.ts: 313ms, render: 798ms)
+ GET /admin/products 200 in 950ms (compile: 8ms, proxy.ts: 262ms, render: 680ms)
+ GET /admin/products 200 in 958ms (compile: 6ms, proxy.ts: 255ms, render: 697ms)
+ GET /admin/products 200 in 1010ms (compile: 6ms, proxy.ts: 304ms, render: 700ms)
+ POST /api/admin/chat 200 in 5.9s (compile: 1677ms, proxy.ts: 6ms, render: 4.2s)
+ GET /admin/products 200 in 1006ms (compile: 8ms, proxy.ts: 270ms, render: 728ms)
+ GET /admin/products 200 in 1032ms (compile: 6ms, proxy.ts: 351ms, render: 674ms)
+ GET /admin/products 200 in 876ms (compile: 10ms, proxy.ts: 259ms, render: 607ms)
+ GET /admin/products 200 in 954ms (compile: 6ms, proxy.ts: 269ms, render: 679ms)
+ GET /admin/products 200 in 991ms (compile: 6ms, proxy.ts: 343ms, render: 642ms)
+ GET /admin/products 200 in 993ms (compile: 8ms, proxy.ts: 317ms, render: 668ms)
+ GET /admin/products 200 in 919ms (compile: 6ms, proxy.ts: 307ms, render: 606ms)
+ GET /admin/products 200 in 929ms (compile: 7ms, proxy.ts: 243ms, render: 679ms)
+ GET /admin/products 200 in 1009ms (compile: 7ms, proxy.ts: 329ms, render: 673ms)
+ GET /admin/products 200 in 963ms (compile: 10ms, proxy.ts: 276ms, render: 676ms)
+ GET /admin/products 200 in 972ms (compile: 9ms, proxy.ts: 282ms, render: 681ms)
+ GET /admin/products 200 in 968ms (compile: 4ms, proxy.ts: 275ms, render: 689ms)
+ GET /admin/products 200 in 932ms (compile: 6ms, proxy.ts: 286ms, render: 641ms)
+ GET /admin/products 200 in 1079ms (compile: 5ms, proxy.ts: 260ms, render: 814ms)
+ GET /admin/products 200 in 1147ms (compile: 9ms, proxy.ts: 338ms, render: 800ms)
+ GET /admin/products 200 in 1062ms (compile: 5ms, proxy.ts: 363ms, render: 695ms)
+ GET /admin/products 200 in 820ms (compile: 5ms, proxy.ts: 195ms, render: 620ms)
+ GET /admin/products 200 in 902ms (compile: 6ms, proxy.ts: 269ms, render: 626ms)
+ GET /admin/products 200 in 798ms (compile: 6ms, proxy.ts: 193ms, render: 598ms)
+ GET /admin/products 200 in 857ms (compile: 5ms, proxy.ts: 172ms, render: 681ms)
+ GET /admin/products/images 200 in 874ms (compile: 179ms, proxy.ts: 245ms, render: 450ms)
+ GET /admin/products 200 in 1572ms (compile: 6ms, proxy.ts: 287ms, render: 1279ms)
+ GET /admin/products/images 200 in 1286ms (compile: 7ms, proxy.ts: 487ms, render: 791ms)
+Γ£ô Compiled in 154ms
+ GET /category/vegetables 200 in 168ms (compile: 27ms, proxy.ts: 9ms, render: 131ms)
+ GET /admin/products/images 200 in 637ms (compile: 162ms, proxy.ts: 382ms, render: 93ms)
+ GET /admin/products/images 200 in 1425ms (compile: 8ms, proxy.ts: 559ms, render: 858ms)
+ POST /admin/products/images 200 in 1116ms (compile: 8ms, proxy.ts: 254ms, render: 853ms)
+ GET /admin/products/images?q=dhokla 200 in 666ms (compile: 8ms, proxy.ts: 438ms, render: 221ms)
+ GET /admin/products/images?q=dhokla&all=1 200 in 371ms (compile: 7ms, proxy.ts: 203ms, render: 160ms)
+ GET /admin/products/images?q=MTR+Khaman+Dhokla+Mix+200g+Staples&all=1 200 in 713ms (compile: 4ms, proxy.ts: 472ms, render: 237ms)
+ GET /admin/products 200 in 1170ms (compile: 9ms, proxy.ts: 417ms, render: 744ms)
+Γ£ô Compiled in 342ms
+ GET /category/vegetables 200 in 362ms (compile: 23ms, proxy.ts: 7ms, render: 332ms)
+ GET /category/vegetables 200 in 234ms (compile: 8ms, proxy.ts: 6ms, render: 221ms)
+ GET /category/vegetables 200 in 138ms (compile: 8ms, proxy.ts: 6ms, render: 124ms)
+ GET /admin/products 200 in 1160ms (compile: 151ms, proxy.ts: 756ms, render: 252ms)
+ GET /admin/products 200 in 606ms (compile: 4ms, proxy.ts: 298ms, render: 304ms)
+ GET /admin/products 200 in 657ms (compile: 10ms, proxy.ts: 147ms, render: 500ms)
+ GET /admin/products 200 in 2.4s (compile: 13ms, proxy.ts: 208ms, render: 2.2s)
+ GET /admin/products 200 in 1429ms (compile: 11ms, proxy.ts: 456ms, render: 962ms)
+ GET /admin/products 200 in 1239ms (compile: 6ms, proxy.ts: 535ms, render: 699ms)
+ GET /admin/products 200 in 1043ms (compile: 6ms, proxy.ts: 327ms, render: 709ms)
+ GET /admin/products 200 in 974ms (compile: 6ms, proxy.ts: 289ms, render: 679ms)
+ GET /admin/products 200 in 898ms (compile: 5ms, proxy.ts: 224ms, render: 669ms)
+ GET /admin/products 200 in 1018ms (compile: 3ms, proxy.ts: 324ms, render: 691ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 774ms (compile: 7ms, proxy.ts: 196ms, render: 571ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 650ms (compile: 5ms, proxy.ts: 164ms, render: 481ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 643ms (compile: 5ms, proxy.ts: 183ms, render: 455ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 681ms (compile: 5ms, proxy.ts: 185ms, render: 491ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 660ms (compile: 5ms, proxy.ts: 177ms, render: 478ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 690ms (compile: 5ms, proxy.ts: 196ms, render: 489ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 652ms (compile: 6ms, proxy.ts: 177ms, render: 469ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 741ms (compile: 5ms, proxy.ts: 181ms, render: 555ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 655ms (compile: 5ms, proxy.ts: 172ms, render: 478ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staples&page=1 200 in 703ms (compile: 4ms, proxy.ts: 205ms, render: 493ms)
+ GET /admin/products?q=MTR+Khaman+Dhokla+Mix+200g+Staple&page=1 200 in 534ms (compile: 6ms, proxy.ts: 182ms, render: 346ms)
+ GET /admin/products?q=MTR&page=1 200 in 1395ms (compile: 17ms, proxy.ts: 357ms, render: 1021ms)
+ GET /admin/products?q=MTR&page=1 200 in 1164ms (compile: 5ms, proxy.ts: 269ms, render: 890ms)
+ GET /admin/products?q=MTR&page=1 200 in 879ms (compile: 6ms, proxy.ts: 304ms, render: 568ms)
+ GET /admin/products?q=MTR&page=1 200 in 752ms (compile: 5ms, proxy.ts: 236ms, render: 511ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 1072ms (compile: 280ms, proxy.ts: 256ms, render: 537ms)
+ GET /admin/products?q=MTR&page=1 200 in 1410ms (compile: 4ms, proxy.ts: 199ms, render: 1206ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 1031ms (compile: 12ms, proxy.ts: 380ms, render: 639ms)
+ POST /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 918ms (compile: 18ms, proxy.ts: 237ms, render: 664ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 429ms (compile: 18ms, proxy.ts: 139ms, render: 271ms)
+ POST /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 640ms (compile: 14ms, proxy.ts: 217ms, render: 410ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 383ms (compile: 8ms, proxy.ts: 132ms, render: 243ms)
+ POST /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 561ms (compile: 14ms, proxy.ts: 200ms, render: 346ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 350ms (compile: 8ms, proxy.ts: 116ms, render: 226ms)
+ GET /admin/products 200 in 1355ms (compile: 3ms, proxy.ts: 191ms, render: 1161ms)
+ GET /admin/products 200 in 947ms (compile: 6ms, proxy.ts: 278ms, render: 663ms)
+ GET /admin/products 200 in 1240ms (compile: 5ms, proxy.ts: 320ms, render: 916ms)
+ GET /admin/products 200 in 901ms (compile: 7ms, proxy.ts: 267ms, render: 627ms)
+ GET /admin/products?q=mtr&page=1 200 in 798ms (compile: 6ms, proxy.ts: 208ms, render: 585ms)
+ GET /admin/products?q=mtr&page=1 200 in 754ms (compile: 4ms, proxy.ts: 189ms, render: 562ms)
+ GET /admin/products?q=mtr&page=1 200 in 944ms (compile: 4ms, proxy.ts: 383ms, render: 557ms)
+ GET /admin/products?q=mtr&page=1 200 in 728ms (compile: 3ms, proxy.ts: 202ms, render: 523ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 346ms (compile: 14ms, proxy.ts: 186ms, render: 146ms)
+ GET /admin/products?q=mtr&page=1 200 in 765ms (compile: 5ms, proxy.ts: 199ms, render: 561ms)
+ GET /admin/products?q=mtr&page=1 200 in 772ms (compile: 7ms, proxy.ts: 184ms, render: 581ms)
+ GET /admin/products?q=mtr&page=1 200 in 727ms (compile: 6ms, proxy.ts: 191ms, render: 529ms)
+ GET /admin/products?q=mtr&page=1 200 in 722ms (compile: 6ms, proxy.ts: 187ms, render: 529ms)
+ GET /admin/products?q=mtr&page=1 200 in 759ms (compile: 5ms, proxy.ts: 194ms, render: 560ms)
+ GET /admin/products?q=mtr&page=1 200 in 708ms (compile: 8ms, proxy.ts: 200ms, render: 500ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 398ms (compile: 20ms, proxy.ts: 215ms, render: 164ms)
+ POST /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 581ms (compile: 15ms, proxy.ts: 163ms, render: 403ms)
+ GET /admin/products/034d381e-ec50-4cd3-8792-c2543b26fb41 200 in 367ms (compile: 10ms, proxy.ts: 138ms, render: 219ms)
+ GET /api/wishlist 200 in 623ms (compile: 5ms, proxy.ts: 7ms, render: 611ms)
+ GET / 200 in 1168ms (compile: 10ms, proxy.ts: 7ms, render: 1152ms)
+ GET / 200 in 992ms (compile: 6ms, proxy.ts: 6ms, render: 980ms)
+ GET /api/wishlist 200 in 189ms (compile: 13ms, proxy.ts: 17ms, render: 159ms)
+ GET /api/wishlist 200 in 686ms (compile: 10ms, proxy.ts: 10ms, render: 665ms)
+ GET / 200 in 1575ms (compile: 6ms, proxy.ts: 6ms, render: 1563ms)
+ GET /category/cooking-essentials 200 in 798ms (compile: 19ms, proxy.ts: 6ms, render: 772ms)
+ GET /category/spices-seasonings 200 in 600ms (compile: 16ms, proxy.ts: 5ms, render: 579ms)
+ GET /category/staples 200 in 435ms (compile: 16ms, proxy.ts: 5ms, render: 414ms)
+Γ¿» Error: Invalid src prop (https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla) on `next/image`, hostname "www.jamoona.com" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    at ignore-listed frames {
+  digest: '3241576309@E231'
+}
+ GET /category/staples 200 in 1063ms (compile: 16ms, proxy.ts: 6ms, render: 1040ms)
+ GET /api/wishlist 200 in 181ms (compile: 11ms, proxy.ts: 16ms, render: 154ms)
+Γ£ô Compiled in 230ms
+ GET /category/staples 200 in 724ms (compile: 20ms, proxy.ts: 7ms, render: 698ms)
+ GET /category/vegetables 200 in 730ms (compile: 13ms, proxy.ts: 90ms, render: 626ms)
+ GET /category/staples 200 in 793ms (compile: 118ms, proxy.ts: 6ms, render: 669ms)
+ GET /category/vegetables 200 in 715ms (compile: 19ms, proxy.ts: 109ms, render: 587ms)
+ GET /category/staples 200 in 863ms (compile: 108ms, proxy.ts: 10ms, render: 745ms)
+ GET /category/vegetables 200 in 872ms (compile: 24ms, proxy.ts: 98ms, render: 750ms)
+ GET /category/staples 200 in 888ms (compile: 16ms, proxy.ts: 6ms, render: 866ms)
+ GET /category/vegetables 200 in 727ms (compile: 31ms, proxy.ts: 18ms, render: 679ms)
+ GET /category/staples 200 in 716ms (compile: 148ms, proxy.ts: 18ms, render: 550ms)
+ GET /category/vegetables 200 in 559ms (compile: 16ms, proxy.ts: 132ms, render: 412ms)
+ GET /category/staples 200 in 427ms (compile: 149ms, proxy.ts: 8ms, render: 269ms)
+ GET /category/vegetables 200 in 288ms (compile: 12ms, proxy.ts: 138ms, render: 138ms)
+Γ£ô Compiled in 64ms
+ GET /category/staples 200 in 243ms (compile: 14ms, proxy.ts: 5ms, render: 225ms)
+ GET /category/vegetables 200 in 186ms (compile: 9ms, proxy.ts: 45ms, render: 131ms)
+Γ£ô Compiled in 139ms
+ GET /category/staples 200 in 881ms (compile: 22ms, proxy.ts: 10ms, render: 848ms)
+ GET /category/vegetables 200 in 880ms (compile: 130ms, proxy.ts: 10ms, render: 740ms)
+ GET /category/staples 200 in 668ms (compile: 20ms, proxy.ts: 16ms, render: 632ms)
+ GET /category/vegetables 200 in 925ms (compile: 168ms, proxy.ts: 9ms, render: 748ms)
+ GET /category/staples 200 in 784ms (compile: 18ms, proxy.ts: 152ms, render: 614ms)
+ GET /category/vegetables 200 in 727ms (compile: 117ms, proxy.ts: 13ms, render: 597ms)
+ GET /category/vegetables 200 in 787ms (compile: 162ms, proxy.ts: 11ms, render: 615ms)
+ GET /category/staples 200 in 790ms (compile: 27ms, proxy.ts: 11ms, render: 752ms)
+ GET /category/staples 200 in 499ms (compile: 17ms, proxy.ts: 17ms, render: 464ms)
+ GET /category/vegetables 200 in 486ms (compile: 100ms, proxy.ts: 9ms, render: 377ms)
+ GET /category/vegetables 200 in 280ms (compile: 159ms, proxy.ts: 9ms, render: 112ms)
+ GET /category/staples 200 in 386ms (compile: 21ms, proxy.ts: 109ms, render: 256ms)
+Γ¿» Error: Invalid src prop (https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla) on `next/image`, hostname "www.jamoona.com" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    at ignore-listed frames {
+  digest: '3241576309@E231'
+}
+ GET /category/staples 200 in 1519ms (compile: 20ms, proxy.ts: 5ms, render: 1494ms)
+ GET /api/wishlist 200 in 292ms (compile: 13ms, proxy.ts: 21ms, render: 258ms)
+ΓÜá Found a change in next.config.ts. Restarting the server to apply the changes...
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.200.182.3:3000
+- Environments: .env.local
+- Experiments (use with caution):
+  ┬╖ optimizePackageImports
+  Γ£ô webpackMemoryOptimizations
+
+Γ£ô Starting...
+Γ£ô Ready in 1945ms
+ GET /api/wishlist 200 in 348ms (compile: 123ms, proxy.ts: 39ms, render: 186ms)
+ GET /category/vegetables 200 in 2.7s (compile: 1030ms, proxy.ts: 9ms, render: 1623ms)
+ GET /category/staples 200 in 3.3s (compile: 1053ms, proxy.ts: 211ms, render: 1989ms)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /category/staples 200 in 1076ms (compile: 17ms, proxy.ts: 6ms, render: 1053ms)
+ GET /api/wishlist 200 in 242ms (compile: 15ms, proxy.ts: 31ms, render: 197ms)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /category/snacks 200 in 512ms (compile: 24ms, proxy.ts: 6ms, render: 481ms)
+ GET /category/beverages 200 in 392ms (compile: 17ms, proxy.ts: 6ms, render: 369ms)
+ GET /category/personal-care 200 in 391ms (compile: 19ms, proxy.ts: 6ms, render: 367ms)
+ GET /category/household 200 in 387ms (compile: 21ms, proxy.ts: 7ms, render: 359ms)
+ GET /category/baby-care 200 in 372ms (compile: 17ms, proxy.ts: 5ms, render: 350ms)
+ GET /cart 200 in 197ms (compile: 163ms, proxy.ts: 6ms, render: 28ms)
+ POST /cart 200 in 397ms (compile: 9ms, proxy.ts: 9ms, render: 379ms)
+ POST /cart 200 in 584ms (compile: 6ms, proxy.ts: 6ms, render: 572ms)
+ POST /cart 200 in 350ms (compile: 6ms, proxy.ts: 7ms, render: 338ms)
+ GET /shop 200 in 671ms (compile: 47ms, proxy.ts: 6ms, render: 618ms)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /api/wishlist 200 in 635ms (compile: 7ms, proxy.ts: 12ms, render: 616ms)
+ GET /shop 200 in 2.3s (compile: 6ms, proxy.ts: 7ms, render: 2.3s)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /category/beverages 200 in 1117ms (compile: 16ms, proxy.ts: 4ms, render: 1097ms)
+ GET /category/cooking-essentials 200 in 988ms (compile: 26ms, proxy.ts: 6ms, render: 956ms)
+OPENAI_API_KEY is missing. Using dummy embeddings for development.
+ GET /shop?q=pasta+sauce 200 in 1280ms (compile: 5ms, proxy.ts: 8ms, render: 1267ms)
+OPENAI_API_KEY is missing. Using dummy embeddings for development.
+ GET /shop?q=pasta+sauce&page=2 200 in 1125ms (compile: 8ms, proxy.ts: 7ms, render: 1110ms)
+ GET /category/staples 200 in 700ms (compile: 19ms, proxy.ts: 6ms, render: 675ms)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /category/spices-seasonings 200 in 761ms (compile: 18ms, proxy.ts: 8ms, render: 735ms)
+ GET /category/cooking-essentials 200 in 738ms (compile: 14ms, proxy.ts: 6ms, render: 718ms)
+ GET /category/spices-seasonings 200 in 456ms (compile: 14ms, proxy.ts: 4ms, render: 437ms)
+ GET /category/staples 200 in 355ms (compile: 15ms, proxy.ts: 5ms, render: 336ms)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /api/wishlist 200 in 251ms (compile: 19ms, proxy.ts: 18ms, render: 214ms)
+ GET /category/staples 200 in 1201ms (compile: 19ms, proxy.ts: 8ms, render: 1174ms)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /category/vegetables 200 in 565ms (compile: 17ms, proxy.ts: 7ms, render: 542ms)
+ GET /api/wishlist 200 in 222ms (compile: 11ms, proxy.ts: 33ms, render: 179ms)
+ GET /category/vegetables 200 in 1891ms (compile: 16ms, proxy.ts: 6ms, render: 1869ms)
+ GET /api/wishlist 200 in 1449ms (compile: 6ms, proxy.ts: 9ms, render: 1434ms)
+ GET /category/spices-seasonings 200 in 700ms (compile: 19ms, proxy.ts: 6ms, render: 675ms)
+ GET /category/snacks 200 in 849ms (compile: 16ms, proxy.ts: 6ms, render: 827ms)
+ GET /category/snacks 200 in 1001ms (compile: 18ms, proxy.ts: 3ms, render: 980ms)
+ GET /api/wishlist 200 in 462ms (compile: 15ms, proxy.ts: 15ms, render: 431ms)
+ GET /category/staples 200 in 486ms (compile: 15ms, proxy.ts: 4ms, render: 468ms)
+Γ¿» The requested resource isn't a valid image for https://www.jamoona.com/en-it/products/mtr-200g-khaman-dhokla received null
+ GET /category/staples 200 in 1589ms (compile: 26ms, proxy.ts: 22ms, render: 1541ms)
+ GET /api/wishlist 200 in 197ms (compile: 11ms, proxy.ts: 30ms, render: 157ms)
+ GET /category/meat-seafood 200 in 580ms (compile: 23ms, proxy.ts: 6ms, render: 551ms)
+ GET /category/dairy-eggs 200 in 491ms (compile: 19ms, proxy.ts: 8ms, render: 465ms)
+ GET /category/cooking-essentials 200 in 611ms (compile: 27ms, proxy.ts: 9ms, render: 576ms)
+ GET /category/staples 200 in 549ms (compile: 28ms, proxy.ts: 11ms, render: 511ms)
+ GET /category/staples 200 in 1409ms (compile: 19ms, proxy.ts: 5ms, render: 1385ms)
+ GET /api/wishlist 200 in 149ms (compile: 10ms, proxy.ts: 18ms, render: 122ms)
+ GET /category/spices-seasonings 200 in 415ms (compile: 22ms, proxy.ts: 5ms, render: 388ms)
+ GET /api/wishlist 200 in 457ms (compile: 13ms, proxy.ts: 24ms, render: 420ms)
+ GET /category/spices-seasonings 200 in 1832ms (compile: 28ms, proxy.ts: 14ms, render: 1790ms)
+ GET /category/cooking-essentials 200 in 1281ms (compile: 25ms, proxy.ts: 8ms, render: 1248ms)
+ GET /category/meat-seafood 200 in 1141ms (compile: 15ms, proxy.ts: 8ms, render: 1118ms)
+ GET /category/spices-seasonings 200 in 551ms (compile: 18ms, proxy.ts: 5ms, render: 528ms)
+ GET /category/staples 200 in 410ms (compile: 17ms, proxy.ts: 5ms, render: 388ms)
+ GET /category/snacks 200 in 507ms (compile: 19ms, proxy.ts: 6ms, render: 482ms)
+ GET /category/beverages 200 in 386ms (compile: 18ms, proxy.ts: 6ms, render: 361ms)
+ GET /category/personal-care 200 in 422ms (compile: 20ms, proxy.ts: 6ms, render: 396ms)
+ GET /api/wishlist 200 in 349ms (compile: 13ms, proxy.ts: 37ms, render: 299ms)
+ GET /category/personal-care 200 in 2.4s (compile: 192ms, proxy.ts: 163ms, render: 2.1s)
+ GET /category/snacks 200 in 420ms (compile: 19ms, proxy.ts: 6ms, render: 395ms)
+ GET /category/staples 200 in 426ms (compile: 20ms, proxy.ts: 5ms, render: 401ms)
+ GET /category/cooking-essentials 200 in 427ms (compile: 20ms, proxy.ts: 6ms, render: 401ms)
+ GET /category/meat-seafood 200 in 428ms (compile: 13ms, proxy.ts: 9ms, render: 406ms)
+ GET /category/bakery 200 in 360ms (compile: 19ms, proxy.ts: 6ms, render: 336ms)
+ GET /category/dairy-eggs 200 in 446ms (compile: 13ms, proxy.ts: 3ms, render: 430ms)
+ GET /category/fruits 200 in 372ms (compile: 16ms, proxy.ts: 5ms, render: 350ms)
+ GET /category/vegetables 200 in 408ms (compile: 21ms, proxy.ts: 6ms, render: 381ms)
+ GET /category/cooking-essentials 200 in 355ms (compile: 20ms, proxy.ts: 7ms, render: 328ms)
+ GET /category/spices-seasonings 200 in 361ms (compile: 16ms, proxy.ts: 5ms, render: 339ms)
+ GET /category/spices-seasonings 200 in 4.6s (compile: 369ms, proxy.ts: 162ms, render: 4.0s)
+ GET /api/wishlist 200 in 754ms (compile: 126ms, proxy.ts: 61ms, render: 567ms)
+ GET /category/baby-care 200 in 705ms (compile: 53ms, proxy.ts: 16ms, render: 636ms)
+ GET /category/baby-care?page=9 200 in 563ms (compile: 31ms, proxy.ts: 12ms, render: 520ms)
+ GET /category/baby-care?page=8 200 in 1302ms (compile: 207ms, proxy.ts: 56ms, render: 1039ms)
+ GET / 200 in 1391ms (compile: 376ms, proxy.ts: 23ms, render: 992ms)
+ GET /api/wishlist 200 in 789ms (compile: 14ms, proxy.ts: 28ms, render: 747ms)
+ GET / 200 in 2.8s (compile: 18ms, proxy.ts: 46ms, render: 2.8s)
+ GET /category/vegetables 200 in 2.7s (compile: 267ms, proxy.ts: 22ms, render: 2.4s)
+ GET /api/wishlist 200 in 932ms (compile: 8ms, proxy.ts: 11ms, render: 912ms)
+ GET /category/vegetables 200 in 2.6s (compile: 97ms, proxy.ts: 16ms, render: 2.5s)
+ GET /api/wishlist 200 in 257ms (compile: 29ms, proxy.ts: 45ms, render: 184ms)
+ GET /category/bakery 200 in 627ms (compile: 45ms, proxy.ts: 8ms, render: 574ms)
+ GET /category/meat-seafood 200 in 841ms (compile: 46ms, proxy.ts: 12ms, render: 783ms)
+ GET /category/cooking-essentials 200 in 676ms (compile: 21ms, proxy.ts: 15ms, render: 640ms)
+ GET /category/spices-seasonings 200 in 1054ms (compile: 44ms, proxy.ts: 11ms, render: 999ms)
+ GET /category/staples 200 in 1528ms (compile: 60ms, proxy.ts: 26ms, render: 1443ms)
+ GET /category/snacks 200 in 1163ms (compile: 60ms, proxy.ts: 36ms, render: 1066ms)
+ GET /category/beverages 200 in 1938ms (compile: 118ms, proxy.ts: 17ms, render: 1803ms)
+ GET /category/personal-care 200 in 1484ms (compile: 65ms, proxy.ts: 15ms, render: 1403ms)
+ GET /category/household 200 in 1507ms (compile: 92ms, proxy.ts: 33ms, render: 1383ms)
+ GET /category/household?page=3 200 in 1162ms (compile: 49ms, proxy.ts: 14ms, render: 1100ms)
+ GET /category/baby-care 200 in 628ms (compile: 29ms, proxy.ts: 11ms, render: 588ms)
+ GET /category/snacks 200 in 868ms (compile: 32ms, proxy.ts: 10ms, render: 826ms)
+ GET /category/snacks?page=9 200 in 795ms (compile: 33ms, proxy.ts: 10ms, render: 752ms)
+ GET /category/snacks?page=6 200 in 832ms (compile: 43ms, proxy.ts: 12ms, render: 777ms)
+ GET /category/snacks?page=5 200 in 819ms (compile: 32ms, proxy.ts: 8ms, render: 779ms)
+[?25h

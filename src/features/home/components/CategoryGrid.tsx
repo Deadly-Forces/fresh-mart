@@ -7,7 +7,7 @@ export async function CategoryGrid() {
   const supabase = await createClient();
   const { data } = await supabase
     .from("categories")
-    .select("*")
+    .select("name, slug, image_url, sort_order")
     .order("sort_order", { ascending: true })
     .limit(5);
 

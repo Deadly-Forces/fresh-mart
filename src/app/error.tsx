@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, RefreshCw } from "lucide-react";
 
 export default function ErrorPage({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error: _error,
   reset,
 }: {

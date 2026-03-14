@@ -79,8 +79,8 @@ export default function CookiePolicyPage() {
             <p>
               You can restrict, block or delete the cookies from our website, or
               any other website, by using your browser. Each browser is
-              different, so check the "Help" menu of your particular browser (or
-              your mobile phone's handset manual) to learn how to change your
+              different, so check the &quot;Help&quot; menu of your particular browser (or
+              your mobile phone&apos;s handset manual) to learn how to change your
               cookie preferences.
             </p>
 

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { DeliveryCountdown } from "@/components/ui/DeliveryCountdown";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useHydrated } from "@/hooks/useHydrated";
 
 const ORDER_STATUSES = [
   "processing",
@@ -35,13 +36,9 @@ interface OrderRow {
 }
 
 export function OrdersClient({ orders }: { orders: OrderRow[] }) {
-  const [mounted, setMounted] = useState(false);
+  const hydrated = useHydrated();
   const [filter, setFilter] = useState<FilterTab>("all");
   const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const filteredOrders = orders.filter((o) => {
     if (filter !== "all" && o.status !== filter) return false;
@@ -56,7 +53,7 @@ export function OrdersClient({ orders }: { orders: OrderRow[] }) {
     return true;
   });
 
-  if (!mounted) return null;
+  if (!hydrated) return null;
 
   return (
     <div className="space-y-6">

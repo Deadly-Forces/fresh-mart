@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapPin, Truck, Clock, Navigation } from "lucide-react";
 
 interface OrderTrackingMapProps {
@@ -20,45 +20,58 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: "Order cancelled",
 };
 
+function getTrackingSnapshot(createdAt: string, status: string, now: number) {
+  if (status === "delivered") {
+    return { localProgress: 1, eta: "Delivered" };
+  }
+
+  if (status === "cancelled") {
+    return { localProgress: 0, eta: "Cancelled" };
+  }
+
+  const deliveryWindowMs = 15 * 60 * 1000;
+  const elapsed = now - new Date(createdAt).getTime();
+  const localProgress = Math.min(1, Math.max(0, elapsed / deliveryWindowMs));
+  const remaining = Math.max(0, deliveryWindowMs - elapsed);
+  const mins = Math.floor(remaining / 60000);
+  const secs = Math.floor((remaining % 60000) / 1000);
+
+  return {
+    localProgress,
+    eta: remaining <= 0 ? "Arriving now!" : `${mins}m ${secs}s`,
+  };
+}
+
 export function OrderTrackingMap({
   createdAt,
   status,
   orderId,
   progressPercent,
 }: OrderTrackingMapProps) {
-  const [localProgress, setLocalProgress] = useState(0);
-  const [eta, setEta] = useState("");
+  const [now, setNow] = useState(() => Date.now());
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tracking = useMemo(
+    () => getTrackingSnapshot(createdAt, status, now),
+    [createdAt, now, status],
+  );
 
   // Use passed progressPercent if available, else local calculated progress
   const progress =
-    progressPercent !== undefined ? progressPercent / 100 : localProgress;
+    progressPercent !== undefined
+      ? progressPercent / 100
+      : tracking.localProgress;
 
   // Calculate delivery ETA
   useEffect(() => {
-    if (status === "delivered" || status === "cancelled") {
-      setLocalProgress(status === "delivered" ? 1 : 0);
-      setEta(status === "delivered" ? "Delivered" : "Cancelled");
-      return;
-    }
+    if (status === "delivered" || status === "cancelled") return;
 
-    const deliveryWindowMs = 15 * 60 * 1000; // 15 minutes
-
-    const update = () => {
-      const elapsed = Date.now() - new Date(createdAt).getTime();
-      const p = Math.min(1, Math.max(0, elapsed / deliveryWindowMs));
-      setLocalProgress(p);
-
-      const remaining = Math.max(0, deliveryWindowMs - elapsed);
-      const mins = Math.floor(remaining / 60000);
-      const secs = Math.floor((remaining % 60000) / 1000);
-      setEta(remaining <= 0 ? "Arriving now!" : `${mins}m ${secs}s`);
-    };
-
-    update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [createdAt, status]);
+    
+    function update() {
+      setNow(Date.now());
+    }
+  }, [status]);
 
   // Draw the animated map
   useEffect(() => {
@@ -223,7 +236,7 @@ export function OrderTrackingMap({
       }
 
       // Driver pulse ring
-      const pulse = (Math.sin(Date.now() / 300) + 1) / 2;
+      const pulse = (Math.sin(now / 300) + 1) / 2;
       ctx.fillStyle = `rgba(59, 130, 246, ${0.15 + pulse * 0.1})`;
       ctx.beginPath();
       ctx.arc(driverX, driverY, 16 + pulse * 4, 0, Math.PI * 2);
@@ -247,24 +260,7 @@ export function OrderTrackingMap({
     ctx.fillRect(20, barY, w - 40, 4);
     ctx.fillStyle = status === "cancelled" ? "#dc2626" : "#16a34a";
     ctx.fillRect(20, barY, (w - 40) * progress, 4);
-  }, [progress, status, createdAt]);
-
-  // Redraw on animation frame for smooth driver animation
-  useEffect(() => {
-    if (status === "delivered" || status === "cancelled") return;
-
-    let raf: number;
-    const animate = () => {
-      // Trigger re-render by updating canvas
-      const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.dispatchEvent(new Event("redraw"));
-      }
-      raf = requestAnimationFrame(animate);
-    };
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
-  }, [status]);
+  }, [createdAt, now, progress, status]);
 
   const statusLabel = STATUS_LABELS[status] || status;
 
@@ -307,7 +303,7 @@ export function OrderTrackingMap({
           </span>
         </div>
         {status !== "delivered" && status !== "cancelled" && (
-          <span className="text-sm font-bold text-primary">{eta}</span>
+          <span className="text-sm font-bold text-primary">{tracking.eta}</span>
         )}
       </div>
     </div>

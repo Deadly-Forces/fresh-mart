@@ -4,16 +4,11 @@ import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/features/cart/store/useCartStore";
-import { useEffect, useState } from "react";
+import { useHydrated } from "@/hooks/useHydrated";
 
 export function CartButton() {
   const items = useCartStore((state) => state.items);
-  const [mounted, setMounted] = useState(false);
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const hydrated = useHydrated();
 
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
@@ -28,7 +23,7 @@ export function CartButton() {
         <ShoppingCart className="w-4 h-4" />
         <span className="hidden sm:inline">Cart</span>
 
-        {mounted && itemCount > 0 && (
+        {hydrated && itemCount > 0 && (
           <span className="absolute -top-1.5 -right-1.5 bg-destructive text-destructive-foreground text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm ring-2 ring-background">
             {itemCount > 99 ? "99+" : itemCount}
           </span>

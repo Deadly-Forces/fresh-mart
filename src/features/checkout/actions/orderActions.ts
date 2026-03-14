@@ -53,6 +53,10 @@ export async function placeOrderAction(
       return { error: "Invalid address." };
     }
 
+    if (paymentMethod !== "cod") {
+      return { error: "Only cash on delivery is available right now." };
+    }
+
     if (items.length === 0) {
       return { error: "Cannot place an empty order." };
     }
@@ -158,13 +162,12 @@ export async function placeOrderAction(
     }));
 
     // Create order and items atomically using RPC
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: rpcResult, error: rpcError } = await (supabase.rpc as any)(
       "create_order_with_items",
       {
         p_address_id: addressId,
         p_delivery_slot: deliverySlot,
-        p_payment_method: paymentMethod,
+        p_payment_method: paymentMethod as PaymentMethod,
         p_total: verifiedTotal,
         p_substitution_preference: substitutionPreference,
         p_applied_promocode: appliedPromocode || null,

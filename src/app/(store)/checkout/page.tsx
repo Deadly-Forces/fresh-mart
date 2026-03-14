@@ -61,7 +61,7 @@ export default function CheckoutPage() {
         `Removed ${invalidItemIds.length} invalid item(s) from cart.`,
       );
     }
-  }, []); // Run once on mount
+  }, [items, removeItem]);
 
   const handlePlaceOrder = async () => {
     if (!selectedAddress) {

@@ -1,10 +1,15 @@
 import Link from "next/link";
-import { fetchProducts, type MappedProduct } from "@/lib/supabase/products";
+import { createClient } from "@/lib/supabase/server";
 
 export async function PopularSearches() {
-  // Fetch a small set of products from Supabase (limit 30) instead of loading all 2000
-  const products = await fetchProducts({ limit: 30 });
-  const popularProducts = products;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("products")
+    .select("id, name, slug")
+    .eq("is_active", true)
+    .limit(30);
+
+  const popularProducts = data ?? [];
 
   // 3. Categories List
   const categoryLinks = [

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { User, LogOut, LayoutDashboard } from "lucide-react";
 import {
@@ -10,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useHydrated } from "@/hooks/useHydrated";
 
 interface UserMenuProps {
   email: string | undefined;
@@ -18,14 +18,10 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ email, name, avatarUrl }: UserMenuProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const hydrated = useHydrated();
 
   // Render a static button during SSR to avoid Radix useId hydration mismatch
-  if (!mounted) {
+  if (!hydrated) {
     return (
       <div className="hidden sm:block">
         <button className="flex items-center justify-center w-9 h-9 rounded-lg hover:bg-secondary transition-colors">

@@ -78,6 +78,7 @@
     "eslint-config-next": "16.1.6",
     "postcss": "^8",
     "prettier": "^3.6.2",
+    "puppeteer-core": "^24.39.1",
     "supabase": "^2.78.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.7"

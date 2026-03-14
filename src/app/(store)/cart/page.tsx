@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCartStore } from "@/features/cart/store/useCartStore";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { validatePromoCodeAction } from "@/features/checkout/actions/promoActions";
 import {
   getAutoDiscountsAction,
@@ -46,6 +46,7 @@ export default function CartPage() {
   // AI Insight State
   const [insight, setInsight] = useState<CartInsight | null>(null);
   const [isFetchingInsight, setIsFetchingInsight] = useState(false);
+  const lastInsightKeyRef = useRef("");
 
   const subtotal = getTotal();
   const deliveryFee = subtotal >= 499 ? 0 : 49;
@@ -71,11 +72,27 @@ export default function CartPage() {
   }, [fetchAutoDiscounts]);
 
   useEffect(() => {
-    // Only fetch insight if there are items and we haven't already fetched one for this exact cart state
-    // We'll use a simple debounce/check to prevent spamming the API
+    const insightKey = items
+      .map((item) => `${item.productId}:${item.quantity}`)
+      .sort()
+      .join("|");
+
+    if (!insightKey) {
+      lastInsightKeyRef.current = "";
+      setInsight(null);
+      return;
+    }
+
+    if (insightKey === lastInsightKeyRef.current) {
+      return;
+    }
+
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let idleId: number | null = null;
+
     const fetchInsight = async () => {
-      if (items.length === 0) {
-        setInsight(null);
+      if (cancelled) {
         return;
       }
 
@@ -89,17 +106,41 @@ export default function CartPage() {
 
         if (response.ok) {
           const data = await response.json();
-          setInsight(data);
+          if (!cancelled) {
+            setInsight(data);
+            lastInsightKeyRef.current = insightKey;
+          }
         }
       } catch (error) {
         console.error("Failed to fetch cart insight:", error);
       } finally {
-        setIsFetchingInsight(false);
+        if (!cancelled) {
+          setIsFetchingInsight(false);
+        }
       }
     };
 
-    const timeoutId = setTimeout(fetchInsight, 1500); // 1.5s debounce
-    return () => clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+        idleId = window.requestIdleCallback(() => {
+          void fetchInsight();
+        });
+      } else {
+        void fetchInsight();
+      }
+    }, 1500);
+
+    return () => {
+      cancelled = true;
+      if (timeoutId) clearTimeout(timeoutId);
+      if (
+        idleId !== null &&
+        typeof window !== "undefined" &&
+        "cancelIdleCallback" in window
+      ) {
+        window.cancelIdleCallback(idleId);
+      }
+    };
   }, [items]);
 
   if (items.length === 0) {

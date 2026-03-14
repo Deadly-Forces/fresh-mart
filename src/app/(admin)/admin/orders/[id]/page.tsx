@@ -4,6 +4,31 @@ import { OrderDetailClient } from "./OrderDetailClient";
 
 export const dynamic = "force-dynamic";
 
+type RawOrder = {
+  id: string;
+  status: string;
+  created_at: string;
+  total: number | string | null;
+  subtotal: number | string | null;
+  delivery_fee: number | string | null;
+  discount_amount: number | string | null;
+  applied_promocode: string | null;
+  payment_status: string | null;
+  payment_method: string | null;
+  notes: string | null;
+  user_id: string | null;
+  address_id: string | null;
+  order_items?:
+    | Array<{
+        id: string;
+        product_id: string;
+        quantity: number;
+        price: number | string;
+        product_snapshot?: Record<string, unknown> | null;
+      }>
+    | null;
+};
+
 export default async function AdminOrderDetailPage({
   params,
 }: {
@@ -24,8 +49,7 @@ export default async function AdminOrderDetailPage({
     .eq("id", id)
     .single();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const order = rawOrder as any;
+  const order = rawOrder as RawOrder | null;
 
   if (orderError || !order) {
     console.error("Failed to fetch order:", orderError);
@@ -69,7 +93,7 @@ export default async function AdminOrderDetailPage({
     paymentMethod: order.payment_method || "N/A",
     notes: order.notes,
     items: Array.isArray(order.order_items)
-      ? order.order_items.map((item: any) => ({
+      ? order.order_items.map((item) => ({
         id: item.id,
         productId: item.product_id,
         quantity: item.quantity,

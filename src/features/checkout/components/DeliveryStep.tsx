@@ -158,7 +158,7 @@ export function DeliveryStep({
               className="flex flex-col p-4 rounded-xl border-2 cursor-pointer transition-colors border-border bg-card hover:border-primary/30 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 [&:has([data-state=checked])]:border-primary"
             >
               <span className="font-semibold text-sm mb-1 text-foreground">
-                Don't Replace
+                Don&apos;t Replace
               </span>
               <span className="text-xs text-muted-foreground">
                 Refund the missing item

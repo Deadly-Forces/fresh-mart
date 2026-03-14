@@ -48,38 +48,43 @@ export default async function ShopPage(props: Props) {
   const page = pageRaw ? parseInt(pageRaw, 10) : 1;
 
   const supabase = await createClient();
+  const canUseDbCategoryFilter = !q && categories.length === 1;
+  const needsCategoryJoin = canUseDbCategoryFilter;
+  const columns = needsCategoryJoin
+    ? "id, name, slug, price, compare_price, images, unit, stock, categories!inner(slug)"
+    : "id, name, slug, price, compare_price, images, unit, stock, categories(slug)";
 
-  // Build an optimized query — select only needed columns
-  let query = supabase
-    .from("products")
-    .select(
-      "id, name, slug, price, compare_price, images, unit, stock, categories(slug)",
-    )
-    .eq("is_active", true);
+  let query = supabase.from("products").select(columns).eq("is_active", true);
 
-  // Push category filter to the database when possible
-  if (categories.length === 1) {
-    // Single-category filter can be pushed to DB via join
+  if (canUseDbCategoryFilter) {
+    query = query.eq("categories.slug", categories[0]);
   }
 
-  // Fetch products in paginated batches to avoid max_rows limit
+  if (maxPrice !== undefined) {
+    query = query.lte("price", maxPrice);
+  }
+
+  if (inStock) {
+    query = query.gt("stock", 0);
+  }
+
   const BATCH_SIZE = 1000;
   let allProducts: any[] = [];
   let fetchFrom = 0;
-  let fetchMore = true;
 
-  while (fetchMore) {
+  while (true) {
     const { data: batch } = await query.range(
       fetchFrom,
       fetchFrom + BATCH_SIZE - 1,
     );
-    if (batch && batch.length > 0) {
-      allProducts = allProducts.concat(batch);
-      fetchFrom += BATCH_SIZE;
-      fetchMore = batch.length === BATCH_SIZE;
-    } else {
-      fetchMore = false;
+    if (!batch || batch.length === 0) {
+      break;
     }
+    allProducts = allProducts.concat(batch);
+    if (batch.length < BATCH_SIZE) {
+      break;
+    }
+    fetchFrom += BATCH_SIZE;
   }
 
   const productsList = (allProducts || []).map((p: any) => {
@@ -499,14 +504,7 @@ export default async function ShopPage(props: Props) {
 
             <ProductGrid
               products={displayProducts}
-              searchQuery={q && !searchParams?.ai ? q : undefined}
               sortBy={sort}
-              categories={categories}
-              maxPrice={maxPrice}
-              dietary={dietary}
-              minRating={minRating}
-              brands={brands}
-              inStock={inStock}
               page={page}
             />
           </div>

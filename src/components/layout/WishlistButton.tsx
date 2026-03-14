@@ -3,16 +3,11 @@
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
-import { useEffect, useState } from "react";
+import { useHydrated } from "@/hooks/useHydrated";
 
 export function WishlistButton() {
   const items = useWishlistStore((state) => state.items);
-  const [mounted, setMounted] = useState(false);
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const hydrated = useHydrated();
 
   const itemCount = items.length;
 
@@ -24,7 +19,7 @@ export function WishlistButton() {
     >
       <Heart className="w-5 h-5 text-red-500" />
 
-      {mounted && itemCount > 0 && (
+      {hydrated && itemCount > 0 && (
         <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm ring-2 ring-background">
           {itemCount > 99 ? "99+" : itemCount}
         </span>

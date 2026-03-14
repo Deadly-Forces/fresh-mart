@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Suspense } from "react";
 import {
@@ -20,6 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useHydrated } from "@/hooks/useHydrated";
 
 interface MobileMenuProps {
   user: { email?: string } | null;
@@ -27,14 +27,10 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ user, profile }: MobileMenuProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const hydrated = useHydrated();
 
   // Render a static button during SSR to avoid Radix useId hydration mismatch
-  if (!mounted) {
+  if (!hydrated) {
     return (
       <button
         className="lg:hidden -ml-1 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"

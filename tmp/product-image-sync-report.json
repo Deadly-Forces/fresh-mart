@@ -1,0 +1,344 @@
+{
+  "startedAt": "2026-03-14T10:49:37.465Z",
+  "totalProducts": 2600,
+  "candidateProducts": 2590,
+  "selectedProducts": 50,
+  "updated": [
+    {
+      "id": "26e40a87-df78-4d2c-856a-1306a4d21bd4",
+      "slug": "staples-bb-royal-chana-dal-premium-1kg-139",
+      "name": "bb Royal Chana Dal Premium 1kg",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-bb-royal-chana-dal-premium-1kg-139.jpg",
+      "source": "wikipedia",
+      "query": "chana dal",
+      "reused": false
+    },
+    {
+      "id": "4588cc0a-6dbc-4b68-80a0-da7935500c68",
+      "slug": "staples-bb-royal-moth-bean-matki-500g-133",
+      "name": "bb Royal Moth Bean (Matki) 500g",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-bb-royal-moth-bean-matki-500g-133.jpg",
+      "source": "wikipedia",
+      "query": "Matki",
+      "reused": false
+    },
+    {
+      "id": "c612928d-247e-4035-8932-672b8bf6a0f6",
+      "slug": "staples-bb-royal-foxtail-millet-kangni-500g-194",
+      "name": "bb Royal Foxtail Millet (Kangni) 500g",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-bb-royal-foxtail-millet-kangni-500g-194.jpg",
+      "source": "wikipedia",
+      "query": "foxtail millet",
+      "reused": false
+    },
+    {
+      "id": "f1ea0d01-7ed5-49e1-8899-8c7a1b880f75",
+      "slug": "staples-bb-royal-wheat-bulgur-500g-185",
+      "name": "bb Royal Wheat Bulgur 500g",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-bb-royal-wheat-bulgur-500g-185.jpg",
+      "source": "wikipedia",
+      "query": "Wheat Bulgur",
+      "reused": false
+    },
+    {
+      "id": "078d86af-4fe5-4641-8f2c-43857d6bdefa",
+      "slug": "staples-bb-royal-kodo-millet-500g-195",
+      "name": "bb Royal Kodo Millet 500g",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-bb-royal-kodo-millet-500g-195.jpg",
+      "source": "wikipedia",
+      "query": "Kodo Millet",
+      "reused": false
+    },
+    {
+      "id": "a43066e6-3626-429b-938e-cbd5ab3470aa",
+      "slug": "staples-rajdhani-sooji-semolina-fine-500g-122",
+      "name": "Rajdhani Sooji (Semolina) Fine 500g",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-rajdhani-sooji-semolina-fine-500g-122.jpg",
+      "source": "wikipedia",
+      "query": "Semolina",
+      "reused": false
+    },
+    {
+      "id": "990af718-968c-4cd5-9fd7-30dc8c800394",
+      "slug": "staples-gits-idli-mix-200g-175",
+      "name": "Gits Idli Mix 200g",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-gits-idli-mix-200g-175.jpg",
+      "source": "wikipedia",
+      "query": "Idli Mix",
+      "reused": false
+    },
+    {
+      "id": "97b97315-4d98-4535-97b8-ac6691c31519",
+      "slug": "staples-daawat-quick-cooking-brown-rice-1kg-186",
+      "name": "Daawat Quick Cooking Brown Rice 1kg",
+      "categorySlug": "staples",
+      "localPath": "/product-images/staples-daawat-quick-cooking-brown-rice-1kg-186.jpg",
+      "source": "wikipedia",
+      "query": "Quick Cooking Brown Rice",
+      "reused": false
+    }
+  ],
+  "skipped": [],
+  "failed": [
+    {
+      "id": "1abbb57d-98d4-4614-9b21-efd52a4ee9d2",
+      "slug": "staples-ching-s-schezwan-instant-noodles-60g-151",
+      "name": "Ching's Schezwan Instant Noodles 60g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "3b172ca6-a44b-4d4b-96c5-206faabc6a4a",
+      "slug": "spices-seasonings-aachi-kulambu-chilli-powder-100g-192",
+      "name": "Aachi Kulambu Chilli Powder 100g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Crab_curry_or_Nandu_Kulambu.jpg/960px-Crab_curry_or_Nandu_Kulambu.jpg"
+    },
+    {
+      "id": "40f4d44d-f979-4552-b154-b7fe564568dd",
+      "slug": "staples-mtr-uttapam-mix-500g-169",
+      "name": "MTR Uttapam Mix 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg/1280px-Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg"
+    },
+    {
+      "id": "61175373-a414-482c-901c-c97caed9233f",
+      "slug": "spices-seasonings-mdh-kadhahi-masala-100g-187",
+      "name": "MDH Kadhahi Masala 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "03961932-51cc-4655-bcc5-71144821677b",
+      "slug": "staples-bb-royal-yellow-peas-500g-137",
+      "name": "bb Royal Yellow Peas 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Yellow_peas.jpg/1280px-Yellow_peas.jpg"
+    },
+    {
+      "id": "2054e241-270b-4f5a-b999-e6bec0dce07c",
+      "slug": "staples-mtr-upma-mix-200g-170",
+      "name": "MTR Upma Mix 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/A_photo_of_Upma.jpg/1280px-A_photo_of_Upma.jpg"
+    },
+    {
+      "id": "994baa51-a5a2-4cd3-868c-a28f70f2718b",
+      "slug": "staples-true-elements-raw-cashews-200g-163",
+      "name": "True Elements Raw Cashews 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Chestnut.jpg/1280px-Chestnut.jpg"
+    },
+    {
+      "id": "5c47fcdb-cb44-4f4a-8d05-383eadda62cf",
+      "slug": "staples-saffola-masala-oats-500g-160",
+      "name": "Saffola Masala Oats 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg/1280px-Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg"
+    },
+    {
+      "id": "506da1ae-7bd3-4e47-b219-98bde59bf429",
+      "slug": "staples-weikfield-penne-pasta-400g-147",
+      "name": "Weikfield Penne Pasta 400g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Pennelisce_closeup.png/1280px-Pennelisce_closeup.png"
+    },
+    {
+      "id": "f7ebd343-dd93-495f-a898-8023b8108e21",
+      "slug": "staples-gits-rasgulla-mix-200g-177",
+      "name": "Gits Rasgulla Mix 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg/1280px-Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg"
+    },
+    {
+      "id": "12c9b5a3-7580-4607-bc5c-f91637c9459b",
+      "slug": "staples-tata-sampann-rajma-chitra-500g-130",
+      "name": "Tata Sampann Rajma Chitra 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Rajma_Masala_%2832081557778%29.jpg/1280px-Rajma_Masala_%2832081557778%29.jpg"
+    },
+    {
+      "id": "980f751b-bd31-42be-8466-4b7d574764e7",
+      "slug": "staples-happilo-premium-flax-seeds-250g-165",
+      "name": "Happilo Premium Flax Seeds 250g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Dog_food_in_a_bowl.jpg/1280px-Dog_food_in_a_bowl.jpg"
+    },
+    {
+      "id": "8a25dcc5-bfb1-4877-ba04-2f26e134fcd1",
+      "slug": "staples-bb-royal-masoor-whole-sabut-500g-132",
+      "name": "bb Royal Masoor Whole (Sabut) 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "ba5b39c2-8bd7-4c64-9e05-ed4a2d4bfb97",
+      "slug": "staples-nourishvitals-roasted-quinoa-puffs-100g-167",
+      "name": "NourishVitals Roasted Quinoa Puffs 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "5e17b581-96d4-4385-a26b-8515944a18c3",
+      "slug": "spices-seasonings-eastern-turmeric-powder-100g-193",
+      "name": "Eastern Turmeric Powder 100g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Turmeric_inflorescence.jpg/1280px-Turmeric_inflorescence.jpg"
+    },
+    {
+      "id": "f4e03dc9-6682-4f53-ac11-9d3133f335ad",
+      "slug": "staples-bb-royal-horse-gram-kulthi-500g-135",
+      "name": "bb Royal Horse Gram (Kulthi) 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Horse_Gram_BNC.jpg/1280px-Horse_Gram_BNC.jpg"
+    },
+    {
+      "id": "dbe88214-0a21-4abb-95e7-1dbae5d043e5",
+      "slug": "staples-mtr-puliogare-powder-100g-187",
+      "name": "MTR Puliogare Powder 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "bd57c9a0-b542-4637-9c60-23756cd25995",
+      "slug": "cooking-essentials-del-monte-sweet-corn-cream-style-420g-195",
+      "name": "Del Monte Sweet Corn Cream Style 420g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Corn_soup.jpg/1280px-Corn_soup.jpg"
+    },
+    {
+      "id": "4cd1007e-d18b-4105-a1d2-62050087b0d5",
+      "slug": "staples-aashirvaad-instant-mix-ragi-dosa-200g-197",
+      "name": "Aashirvaad Instant Mix Ragi Dosa 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg/1280px-Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg"
+    },
+    {
+      "id": "71866103-ee17-4b00-ad18-7b1e0b1919e8",
+      "slug": "staples-gits-dosa-mix-200g-176",
+      "name": "Gits Dosa Mix 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg/1280px-Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg"
+    },
+    {
+      "id": "dc3e1c33-20f7-4190-8851-43f1d1913775",
+      "slug": "staples-mtr-vada-mix-200g-172",
+      "name": "MTR Vada Mix 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Medu_Vadas.JPG/1280px-Medu_Vadas.JPG"
+    },
+    {
+      "id": "864e626a-6386-47b5-b080-1b1e11789c6f",
+      "slug": "staples-true-elements-muesli-mix-fruits-and-nuts-1kg-161",
+      "name": "True Elements Muesli Mix Fruits and Nuts 1kg",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Dorset_Cereals_muesli.jpg/1280px-Dorset_Cereals_muesli.jpg"
+    },
+    {
+      "id": "d40af475-e92a-4df9-8763-6031fa0c7532",
+      "slug": "staples-bb-royal-makhana-fox-nuts-premium-200g-188",
+      "name": "bb Royal Makhana (Fox Nuts) Premium 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Fox_Squirrel_%2814539535789%29.jpg/1280px-Fox_Squirrel_%2814539535789%29.jpg"
+    },
+    {
+      "id": "2cc3710f-bbcd-402e-9461-8137e0c1c2d1",
+      "slug": "staples-happilo-premium-chia-seeds-250g-164",
+      "name": "Happilo Premium Chia Seeds 250g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Alligator_Chia_Pet.jpg/1280px-Alligator_Chia_Pet.jpg"
+    },
+    {
+      "id": "78c18725-fc05-43b5-9346-609b77f7d8ae",
+      "slug": "spices-seasonings-suhana-vada-pav-chutney-powder-100g-196",
+      "name": "Suhana Vada Pav Chutney Powder 100g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vada_Pav-Indian_street_food.JPG/1280px-Vada_Pav-Indian_street_food.JPG"
+    },
+    {
+      "id": "c71ca091-3819-4219-95e3-b95753734987",
+      "slug": "spices-seasonings-eastern-chilli-powder-100g-194",
+      "name": "Eastern Chilli Powder 100g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/BolivianChilePowder2.JPG/500px-BolivianChilePowder2.JPG"
+    },
+    {
+      "id": "2cac0d68-e505-4b5b-91db-42714650c650",
+      "slug": "spices-seasonings-catch-coriander-cumin-powder-100g-199",
+      "name": "Catch Coriander Cumin Powder 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "e1672e29-5276-4fd2-8c61-8ef0289fa051",
+      "slug": "staples-aashirvaad-navadhanya-atta-1kg-124",
+      "name": "Aashirvaad Navadhanya Atta 1kg",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "cd7ece8a-6590-42cb-af65-541175fd5cb0",
+      "slug": "cooking-essentials-veeba-mint-mayonnaise-250g-197",
+      "name": "Veeba Mint Mayonnaise 250g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "bd3632f8-398c-415a-a077-640305378eef",
+      "slug": "staples-aashirvaad-instant-mix-rava-dosa-200g-179",
+      "name": "Aashirvaad Instant Mix Rava Dosa 200g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg/1280px-Dosa_at_Sri_Ganesha_Restauran%2C_Bangkok_%2844570742744%29.jpg"
+    },
+    {
+      "id": "90b3ba21-5246-4c51-9fc3-363ba0a75344",
+      "slug": "staples-gits-jalebi-mix-100g-178",
+      "name": "Gits Jalebi Mix 100g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Fluffy_Poori_%28cropped%29.JPG/1280px-Fluffy_Poori_%28cropped%29.JPG"
+    },
+    {
+      "id": "c2468a5a-318a-4b37-925f-82fa26b5f1b8",
+      "slug": "staples-barilla-penne-rigate-500g-142",
+      "name": "Barilla Penne Rigate 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Pennelisce_closeup.png/1280px-Pennelisce_closeup.png"
+    },
+    {
+      "id": "65a8430a-6ef2-4de2-aa51-51be33fc59e7",
+      "slug": "staples-bb-royal-double-beans-lima-500g-141",
+      "name": "bb Royal Double Beans (Lima) 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sanisidroskyscrapers.jpg/1280px-Sanisidroskyscrapers.jpg"
+    },
+    {
+      "id": "21905b65-024d-4958-ab17-cf12a8f61f2b",
+      "slug": "staples-24-mantra-organic-moong-dal-500g-128",
+      "name": "24 Mantra Organic Moong Dal 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Moong_dal_ka_halwa.jpg/960px-Moong_dal_ka_halwa.jpg"
+    },
+    {
+      "id": "b2e384f3-1771-4b8f-8583-38cb0a970ec6",
+      "slug": "staples-bb-royal-val-dal-field-beans-500g-134",
+      "name": "bb Royal Val Dal (Field Beans) 500g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Baked_beans_in_tomato_sauce.jpg/1280px-Baked_beans_in_tomato_sauce.jpg"
+    },
+    {
+      "id": "1585bbc3-a86f-4c3b-aedb-a7a00362e10d",
+      "slug": "staples-bagrry-s-corn-flakes-plus-800g-158",
+      "name": "Bagrry's Corn Flakes Plus 800g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "cc223914-2e78-4a01-8e5a-1f422f1c5931",
+      "slug": "cooking-essentials-cremica-salsa-dip-200g-198",
+      "name": "Cremica Salsa Dip 200g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "88dc06e5-7340-403f-8c2e-7b54d864b620",
+      "slug": "staples-kellogg-s-muesli-fruit-nut-and-seeds-750g-156",
+      "name": "Kellogg's Muesli Fruit Nut and Seeds 750g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Kolanut.jpg/250px-Kolanut.jpg"
+    },
+    {
+      "id": "07d33071-1243-4ddc-b7ac-5ecdb0feb31e",
+      "slug": "staples-smith-jones-hakka-noodles-150g-152",
+      "name": "Smith & Jones Hakka Noodles 150g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "10a8ed47-b8c8-4d3a-8257-8b052472c11f",
+      "slug": "staples-gits-instant-mix-medu-vada-200g-198",
+      "name": "Gits Instant Mix Medu Vada 200g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "d20783bb-feef-4c34-ba59-85dcf97b6b62",
+      "slug": "cooking-essentials-sundrop-superlite-advanced-sunflower-oil-1l-192",
+      "name": "Sundrop Superlite Advanced Sunflower Oil 1L",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "e64d3795-ec02-4592-a9b2-8990274cd715",
+      "slug": "staples-kellogg-s-corn-flakes-original-475g-154",
+      "name": "Kellogg's Corn Flakes Original 475g",
+      "reason": "Image download failed with 429 for https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Kellogg%27s_Corn_Flakes%2C_with_milk.jpg/1280px-Kellogg%27s_Corn_Flakes%2C_with_milk.jpg"
+    }
+  ],
+  "finishedAt": "2026-03-14T10:50:47.926Z"
+}

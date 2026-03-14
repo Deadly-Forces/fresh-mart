@@ -97,11 +97,15 @@ export default async function AdminCategoriesPage() {
                     </td>
                     <td className="px-4 py-3">
                       {c.image_url ? (
-                        <img
-                          src={c.image_url}
-                          alt={c.name}
-                          className="w-10 h-10 object-cover rounded-md border"
-                        />
+                        <div className="relative w-10 h-10 overflow-hidden rounded-md border">
+                          {/* Admin preview URLs may point to arbitrary external hosts. */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={c.image_url}
+                            alt={c.name}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="w-10 h-10 bg-secondary rounded-md border" />
                       )}

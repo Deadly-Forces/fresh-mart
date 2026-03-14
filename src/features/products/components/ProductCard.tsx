@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { memo, useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Star, ShoppingCart, Minus, Plus, Heart, Sparkles } from "lucide-react";
@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useCartStore } from "@/features/cart/store/useCartStore";
 import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
 import { toast } from "sonner";
+import { useHydrated } from "@/hooks/useHydrated";
 
 interface ProductCardProps {
   id: string;
@@ -38,26 +39,29 @@ export const ProductCard = memo(function ProductCard({
   badge,
   className,
 }: ProductCardProps) {
-  const items = useCartStore((s) => s.items);
   const addItem = useCartStore((s) => s.addItem);
   const updateQuantity = useCartStore((s) => s.updateQuantity);
   const removeItem = useCartStore((s) => s.removeItem);
   const toggleItem = useWishlistStore((s) => s.toggleItem);
-  const isInWishlist = useWishlistStore((s) => s.isInWishlist);
-  const [mounted, setMounted] = useState(false);
+  const cartItem = useCartStore((s) =>
+    s.items.find((item) => item.productId === id),
+  );
+  const wishlistItemExists = useWishlistStore((s) =>
+    s.items.some((item) => item.id === id),
+  );
+  const hydrated = useHydrated();
   const [showSparkle, setShowSparkle] = useState(false);
   const sparkleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    setMounted(true);
     return () => {
       if (sparkleTimeoutRef.current) clearTimeout(sparkleTimeoutRef.current);
     };
   }, []);
 
-  const isLiked = mounted ? isInWishlist(id) : false;
-
-  const cartItem = useMemo(() => items.find((i) => i.productId === id), [items, id]);
+  const isLiked = hydrated
+    ? wishlistItemExists
+    : false;
 
   const handleAddToCart = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -93,7 +97,7 @@ export const ProductCard = memo(function ProductCard({
 
   const handleToggleWishlist = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    const wasLiked = isInWishlist(id);
+    const wasLiked = wishlistItemExists;
     toggleItem({
       id,
       name,
@@ -117,7 +121,7 @@ export const ProductCard = memo(function ProductCard({
     toast.success(
       wasLiked ? `Removed ${name} from wishlist` : `Added ${name} to wishlist`,
     );
-  }, [toggleItem, isInWishlist, id, name, slug, price, comparePrice, image, unit, rating, reviewsCount, badge]);
+  }, [toggleItem, wishlistItemExists, id, name, slug, price, comparePrice, image, unit, rating, reviewsCount, badge]);
 
   return (
     <div
@@ -212,7 +216,7 @@ export const ProductCard = memo(function ProductCard({
         <div className="mt-auto space-y-3">
           <PriceDisplay price={price} comparePrice={comparePrice} size="sm" />
 
-          {mounted && cartItem ? (
+          {hydrated && cartItem ? (
             <div className="flex items-center justify-between w-full h-9 rounded-xl border border-primary bg-primary text-primary-foreground overflow-hidden shadow-sm z-10 relative transition-all">
               <button
                 onClick={handleDecrement}

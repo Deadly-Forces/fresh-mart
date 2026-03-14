@@ -1,8 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Bot } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  MessageCircle,
+  Bot,
+  Ticket,
+} from "lucide-react";
 import { toast } from "sonner";
+import { createClient } from "@/lib/supabase/client";
+
+interface ContactOrder {
+  id: string;
+  status: string;
+  created_at: string;
+  total: number;
+}
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,9 +27,58 @@ export default function ContactPage() {
     firstName: "",
     lastName: "",
     email: "",
-    message: ""
+    message: "",
+    orderId: "",
   });
-  const [aiResponse, setAiResponse] = useState<any>(null);
+  const [aiResponse, setAiResponse] = useState<{
+    draft_response: string;
+    category: string;
+    priority: string;
+    suggested_action: string;
+  } | null>(null);
+  const [ticketId, setTicketId] = useState<string | null>(null);
+  const [orders, setOrders] = useState<ContactOrder[]>([]);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function loadContext() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      const nameParts = (profile?.name || "")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+
+      setFormData((current) => ({
+        ...current,
+        firstName: current.firstName || nameParts[0] || "",
+        lastName: current.lastName || nameParts.slice(1).join(" "),
+        email: current.email || user.email || "",
+      }));
+
+      const { data: recentOrders } = await supabase
+        .from("orders")
+        .select("id, status, created_at, total")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(6);
+
+      setOrders((recentOrders as ContactOrder[]) ?? []);
+    }
+
+    void loadContext();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,27 +89,34 @@ export default function ContactPage() {
 
     setIsSubmitting(true);
     setAiResponse(null);
+    setTicketId(null);
     try {
-      // Assuming a generic user ID for unauthenticated contact form submissions, 
-      // or we could fetch the real one. Passing a dummy UUID for now.
-      const res = await fetch("/api/ai/support-triage", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
           message: formData.message,
-          userId: "00000000-0000-0000-0000-000000000000" // Mock or anonymous user
-        })
+          orderId: formData.orderId || undefined,
+        }),
       });
       const data = await res.json();
 
       if (data.success && data.triage) {
         setAiResponse(data.triage);
+        setTicketId(data.ticketId || null);
         toast.success("Message sent successfully!");
-        setFormData({ firstName: "", lastName: "", email: "", message: "" });
+        setFormData((current) => ({
+          ...current,
+          message: "",
+          orderId: "",
+        }));
       } else {
-        toast.error("Failed to send message.");
+        toast.error(data.error || "Failed to send message.");
       }
-    } catch (e) {
+    } catch {
       toast.error("An error occurred.");
     } finally {
       setIsSubmitting(false);
@@ -132,10 +205,23 @@ export default function ContactPage() {
             {/* AI Response Box (if available) */}
             {aiResponse && (
               <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 animate-in fade-in slide-in-from-bottom-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Bot className="w-5 h-5 text-primary" />
-                  <h3 className="font-semibold text-primary">Automated Support Assistant</h3>
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-2">
+                    <Bot className="w-5 h-5 text-primary" />
+                    <h3 className="font-semibold text-primary">
+                      Automated Support Assistant
+                    </h3>
+                  </div>
+                  {ticketId ? (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-primary/20 bg-background px-2.5 py-1 text-[11px] font-semibold text-primary">
+                      <Ticket className="h-3.5 w-3.5" />
+                      {ticketId.slice(0, 8).toUpperCase()}
+                    </span>
+                  ) : null}
                 </div>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Your support request has been saved for follow-up.
+                </p>
                 <p className="text-sm text-muted-foreground mb-4">
                   {aiResponse.draft_response}
                 </p>
@@ -189,6 +275,29 @@ export default function ContactPage() {
                     placeholder="rajesh@example.com"
                   />
                 </div>
+                {orders.length > 0 ? (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      Related Order{" "}
+                      <span className="text-muted-foreground">(optional)</span>
+                    </label>
+                    <select
+                      value={formData.orderId}
+                      onChange={(e) =>
+                        setFormData({ ...formData, orderId: e.target.value })
+                      }
+                      className="w-full h-12 px-4 rounded-xl border border-border/60 bg-background/80 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 outline-none transition-all text-sm"
+                    >
+                      <option value="">Select an order</option>
+                      {orders.map((order) => (
+                        <option key={order.id} value={order.id}>
+                          #{order.id.slice(0, 8).toUpperCase()} • {order.status} • ₹
+                          {order.total.toFixed(2)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : null}
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Message</label>
                   <textarea

@@ -285,7 +285,9 @@ export default async function HomePage() {
         </div>
       </section>
       {/* ─── Popular Searches ─── */}
-      <PopularSearches />
+      <Suspense fallback={<div className="py-16 md:py-24" />}>
+        <PopularSearches />
+      </Suspense>
     </div>
   );
 }

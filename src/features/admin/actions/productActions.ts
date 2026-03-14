@@ -11,6 +11,19 @@ import {
 } from "@/lib/security";
 import { z } from "zod";
 
+const rootRelativeImagePathSchema = z
+  .string()
+  .max(1000)
+  .regex(
+    /^\/[A-Za-z0-9\/_.-]+$/,
+    "Image paths must be a valid URL or a root-relative path.",
+  );
+
+const productImageSchema = z.union([
+  z.string().url().max(1000),
+  rootRelativeImagePathSchema,
+]);
+
 // Validation schemas
 const productUpdateSchema = z.object({
   name: z.string().min(1).max(200).optional(),
@@ -213,7 +226,7 @@ const productCreateSchema = z.object({
   unit: z.string().max(50).optional(),
   category_id: z.string().uuid().nullable().optional(),
   is_active: z.boolean(),
-  images: z.array(z.string().url().max(1000)).max(10).optional(),
+  images: z.array(productImageSchema).max(10).optional(),
 });
 
 export async function createProductAction(data: {
@@ -282,7 +295,7 @@ export async function updateProductImagesAction(
     }
 
     // Validate each URL
-    const urlSchema = z.array(z.string().url().max(1000)).max(10);
+    const urlSchema = z.array(productImageSchema).max(10);
     const validation = urlSchema.safeParse(images);
     if (!validation.success) {
       return { error: "Invalid image URLs." };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Users,
   Copy,
@@ -36,11 +36,7 @@ export function ReferralTab() {
   const [applyCode, setApplyCode] = useState("");
   const [isApplying, setIsApplying] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     const result = await getReferralDataAction();
     if (!result.error) {
@@ -49,7 +45,17 @@ export function ReferralTab() {
       setTotalEarned((result.totalEarned as number) ?? 0);
     }
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void loadData();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [loadData]);
 
   const handleCopy = async () => {
     try {
@@ -95,7 +101,7 @@ export function ReferralTab() {
         `Referral applied! You earned ${result.pointsEarned} bonus points!`,
       );
       setApplyCode("");
-      loadData();
+      void loadData();
     }
     setIsApplying(false);
   };

@@ -4,6 +4,7 @@ import {
 } from "@/lib/supabase/products";
 import { ProductDetailClient } from "@/features/products/components/ProductDetailClient";
 import Link from "next/link";
+import DOMPurify from "isomorphic-dompurify";
 
 /** Build derived detail fields from a base product */
 function buildDetail(
@@ -49,12 +50,20 @@ function buildDetail(
     },
   ];
 
+  const description = DOMPurify.sanitize(
+    `<p>${base.name} — premium quality from trusted suppliers. Selected for freshness and flavour so you can enjoy the very best.</p><ul><li>Premium quality guaranteed</li><li>Carefully selected &amp; inspected</li><li>From trusted suppliers</li><li>Great value for money</li></ul>`,
+  );
+
+  const nutritionalInfo = DOMPurify.sanitize(
+    `<table><tr><td>Serving Size</td><td>100 g</td></tr><tr><td>Calories</td><td>${90 + ((base.price * 0.12) | 0)}</td></tr><tr><td>Total Fat</td><td>${(base.price * 0.004).toFixed(1)}g</td></tr><tr><td>Sodium</td><td>${(base.price * 0.06).toFixed(0)}mg</td></tr><tr><td>Carbohydrate</td><td>${(base.price * 0.024).toFixed(0)}g</td></tr><tr><td>Protein</td><td>${(base.price * 0.01).toFixed(1)}g</td></tr></table>`,
+  );
+
   return {
     ...base,
     images: [base.image, base.image, base.image, base.image, base.image],
     stock: base.stock ?? 50,
-    description: `<p>${base.name} — premium quality from trusted suppliers. Selected for freshness and flavour so you can enjoy the very best.</p><ul><li>Premium quality guaranteed</li><li>Carefully selected &amp; inspected</li><li>From trusted suppliers</li><li>Great value for money</li></ul>`,
-    nutritionalInfo: `<table><tr><td>Serving Size</td><td>100 g</td></tr><tr><td>Calories</td><td>${90 + ((base.price * 0.12) | 0)}</td></tr><tr><td>Total Fat</td><td>${(base.price * 0.004).toFixed(1)}g</td></tr><tr><td>Sodium</td><td>${(base.price * 0.06).toFixed(0)}mg</td></tr><tr><td>Carbohydrate</td><td>${(base.price * 0.024).toFixed(0)}g</td></tr><tr><td>Protein</td><td>${(base.price * 0.01).toFixed(1)}g</td></tr></table>`,
+    description,
+    nutritionalInfo,
     tags,
     variants,
     categorySlug: base.categorySlug ?? "grocery",

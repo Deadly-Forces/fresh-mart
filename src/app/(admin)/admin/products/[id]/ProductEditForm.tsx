@@ -261,11 +261,15 @@ export function ProductEditForm({ product }: ProductEditFormProps) {
                     key={`${url}-${i}`}
                     className="relative group border rounded-md p-1"
                   >
-                    <img
-                      src={url}
-                      alt={`Product image ${i + 1}`}
-                      className="w-20 h-20 object-cover rounded"
-                    />
+                    <div className="relative w-20 h-20 overflow-hidden rounded">
+                      {/* Admin preview URLs may point to arbitrary external hosts. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={url}
+                        alt={`Product image ${i + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
                     <div className="absolute -top-2 -right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         type="button"

@@ -116,12 +116,40 @@ export async function fetchProducts(opts?: {
 
 /** Get category counts from all active products */
 export async function fetchCategoryCounts(): Promise<Record<string, number>> {
-  const products = await fetchProducts();
+  const supabase = await createClient();
   const counts: Record<string, number> = {};
-  for (const p of products) {
-    const cat = p.categorySlug ?? "other";
-    counts[cat] = (counts[cat] || 0) + 1;
+  const BATCH = 1000;
+  let from = 0;
+
+  while (true) {
+    const { data } = await supabase
+      .from("products")
+      .select("categories(slug)")
+      .eq("is_active", true)
+      .range(from, from + BATCH - 1);
+
+    if (!data || data.length === 0) {
+      break;
+    }
+
+    for (const product of data) {
+      let categorySlug = "other";
+      if (Array.isArray(product.categories) && product.categories.length > 0) {
+        categorySlug = product.categories[0].slug;
+      } else if (product.categories && !Array.isArray(product.categories)) {
+        categorySlug = (product.categories as { slug?: string }).slug ?? "other";
+      }
+
+      counts[categorySlug] = (counts[categorySlug] || 0) + 1;
+    }
+
+    if (data.length < BATCH) {
+      break;
+    }
+
+    from += BATCH;
   }
+
   return counts;
 }
 

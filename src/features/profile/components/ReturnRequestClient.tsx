@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createReturnRequestAction } from "@/features/profile/actions/createReturnRequest";
+import { uploadReturnEvidenceAction } from "@/features/profile/actions/uploadReturnEvidence";
 import { useRouter } from "next/navigation";
 
 interface ReturnRequestClientProps {
@@ -31,6 +32,7 @@ export function ReturnRequestClient({
     defaultType === "replace" ? "replace" : "return",
   );
   const [reason, setReason] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageFileName, setImageFileName] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Record<string, number>>(
@@ -48,6 +50,7 @@ export function ReturnRequestClient({
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
       setImageFileName(e.target.files[0].name);
     }
   };
@@ -168,12 +171,22 @@ export function ReturnRequestClient({
         quantity: selectedItems[item.id],
       }));
 
-    // 2. Mock image url
-    const mockImageUrl = imageFileName
-      ? `https://example.com/mock-upload/${imageFileName}`
-      : undefined;
+    let uploadedImageUrl: string | undefined;
 
-    // 3. Submit to server
+    if (imageFile) {
+      const uploadFormData = new FormData();
+      uploadFormData.append("evidence", imageFile);
+
+      const uploadResult = await uploadReturnEvidenceAction(uploadFormData);
+      if (uploadResult.error) {
+        toast.error(uploadResult.error);
+        setIsProcessing(false);
+        return;
+      }
+
+      uploadedImageUrl = uploadResult.imageUrl;
+    }
+
     try {
       const formData = new FormData();
       formData.append("orderId", order.id);
@@ -182,7 +195,7 @@ export function ReturnRequestClient({
       formData.append("status", aiAnalysisResult.status);
       formData.append("adminNotes", aiAnalysisResult.adminNotes);
       formData.append("items", JSON.stringify(itemsToReturn));
-      if (mockImageUrl) formData.append("imageUrl", mockImageUrl);
+      if (uploadedImageUrl) formData.append("imageUrl", uploadedImageUrl);
 
       const result = await createReturnRequestAction(formData);
 
@@ -195,6 +208,8 @@ export function ReturnRequestClient({
           message: aiAnalysisResult.userMessage,
         });
         toast.success("Request submitted successfully!");
+        setIsProcessing(false);
+        router.refresh();
       }
     } catch (error) {
       toast.error("Failed to process request.");

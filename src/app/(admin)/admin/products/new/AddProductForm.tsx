@@ -336,11 +336,15 @@ export function AddProductForm({ categories }: AddProductFormProps) {
               <div className="flex flex-wrap gap-3">
                 {images.map((url, i) => (
                   <div key={i} className="relative group">
-                    <img
-                      src={url}
-                      alt={`Product image ${i + 1}`}
-                      className="w-20 h-20 object-cover rounded-md border"
-                    />
+                    <div className="relative w-20 h-20 overflow-hidden rounded-md border">
+                      {/* Admin preview URLs may point to arbitrary external hosts. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={url}
+                        alt={`Product image ${i + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
                     <button
                       type="button"
                       onClick={() => removeImage(i)}

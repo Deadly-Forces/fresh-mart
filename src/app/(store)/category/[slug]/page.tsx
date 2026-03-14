@@ -156,15 +156,8 @@ export default async function CategoryPage({
 
           {/* Product Grid */}
           <ProductGrid
-            products={allProducts}
+            products={displayProducts}
             sortBy={sort}
-            categorySlug={slug}
-            categories={categories}
-            maxPrice={maxPrice}
-            dietary={dietary}
-            minRating={minRating}
-            brands={brands}
-            inStock={inStock}
             page={page}
           />
         </div>

@@ -28,7 +28,7 @@ export default function TermsPage() {
           <div className="prose prose-slate max-w-none text-muted-foreground prose-headings:text-foreground prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
             <h2>1. Acceptance of Terms</h2>
             <p>
-              By accessing and using FreshMart's website and services, you
+              By accessing and using FreshMart&apos;s website and services, you
               accept and agree to be bound by the terms and provision of this
               agreement.
             </p>

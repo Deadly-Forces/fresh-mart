@@ -9,6 +9,7 @@ import {
   AlertTriangle,
   ChevronLeft,
   ChevronRight,
+  ImageIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -130,6 +131,11 @@ export default async function AdminProductsPage({
           <ProductSearchInput />
         </Suspense>
         <div className="flex gap-2">
+          <Link href="/admin/products/images">
+            <Button variant="outline" size="sm" className="gap-1">
+              <ImageIcon className="w-4 h-4" /> Images
+            </Button>
+          </Link>
           <Button variant="outline" size="sm" className="gap-1">
             <Upload className="w-4 h-4" /> Import
           </Button>
@@ -195,11 +201,15 @@ export default async function AdminProductsPage({
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         {p.image_url ? (
-                          <img
-                            src={p.image_url}
-                            alt={p.name}
-                            className="w-10 h-10 object-cover rounded-md shrink-0 border"
-                          />
+                          <div className="relative w-10 h-10 shrink-0 overflow-hidden rounded-md border">
+                            {/* Admin preview URLs may point to arbitrary external hosts. */}
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={p.image_url}
+                              alt={p.name}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
                         ) : (
                           <div className="w-10 h-10 bg-secondary rounded-md shrink-0 border" />
                         )}

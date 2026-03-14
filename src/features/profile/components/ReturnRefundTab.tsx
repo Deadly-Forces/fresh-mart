@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   RotateCcw,
   Loader2,
@@ -102,18 +102,24 @@ export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
 
   const deliveredOrders = orders.filter((o) => o.status === "delivered");
 
-  useEffect(() => {
-    loadRequests();
-  }, []);
-
-  const loadRequests = async () => {
+  const loadRequests = useCallback(async () => {
     setLoading(true);
     const result = await getReturnRequestsAction();
     if (!result.error) {
       setRequests((result.requests as unknown as ReturnRequest[]) ?? []);
     }
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void loadRequests();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [loadRequests]);
 
   // Orders that already have a return request
   const ordersWithReturn = new Set(requests.map((r) => r.order_id));
@@ -148,7 +154,7 @@ export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
       setSelectedOrderId("");
       setReason("");
       setDescription("");
-      loadRequests();
+      void loadRequests();
     }
     setIsSubmitting(false);
   };

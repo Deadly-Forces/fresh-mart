@@ -822,6 +822,75 @@ export type Database = {
           },
         ];
       };
+      support_tickets: {
+        Row: {
+          category: string | null;
+          created_at: string | null;
+          draft_response: string | null;
+          email: string;
+          first_name: string | null;
+          id: string;
+          last_name: string | null;
+          message: string;
+          order_id: string | null;
+          priority: string | null;
+          status: string;
+          suggested_action: string | null;
+          summary: string | null;
+          updated_at: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          category?: string | null;
+          created_at?: string | null;
+          draft_response?: string | null;
+          email: string;
+          first_name?: string | null;
+          id?: string;
+          last_name?: string | null;
+          message: string;
+          order_id?: string | null;
+          priority?: string | null;
+          status?: string;
+          suggested_action?: string | null;
+          summary?: string | null;
+          updated_at?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          category?: string | null;
+          created_at?: string | null;
+          draft_response?: string | null;
+          email?: string;
+          first_name?: string | null;
+          id?: string;
+          last_name?: string | null;
+          message?: string;
+          order_id?: string | null;
+          priority?: string | null;
+          status?: string;
+          suggested_action?: string | null;
+          summary?: string | null;
+          updated_at?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "support_tickets_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       return_requests: {
         Row: {
           admin_notes: string | null;

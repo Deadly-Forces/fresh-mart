@@ -17,6 +17,8 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminPickerPage() {
   const supabase = await createClient();
+  const now = new Date();
+  const nowMs = now.getTime();
 
   // Fetch orders that need picking.
   // processing = auto-advanced by system (payment confirmed)
@@ -32,12 +34,13 @@ export default async function AdminPickerPage() {
     .order("created_at", { ascending: true }); // oldest first = most urgent
 
   // Fetch recently packed orders (last 24h) — set by the Picker App
-  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
   const { data: packedOrders } = await supabase
     .from("orders")
     .select(`*, order_items ( quantity, price, product_snapshot )`)
     .eq("status", "packed")
-    .gte("created_at", yesterday)
+    .gte("created_at", yesterday.toISOString())
     .order("created_at", { ascending: false });
 
   // Use raw DB data — no simulation override
@@ -68,7 +71,7 @@ export default async function AdminPickerPage() {
       0,
     );
     const minutesAgo = Math.round(
-      (Date.now() - new Date(o.created_at).getTime()) / 60000,
+      (nowMs - new Date(o.created_at).getTime()) / 60000,
     );
 
     return {

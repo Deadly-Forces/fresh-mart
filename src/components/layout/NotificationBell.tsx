@@ -4,13 +4,13 @@ import Link from "next/link";
 import { Bell } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useHydrated } from "@/hooks/useHydrated";
 
 export function NotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0);
-  const [mounted, setMounted] = useState(false);
+  const hydrated = useHydrated();
 
   useEffect(() => {
-    setMounted(true);
     const supabase = createClient();
 
     async function fetchCount() {
@@ -54,7 +54,7 @@ export function NotificationBell() {
       aria-label="Notifications"
     >
       <Bell className="w-5 h-5 text-muted-foreground" />
-      {mounted && unreadCount > 0 && (
+      {hydrated && unreadCount > 0 && (
         <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold min-w-4 h-4 flex items-center justify-center rounded-full shadow-sm ring-2 ring-background px-0.5">
           {unreadCount > 99 ? "99+" : unreadCount}
         </span>

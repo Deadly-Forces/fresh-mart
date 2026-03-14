@@ -83,11 +83,15 @@ export function BannerManager({ banners }: { banners: Banner[] }) {
             >
               <span className="text-muted-foreground">⠿</span>
               {b.image_url ? (
-                <img
-                  src={b.image_url}
-                  alt={b.title}
-                  className="w-24 h-14 object-cover rounded-md shrink-0 border"
-                />
+                <div className="relative w-24 h-14 shrink-0 overflow-hidden rounded-md border">
+                  {/* Admin preview URLs may point to arbitrary external hosts. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={b.image_url}
+                    alt={b.title}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               ) : (
                 <div className="w-24 h-14 bg-secondary rounded-md shrink-0 flex items-center justify-center text-xs text-muted-foreground">
                   Preview

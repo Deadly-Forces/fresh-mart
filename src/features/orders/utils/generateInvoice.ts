@@ -135,8 +135,10 @@ export async function generateInvoice(order: UserOrder) {
   });
 
   // --- Totals section ---
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const finalY = (doc as any).lastAutoTable?.finalY || y + 40;
+  const docWithTable = doc as typeof doc & {
+    lastAutoTable?: { finalY?: number };
+  };
+  const finalY = docWithTable.lastAutoTable?.finalY || y + 40;
   let totalsY = finalY + 12;
 
   const subtotal =

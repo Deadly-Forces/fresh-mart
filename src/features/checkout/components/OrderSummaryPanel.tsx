@@ -1,12 +1,13 @@
 "use client";
 
 import { useCartStore } from "@/features/cart/store/useCartStore";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, Gift, Sparkles } from "lucide-react";
 import {
   getAutoDiscountsAction,
   type AutoDiscount,
 } from "@/features/checkout/actions/autoDiscountActions";
+import { useHydrated } from "@/hooks/useHydrated";
 
 interface OrderSummaryPanelProps {
   isExpressDelivery?: boolean;
@@ -17,40 +18,47 @@ export function OrderSummaryPanel({
   isExpressDelivery = false,
   onAutoDiscountChange,
 }: OrderSummaryPanelProps) {
+  const hydrated = useHydrated();
   const items = useCartStore((s) => s.items);
   const getTotal = useCartStore((s) => s.getTotal);
   const appliedPromo = useCartStore((s) => s.appliedPromo);
-  const [mounted, setMounted] = useState(false);
   const [autoDiscounts, setAutoDiscounts] = useState<AutoDiscount[]>([]);
   const [autoTotal, setAutoTotal] = useState(0);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const subtotal = getTotal();
 
-  // Fetch auto-discounts when subtotal changes
-  const fetchAutoDiscounts = useCallback(async () => {
-    if (subtotal <= 0) {
-      setAutoDiscounts([]);
-      setAutoTotal(0);
-      onAutoDiscountChange?.(0);
-      return;
-    }
-    const result = await getAutoDiscountsAction(subtotal);
-    setAutoDiscounts(result.discounts);
-    setAutoTotal(result.totalDiscount);
-    onAutoDiscountChange?.(result.totalDiscount);
-  }, [subtotal, onAutoDiscountChange]);
-
   useEffect(() => {
-    if (mounted) {
-      fetchAutoDiscounts();
-    }
-  }, [mounted, fetchAutoDiscounts]);
+    if (!hydrated) return;
 
-  if (!mounted) {
+    let cancelled = false;
+
+    async function loadAutoDiscounts() {
+      await Promise.resolve();
+      if (cancelled) return;
+
+      if (subtotal <= 0) {
+        setAutoDiscounts([]);
+        setAutoTotal(0);
+        onAutoDiscountChange?.(0);
+        return;
+      }
+
+      const result = await getAutoDiscountsAction(subtotal);
+      if (cancelled) return;
+
+      setAutoDiscounts(result.discounts);
+      setAutoTotal(result.totalDiscount);
+      onAutoDiscountChange?.(result.totalDiscount);
+    }
+
+    void loadAutoDiscounts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hydrated, onAutoDiscountChange, subtotal]);
+
+  if (!hydrated) {
     return (
       <div className="w-full lg:w-[35%] lg:sticky lg:top-[140px] lg:self-start">
         <div className="bg-card border border-border rounded-card p-6 flex justify-center items-center min-h-[300px]">
@@ -158,7 +166,7 @@ export function OrderSummaryPanel({
         </div>
         {totalDiscount > 0 && (
           <p className="text-xs text-emerald-600 text-center font-medium">
-            🎉 You're saving ₹{totalDiscount.toFixed(2)} on this order!
+            🎉 You&apos;re saving ₹{totalDiscount.toFixed(2)} on this order!
           </p>
         )}
       </div>

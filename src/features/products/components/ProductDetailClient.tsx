@@ -1,9 +1,9 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import DOMPurify from "isomorphic-dompurify";
 import {
   ChevronRight,
   Heart,
@@ -16,13 +16,23 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
-import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCartStore } from "@/features/cart/store/useCartStore";
 import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { ProductCard } from "./ProductCard";
+import { useHydrated } from "@/hooks/useHydrated";
+
+const ReviewsSection = dynamic(
+  () =>
+    import("@/features/reviews/components/ReviewsSection").then((mod) => ({
+      default: mod.ReviewsSection,
+    })),
+  {
+    loading: () => null,
+  },
+);
 
 interface RelatedProduct {
   id: string;
@@ -47,13 +57,11 @@ export function ProductDetailClient({
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState("2");
   const [quantity, setQuantity] = useState(1);
-  const [mounted, setMounted] = useState(false);
+  const hydrated = useHydrated();
   const [showSparkle, setShowSparkle] = useState(false);
   const sparkleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Hydration check
   useEffect(() => {
-    setMounted(true);
     return () => {
       if (sparkleTimeoutRef.current) clearTimeout(sparkleTimeoutRef.current);
     };
@@ -63,7 +71,7 @@ export function ProductDetailClient({
   const toggleItem = useWishlistStore((s) => s.toggleItem);
   const isInWishlist = useWishlistStore((s) => s.isInWishlist);
 
-  const isLiked = mounted && product ? isInWishlist(product.id) : false;
+  const isLiked = hydrated && product ? isInWishlist(product.id) : false;
 
   if (!product) {
     return (
@@ -385,7 +393,7 @@ export function ProductDetailClient({
           <div
             className="prose prose-sm max-w-none text-foreground/80"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(product.description || ""),
+              __html: product.description || "",
             }}
           />
         </TabsContent>
@@ -394,7 +402,7 @@ export function ProductDetailClient({
           <div
             className="prose prose-sm max-w-none text-foreground/80"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(product.nutritionalInfo || ""),
+              __html: product.nutritionalInfo || "",
             }}
           />
         </TabsContent>

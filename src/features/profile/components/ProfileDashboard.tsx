@@ -204,7 +204,6 @@ export function ProfileDashboard({
       setIsLoadingAddress(false);
     };
     fetchDefaultAddress();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
