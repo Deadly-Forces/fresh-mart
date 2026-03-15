@@ -144,11 +144,9 @@ const cookingEssentials = [
 
   // Cooking Sprays & Misc
   ['PAM Cooking Spray Original 170g', 380, 450, 'g'],
-  ['Tata Sampann High Protein Unpolished Tur Dal 500g', 78, 9, 'g'],
   ['Nutrela Soya Chunks 200g', 55, 68, 'g'],
   ['Saffola Arogyam Chyawanprash 500g', 215, 260, 'g'],
   ['Cornito Corn Starch 100g', 40, 50, 'g'],
-  ['MTR Spiced Chutney Powder 200g', 65, 80, 'g'],
   ['Tops Green Chilli Sauce 650g', 75, 92, 'g'],
   ['Ching\'s Dark Soy Sauce 750ml', 195, 235, 'ml'],
   ['Lee Kum Kee Hoisin Sauce 240g', 250, 300, 'g'],
@@ -220,6 +218,9 @@ const spicesSeasonings = [
   ['Suhana Chicken Biryani Mix 50g', 60, 74, 'g'],
   ['Suhana Paneer Butter Masala Mix 50g', 55, 68, 'g'],
   ['Suhana Pani Puri Masala 50g', 35, 44, 'g'],
+  ['MTR Spiced Chutney Powder 200g', 65, 80, 'g'],
+  ['MTR Bisibelebath Powder 100g', 48, 60, 'g'],
+  ['MTR Puliogare Powder 100g', 52, 65, 'g'],
   ['Smith & Jones Biryani Masala 20g', 22, 28, 'g'],
   ['MDH Kashmiri Lal Mirch Fine 100g', 45, 56, 'g'],
 
@@ -304,6 +305,7 @@ const staples = [
   // More Dals & Pulses
   ['24 Mantra Organic Toor Dal 500g', 72, 88, 'g'],
   ['24 Mantra Organic Moong Dal 500g', 68, 82, 'g'],
+  ['Tata Sampann High Protein Unpolished Tur Dal 500g', 78, 95, 'g'],
   ['Tata Sampann Urad Dal Whole 1kg', 155, 188, 'kg'],
   ['Tata Sampann Rajma Chitra 500g', 85, 105, 'g'],
   ['bb Royal Green Moong Whole 500g', 72, 88, 'g'],
@@ -358,7 +360,6 @@ const staples = [
   ['MTR Upma Mix 200g', 42, 52, 'g'],
   ['MTR Khaman Dhokla Mix 200g', 48, 60, 'g'],
   ['MTR Vada Mix 200g', 45, 56, 'g'],
-  ['MTR Bisibelebath Powder 100g', 48, 60, 'g'],
   ['Gits Khaman Dhokla Mix 500g', 95, 115, 'g'],
   ['Gits Idli Mix 200g', 45, 56, 'g'],
   ['Gits Dosa Mix 200g', 48, 60, 'g'],
@@ -374,7 +375,6 @@ const staples = [
   ['bb Royal Dalia (Broken Wheat) 500g', 38, 48, 'g'],
   ['bb Royal Wheat Bulgur 500g', 45, 56, 'g'],
   ['Daawat Quick Cooking Brown Rice 1kg', 95, 115, 'kg'],
-  ['MTR Puliogare Powder 100g', 52, 65, 'g'],
   ['bb Royal Makhana (Fox Nuts) Premium 200g', 210, 255, 'g'],
 ];
 

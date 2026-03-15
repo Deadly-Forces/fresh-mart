@@ -1,0 +1,81 @@
+{
+  "startedAt": "2026-03-15T05:33:53.055Z",
+  "totalProducts": 2600,
+  "candidateProducts": 139,
+  "selectedProducts": 139,
+  "updated": [],
+  "failed": [
+    {
+      "id": "af26061d-30da-42dd-b744-7d093447255e",
+      "slug": "staples-bb-royal-pink-poha-flattened-rice-thick-500g-181",
+      "name": "bb Royal Pink Poha (Flattened Rice) Thick 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "e1672e29-5276-4fd2-8c61-8ef0289fa051",
+      "slug": "staples-aashirvaad-navadhanya-atta-1kg-124",
+      "name": "Aashirvaad Navadhanya Atta 1kg",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "b2e384f3-1771-4b8f-8583-38cb0a970ec6",
+      "slug": "staples-bb-royal-val-dal-field-beans-500g-134",
+      "name": "bb Royal Val Dal (Field Beans) 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "a271c18c-ad4f-4e0a-9808-4f8670649192",
+      "slug": "spices-seasonings-mdh-loyalty-haldi-powder-500g-188",
+      "name": "MDH Loyalty Haldi Powder 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "09ce2d69-27bc-43fb-b94c-1783040d7fb1",
+      "slug": "cooking-essentials-tata-tea-gold-honey-jar-250g-194",
+      "name": "Tata Tea Gold Honey Jar 250g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "ba5b39c2-8bd7-4c64-9e05-ed4a2d4bfb97",
+      "slug": "staples-nourishvitals-roasted-quinoa-puffs-100g-167",
+      "name": "NourishVitals Roasted Quinoa Puffs 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "65a8430a-6ef2-4de2-aa51-51be33fc59e7",
+      "slug": "staples-bb-royal-double-beans-lima-500g-141",
+      "name": "bb Royal Double Beans (Lima) 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "c498d086-d9ce-4cdd-8ff8-e7ffce9c74a1",
+      "slug": "spices-seasonings-mdh-black-salt-powder-kala-namak-100g-116",
+      "name": "MDH Black Salt Powder (Kala Namak) 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "d2a9d3c1-3c83-4b97-907d-6e3aaba53a21",
+      "slug": "spices-seasonings-catch-cumin-powder-sprinkler-50g-178",
+      "name": "Catch Cumin Powder Sprinkler 50g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "05b757c6-87ff-4c18-ba75-3e0b92c5bdaf",
+      "slug": "spices-seasonings-catch-piri-piri-seasoning-50g-180",
+      "name": "Catch Piri Piri Seasoning 50g",
+      "reason": "Image download failed with 403 for https://www.thewhitbycatch.co.uk/wp-content/uploads/2021/11/IMG_4970-1.jpg"
+    },
+    {
+      "id": "20c5599c-5249-4258-a778-ff743ed00940",
+      "slug": "spices-seasonings-mdh-poppy-seed-powder-khus-khus-100g-118",
+      "name": "MDH Poppy Seed Powder (Khus Khus) 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "f4f287a7-5e24-4cb3-9871-7ff0c74c779e",
+      "slug": "staples-tata-sampann-biryani-basmati-rice-1kg-100",
+      "name": "Tata Sampann Biryani Basmati Rice 1kg",
+      "reason": "no-source-found"
+    }
+  ]
+}

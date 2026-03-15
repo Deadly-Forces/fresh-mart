@@ -1,0 +1,258 @@
+{
+  "broken": [
+    "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\broken-files.jpg"
+  ],
+  "groups": [
+    {
+      "index": 1,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-01.jpg",
+      "count": 77,
+      "categories": [
+        "baby-care",
+        "bakery-fresho",
+        "beverages-epigamia",
+        "beverages-rasna",
+        "beverages-tata",
+        "catch-nigella",
+        "catch-white",
+        "cooking-essentials",
+        "dabur-coconut",
+        "dairy-eggs",
+        "haldiram-s",
+        "hamdard-kewra",
+        "household-asian",
+        "household-flair",
+        "household-fresho",
+        "household-freshwrap",
+        "household-gala",
+        "household-probioclean",
+        "meat-seafood",
+        "nestle-everyday",
+        "personal-care",
+        "rajesh-masala",
+        "smith-jones",
+        "spices-seasonings",
+        "staples-aashirvaad",
+        "staples-ashirvaad",
+        "staples-bb",
+        "staples-lal",
+        "staples-nourishvitals",
+        "staples-sunfeast",
+        "staples-tata",
+        "staples-toor",
+        "weikfield-cream"
+      ],
+      "files": [
+        "baby-care-babyhug-nappy-pads-large-193.jpg",
+        "baby-care-chicco-corner-guards-128.jpg",
+        "baby-care-chicco-suction-bowl-with-spoon-144.jpg",
+        "baby-care-himalaya-baby-rice-cereal-130.jpg",
+        "baby-care-mothercare-all-we-know-laundry-cleaner-117.jpg",
+        "baby-care-slurrp-farm-puffs-cheesy-broccoli-174.jpg",
+        "baby-care-tritan-baby-bottle-sterilizer-119.jpg",
+        "bakery-fresho-suji-rusk-60.jpg",
+        "beverages-epigamia-protein-smoothie-mango-123.jpg",
+        "beverages-rasna-khus-khus-concentrate-120.jpg",
+        "beverages-tata-tea-premium-3.jpg",
+        "catch-nigella-seeds-kalonji-100g.jpg"
+      ]
+    },
+    {
+      "index": 2,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-02.jpg",
+      "count": 15,
+      "categories": [
+        "bakery-fresho",
+        "fruits-fresho",
+        "fruits-imported",
+        "meat-seafood"
+      ],
+      "files": [
+        "bakery-fresho-bread-pakora-113.jpg",
+        "bakery-fresho-cannoli-157.jpg",
+        "bakery-fresho-chocolate-donut-86.jpg",
+        "bakery-fresho-fan-toast-94.jpg",
+        "bakery-fresho-palmier-butterfly-pastry-155.jpg",
+        "bakery-fresho-paneer-puff-110.jpg",
+        "bakery-fresho-puff-pastry-veg-109.jpg",
+        "bakery-fresho-samosa-112.jpg",
+        "bakery-fresho-scone-plain-136.jpg",
+        "bakery-fresho-swiss-roll-chocolate-145.jpg",
+        "fruits-fresho-kokum-fresh-191.jpg",
+        "fruits-fresho-phalsa-fruit-152.jpg"
+      ]
+    },
+    {
+      "index": 3,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-03.jpg",
+      "count": 12,
+      "categories": [
+        "baby-care",
+        "bakery-fresho",
+        "cooking-essentials",
+        "household-origami",
+        "meat-seafood",
+        "personal-care",
+        "snacks-haldirams"
+      ],
+      "files": [
+        "baby-care-babyhug-full-sleeves-romper-187.jpg",
+        "baby-care-himalaya-baby-care-gift-pack-106.jpg",
+        "baby-care-pigeon-baby-tooth-gel-135.jpg",
+        "baby-care-pigeon-weaning-bottle-120ml-139.jpg",
+        "bakery-fresho-filo-pastry-sheets-196.jpg",
+        "cooking-essentials-nandini-pure-ghee-500ml-22.jpg",
+        "household-origami-kitchen-towel-roll-71.jpg",
+        "meat-seafood-mtr-ready-to-eat-fish-curry-114.jpg",
+        "personal-care-park-avenue-premium-icon-perfume-154.jpg",
+        "personal-care-wild-stone-ultra-sensual-deodorant-65.jpg",
+        "personal-care-wow-onion-black-seed-shampoo-121.jpg",
+        "snacks-haldirams-moong-dal-28.jpg"
+      ]
+    },
+    {
+      "index": 4,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-04.jpg",
+      "count": 7,
+      "categories": [
+        "baby-care",
+        "dairy-eggs",
+        "vegetables-24",
+        "vegetables-fresho",
+        "vegetables-organic"
+      ],
+      "files": [
+        "baby-care-nan-pro-2-follow-up-formula-powder-80.jpg",
+        "dairy-eggs-amul-taaza-homogenised-toned-milk-137.jpg",
+        "dairy-eggs-baskin-robbins-premium-chocolate-128.jpg",
+        "dairy-eggs-kwality-walls-magnum-classic-125.jpg",
+        "vegetables-24-mantra-organic-green-chilli-78.jpg",
+        "vegetables-fresho-ginger-adrak-22.jpg",
+        "vegetables-organic-tattva-cucumber-69.jpg"
+      ]
+    },
+    {
+      "index": 5,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-05.jpg",
+      "count": 6,
+      "categories": [
+        "fruits-fresho",
+        "vegetables-fresho"
+      ],
+      "files": [
+        "fruits-fresho-blood-orange-22.jpg",
+        "fruits-fresho-citrus-mix-pack-129.jpg",
+        "fruits-fresho-fruit-basket-premium-126.jpg",
+        "fruits-fresho-tangerine-23.jpg",
+        "vegetables-fresho-parsnip-161.jpg",
+        "vegetables-fresho-raita-mix-pack-118.jpg"
+      ]
+    },
+    {
+      "index": 6,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-06.jpg",
+      "count": 6,
+      "categories": [
+        "meat-seafood"
+      ],
+      "files": [
+        "meat-seafood-freshtohome-cuttlefish-cleaned-198.jpg",
+        "meat-seafood-freshtohome-goat-biryani-cut-37.jpg",
+        "meat-seafood-freshtohome-goat-ribs-144.jpg",
+        "meat-seafood-freshtohome-marinated-fish-fry-187.jpg",
+        "meat-seafood-freshtohome-mussels-69.jpg",
+        "meat-seafood-freshtohome-tilapia-fish-55.jpg"
+      ]
+    },
+    {
+      "index": 7,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-07.jpg",
+      "count": 5,
+      "categories": [
+        "baby-care"
+      ],
+      "files": [
+        "baby-care-chicco-natural-feeling-bottle-180.jpg",
+        "baby-care-luvlap-anti-colic-feeding-bottle-150ml-95.jpg",
+        "baby-care-mee-mee-premium-feeding-bottle-250ml-96.jpg",
+        "baby-care-mee-mee-straw-sipper-141.jpg",
+        "baby-care-pigeon-softouch-wide-neck-bottle-240ml-89.jpg"
+      ]
+    },
+    {
+      "index": 8,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-08.jpg",
+      "count": 5,
+      "categories": [
+        "baby-care"
+      ],
+      "files": [
+        "baby-care-himalaya-baby-massage-oil-50.jpg",
+        "baby-care-himalaya-baby-shampoo-gentle-45.jpg",
+        "baby-care-johnsons-baby-lotion-38.jpg",
+        "baby-care-johnsons-baby-lotion-39.jpg",
+        "baby-care-johnsons-cottontouch-baby-lotion-44.jpg"
+      ]
+    },
+    {
+      "index": 9,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-09.jpg",
+      "count": 5,
+      "categories": [
+        "dairy-eggs",
+        "fruits-organic"
+      ],
+      "files": [
+        "dairy-eggs-aashirvaad-svasti-ghee-71.jpg",
+        "dairy-eggs-amul-ghee-68.jpg",
+        "dairy-eggs-ananda-ghee-74.jpg",
+        "dairy-eggs-mother-dairy-cow-ghee-70.jpg",
+        "fruits-organic-tattva-mango-184.jpg"
+      ]
+    },
+    {
+      "index": 10,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-10.jpg",
+      "count": 5,
+      "categories": [
+        "spices-seasonings"
+      ],
+      "files": [
+        "spices-seasonings-badshah-kitchen-king-masala-100g-143.jpg",
+        "spices-seasonings-catch-black-pepper-powder-100g-12.jpg",
+        "spices-seasonings-everest-meat-masala-100g-25.jpg",
+        "spices-seasonings-everest-mutton-masala-100g-131.jpg",
+        "spices-seasonings-mdh-turmeric-powder-haldi-100g-0.jpg"
+      ]
+    },
+    {
+      "index": 11,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-11.jpg",
+      "count": 4,
+      "categories": [
+        "bakery-weikfield",
+        "cooking-essentials"
+      ],
+      "files": [
+        "bakery-weikfield-baking-soda-181.jpg",
+        "cooking-essentials-weikfield-baking-soda-100g-51.jpg",
+        "cooking-essentials-weikfield-dessert-gel-agar-agar-25g-157.jpg",
+        "cooking-essentials-weikfield-gelatin-powder-25g-189.jpg"
+      ]
+    },
+    {
+      "index": 12,
+      "path": "E:\\Programming\\Projects\\Grocery\\fresh-mart\\tmp\\image-review\\group-12.jpg",
+      "count": 3,
+      "categories": [
+        "baby-care",
+        "snacks-ritebite"
+      ],
+      "files": [
+        "baby-care-cerelac-baby-cereal-wheat-honey-73.jpg",
+        "baby-care-enfagrow-a+-stage-3-nutritional-milk-powder-82.jpg",
+        "snacks-ritebite-max-protein-bar-peanut-110.jpg"
+      ]
+    }
+  ]
+}

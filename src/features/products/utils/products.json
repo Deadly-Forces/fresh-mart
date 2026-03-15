@@ -509,7 +509,7 @@
     "rating": 4.9,
     "reviewsCount": 1133,
     "stock": 200,
-    "categorySlug": "cooking-essentials",
+    "categorySlug": "beverages",
     "badge": "Sale"
   },
   {
@@ -1064,7 +1064,7 @@
     "rating": 4.8,
     "reviewsCount": 170,
     "stock": 200,
-    "categorySlug": "cooking-essentials"
+    "categorySlug": "beverages"
   },
   {
     "id": "prod-cooking-essentials-81",
@@ -1623,7 +1623,7 @@
     "rating": 3.9,
     "reviewsCount": 1196,
     "stock": 200,
-    "categorySlug": "cooking-essentials",
+    "categorySlug": "beverages",
     "badge": "Bestseller"
   },
   {
@@ -2191,7 +2191,7 @@
     "rating": 4.1,
     "reviewsCount": 61,
     "stock": 200,
-    "categorySlug": "cooking-essentials"
+    "categorySlug": "beverages"
   },
   {
     "id": "prod-cooking-essentials-165",
@@ -12111,7 +12111,7 @@
     "rating": 4.4,
     "reviewsCount": 502,
     "stock": 200,
-    "categorySlug": "fruits",
+    "categorySlug": "beverages",
     "badge": "Organic"
   },
   {
@@ -13352,7 +13352,7 @@
     "rating": 4.6,
     "reviewsCount": 1028,
     "stock": 200,
-    "categorySlug": "dairy-eggs"
+    "categorySlug": "cooking-essentials"
   },
   {
     "id": "prod-dairy-eggs-1",
@@ -13365,7 +13365,7 @@
     "rating": 4.1,
     "reviewsCount": 232,
     "stock": 200,
-    "categorySlug": "dairy-eggs"
+    "categorySlug": "cooking-essentials"
   },
   {
     "id": "prod-dairy-eggs-2",
@@ -17675,7 +17675,7 @@
     "rating": 4.7,
     "reviewsCount": 463,
     "stock": 200,
-    "categorySlug": "bakery",
+    "categorySlug": "cooking-essentials",
     "badge": "New"
   },
   {
@@ -18432,7 +18432,7 @@
     "rating": 4.4,
     "reviewsCount": 267,
     "stock": 200,
-    "categorySlug": "bakery"
+    "categorySlug": "cooking-essentials"
   },
   {
     "id": "prod-bakery-182",
@@ -18458,7 +18458,7 @@
     "rating": 4.7,
     "reviewsCount": 888,
     "stock": 200,
-    "categorySlug": "bakery"
+    "categorySlug": "cooking-essentials"
   },
   {
     "id": "prod-bakery-184",
@@ -18711,7 +18711,7 @@
     "rating": 4.6,
     "reviewsCount": 1183,
     "stock": 200,
-    "categorySlug": "meat-seafood"
+    "categorySlug": "vegetables"
   },
   {
     "id": "prod-meat-seafood-3",

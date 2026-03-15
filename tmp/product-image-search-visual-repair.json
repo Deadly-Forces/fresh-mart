@@ -1,0 +1,1040 @@
+{
+  "startedAt": "2026-03-15T05:21:56.806Z",
+  "totalProducts": 2600,
+  "candidateProducts": 152,
+  "selectedProducts": 152,
+  "updated": [
+    {
+      "id": "91cbb5e9-56b1-4ccf-9752-c7480e40b483",
+      "slug": "dabur-coconut-cream-200ml",
+      "name": "Dabur Coconut Cream 200ml",
+      "categorySlug": "cooking-essentials",
+      "localPath": "/product-images/dabur-coconut-cream-200ml.jpg",
+      "source": "tajstores.co.uk",
+      "query": "Dabur Coconut Cream 200ml",
+      "pageUrl": "https://tajstores.co.uk/product/dabur-vatika-coconut-hair-cream/",
+      "imageUrl": "https://tajstores.co.uk/wp-content/uploads/2021/08/DSC_0008-scaled.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "DABUR VATIKA COCONUT HAIR CREAM – Taj Stores",
+      "matchCoverage": 1,
+      "matchScore": 0.42857142857142855
+    },
+    {
+      "id": "e6dbfaa4-9e73-4ea7-b675-1715247eed1a",
+      "slug": "baby-care-mee-mee-straw-sipper-141",
+      "name": "Mee Mee Straw Sipper 1 pc",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-mee-mee-straw-sipper-141.jpg",
+      "source": "amazon.in",
+      "query": "Mee Mee Straw Sipper 1 pc",
+      "pageUrl": "https://www.amazon.in/Mee-Handle-Straw-Sipper-Plastic/dp/B07TLZF5WY",
+      "imageUrl": "https://m.media-amazon.com/images/I/61ZwNvZEZ4L._AC_PT0_BL0_SX245_SY275_FMwebp_QL25_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Mee Mee Twin Handle Straw Sipper Cup (Blue, Plastic)",
+      "matchCoverage": 1,
+      "matchScore": 0.5
+    },
+    {
+      "id": "77397bb7-75a1-4abe-a37a-7b17aab66c55",
+      "slug": "baby-care-johnsons-baby-lotion-39",
+      "name": "Johnson's Baby Lotion 500ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-johnsons-baby-lotion-39.jpg",
+      "source": "amazon.in",
+      "query": "Johnson's Baby Lotion 500ml",
+      "pageUrl": "https://www.amazon.in/Johnsons-19804821-Baby-Lotion-500ml/dp/B008YD5G1I",
+      "imageUrl": "https://m.media-amazon.com/images/I/71MzX+BXddL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Johnson's Baby Lotion, 500ml",
+      "matchCoverage": 1,
+      "matchScore": 1
+    },
+    {
+      "id": "40b324d4-bb2b-43c9-bc70-d1796419a16c",
+      "slug": "baby-care-johnsons-cottontouch-baby-lotion-44",
+      "name": "Johnson's Cottontouch Baby Lotion 200ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-johnsons-cottontouch-baby-lotion-44.jpg",
+      "source": "amazon.in",
+      "query": "Johnson's Cottontouch Baby Lotion 200ml",
+      "pageUrl": "https://www.amazon.in/Johnsons-79603260-Baby-Lotion-200ml/dp/B07FHHCR44",
+      "imageUrl": "https://m.media-amazon.com/images/I/71MzX+BXddL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Johnson's Baby Lotion (White, 200ml) - Amazon.in",
+      "matchCoverage": 0.75,
+      "matchScore": 0.6
+    },
+    {
+      "id": "d0ed055d-606e-4acd-a5b2-f9b9c7362aee",
+      "slug": "household-syska-led-tube-light-22w-163",
+      "name": "Syska LED Tube Light 22W 1 pc",
+      "categorySlug": "household",
+      "localPath": "/product-images/household-syska-led-tube-light-22w-163.jpg",
+      "source": "amazon.in",
+      "query": "Syska LED Tube Light 22W 1 pc",
+      "pageUrl": "https://www.amazon.in/Syska-SSK-T5-22W-22-Watt-Light-20/dp/B01MF9S885",
+      "imageUrl": "https://m.media-amazon.com/images/I/61oypYZrUoL.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "SYSKA 22W LED Cool Day Light Tube Light, Pack of 20",
+      "matchCoverage": 1,
+      "matchScore": 0.625
+    },
+    {
+      "id": "7821b2fb-b4ca-4ca7-9bf4-7e104db831d9",
+      "slug": "personal-care-wow-onion-black-seed-shampoo-121",
+      "name": "WOW Onion Black Seed Shampoo 300ml",
+      "categorySlug": "personal-care",
+      "localPath": "/product-images/personal-care-wow-onion-black-seed-shampoo-121.jpg",
+      "source": "amazon.in",
+      "query": "WOW Onion Black Seed Shampoo 300ml",
+      "pageUrl": "https://www.amazon.in/WOW-Skin-Science-Pro-Vitamin-Controls/dp/B08JWB74DM",
+      "imageUrl": "https://m.media-amazon.com/images/I/51r7I5AOTIL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "WOW Skin Science||Combo ion Black Seed Oil Shampoo with Red Onion Seed ...",
+      "matchCoverage": 1,
+      "matchScore": 0.45454545454545453
+    },
+    {
+      "id": "26a7d3ca-2dd9-4475-a00b-82882bf5230b",
+      "slug": "snacks-haldirams-moong-dal-28",
+      "name": "Haldiram's Moong Dal 400g",
+      "categorySlug": "snacks",
+      "localPath": "/product-images/snacks-haldirams-moong-dal-28.jpg",
+      "source": "amazon.in",
+      "query": "Haldiram's Moong Dal 400g",
+      "pageUrl": "https://www.amazon.in/Haldirams-Moong-Dal-400gms-Pack/dp/B07P633J56",
+      "imageUrl": "https://m.media-amazon.com/images/I/71k-4U0eCLL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Haldiram's Nagpur Moong Dal, 400 Gm (200 Gm X Pack Of 2)",
+      "matchCoverage": 1,
+      "matchScore": 0.75
+    },
+    {
+      "id": "986d3bfb-8c0a-4b42-832a-8f64b225a975",
+      "slug": "snacks-ritebite-max-protein-bar-peanut-110",
+      "name": "RiteBite Max Protein Bar Peanut 70g",
+      "categorySlug": "snacks",
+      "localPath": "/product-images/snacks-ritebite-max-protein-bar-peanut-110.jpg",
+      "source": "amazon.in",
+      "query": "RiteBite Max Protein Bar Peanut 70g",
+      "pageUrl": "https://www.amazon.in/RiteBite-Max-Protein-Active-Minerals/dp/B0F4JVVF2T",
+      "imageUrl": "https://m.media-amazon.com/images/I/41kAJx2U4LL._SX38_SY50_CR,0,0,38,50_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "RiteBite Max Protein Active Peanut Butter Protein Bars + Active …",
+      "matchCoverage": 0.8,
+      "matchScore": 0.5714285714285714
+    },
+    {
+      "id": "d91ccaf6-fffc-47da-8585-1fdefb898813",
+      "slug": "beverages-epigamia-protein-smoothie-mango-123",
+      "name": "Epigamia Protein Smoothie Mango 180ml",
+      "categorySlug": "beverages",
+      "localPath": "/product-images/beverages-epigamia-protein-smoothie-mango-123.jpg",
+      "source": "amazon.in",
+      "query": "Epigamia Protein Smoothie Mango 180ml",
+      "pageUrl": "https://www.amazon.in/Epigamia-Greek-Yogurt-Smoothie-Alphonso/dp/B07L1FZXGV",
+      "imageUrl": "https://m.media-amazon.com/images/I/61WiT++oBTL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-1",
+      "matchedText": "Epigamia Mango Smoothie, 180 ml | Real Fruits, Zero Preservatives | Protein Source | Lactose Free | Greek Yogurt Smoothie : Amazon.in: Grocery & Gourmet Foods",
+      "matchCoverage": 1,
+      "matchScore": 0.17647058823529413
+    },
+    {
+      "id": "e90f3fac-d7bb-4895-89db-8613d597819c",
+      "slug": "meat-seafood-freshtohome-goat-biryani-cut-37",
+      "name": "FreshToHome Goat Biryani Cut 500g",
+      "categorySlug": "meat-seafood",
+      "localPath": "/product-images/meat-seafood-freshtohome-goat-biryani-cut-37.jpg",
+      "source": "amazon.in",
+      "query": "FreshToHome Goat Biryani Cut 500g",
+      "pageUrl": "https://www.amazon.in/FreshToHome-Premium-Goat-Biryani-include/dp/B09Z9MPVFV",
+      "imageUrl": "https://m.media-amazon.com/images/I/41CYJXK8UgL._SX38_SY50_CR,0,0,38,50_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "FreshToHome Premium Goat Biryani Cut | 480g to 500g Pack",
+      "matchCoverage": 1,
+      "matchScore": 0.8
+    },
+    {
+      "id": "56f90656-2633-459e-8b91-95aec1b91392",
+      "slug": "dairy-eggs-amul-taaza-homogenised-toned-milk-137",
+      "name": "Amul Taaza Homogenised Toned Milk 500ml",
+      "categorySlug": "dairy-eggs",
+      "localPath": "/product-images/dairy-eggs-amul-taaza-homogenised-toned-milk-137.jpg",
+      "source": "amazon.in",
+      "query": "Amul Taaza Homogenised Toned Milk 500ml",
+      "pageUrl": "https://www.amazon.in/Amull-Taaza-Homogenised-Toned-Milk/dp/B0DC8VMG23",
+      "imageUrl": "https://m.media-amazon.com/images/I/61WiT++oBTL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Amul Taaza Homogenised Toned Milk 1Ltr - Amazon.in",
+      "matchCoverage": 1,
+      "matchScore": 0.5714285714285714
+    },
+    {
+      "id": "68ed3215-d62d-46fb-9185-67a3c4cfde4d",
+      "slug": "dairy-eggs-aashirvaad-svasti-ghee-71",
+      "name": "Aashirvaad Svasti Ghee 1L",
+      "categorySlug": "dairy-eggs",
+      "localPath": "/product-images/dairy-eggs-aashirvaad-svasti-ghee-71.jpg",
+      "source": "amazon.in",
+      "query": "Aashirvaad Svasti Ghee 1L",
+      "pageUrl": "https://www.amazon.in/Aashirvaad-Svasti-Pure-Cow-Ghee/dp/B09FDTL2R8",
+      "imageUrl": "https://m.media-amazon.com/images/I/819XszDoQBL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Aashirvaad Svasti Pure Cow Ghee, 1L - Amazon.in",
+      "matchCoverage": 1,
+      "matchScore": 0.3333333333333333
+    },
+    {
+      "id": "99dfac9f-b234-4d3f-89cd-ae07e6249882",
+      "slug": "fruits-fresho-fruit-basket-premium-126",
+      "name": "Fresho Fruit Basket Premium 2kg",
+      "categorySlug": "fruits",
+      "localPath": "/product-images/fruits-fresho-fruit-basket-premium-126.jpg",
+      "source": "2b2.in",
+      "query": "Fresho Fruit Basket Premium 2kg",
+      "pageUrl": "https://2b2.in/product/premium-fruit-basket-large/",
+      "imageUrl": "https://2b2.in/wp-content/uploads/2025/10/Beige-White-Large-150x150.png",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Premium Fruit Basket &#8211; Large",
+      "matchCoverage": 1,
+      "matchScore": 0.6666666666666666
+    }
+  ],
+  "failed": [
+    {
+      "id": "b2e384f3-1771-4b8f-8583-38cb0a970ec6",
+      "slug": "staples-bb-royal-val-dal-field-beans-500g-134",
+      "name": "bb Royal Val Dal (Field Beans) 500g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "09ce2d69-27bc-43fb-b94c-1783040d7fb1",
+      "slug": "cooking-essentials-tata-tea-gold-honey-jar-250g-194",
+      "name": "Tata Tea Gold Honey Jar 250g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "af26061d-30da-42dd-b744-7d093447255e",
+      "slug": "staples-bb-royal-pink-poha-flattened-rice-thick-500g-181",
+      "name": "bb Royal Pink Poha (Flattened Rice) Thick 500g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "ba5b39c2-8bd7-4c64-9e05-ed4a2d4bfb97",
+      "slug": "staples-nourishvitals-roasted-quinoa-puffs-100g-167",
+      "name": "NourishVitals Roasted Quinoa Puffs 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "a271c18c-ad4f-4e0a-9808-4f8670649192",
+      "slug": "spices-seasonings-mdh-loyalty-haldi-powder-500g-188",
+      "name": "MDH Loyalty Haldi Powder 500g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "65a8430a-6ef2-4de2-aa51-51be33fc59e7",
+      "slug": "staples-bb-royal-double-beans-lima-500g-141",
+      "name": "bb Royal Double Beans (Lima) 500g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "e1672e29-5276-4fd2-8c61-8ef0289fa051",
+      "slug": "staples-aashirvaad-navadhanya-atta-1kg-124",
+      "name": "Aashirvaad Navadhanya Atta 1kg",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "f4f287a7-5e24-4cb3-9871-7ff0c74c779e",
+      "slug": "staples-tata-sampann-biryani-basmati-rice-1kg-100",
+      "name": "Tata Sampann Biryani Basmati Rice 1kg",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "972b58fa-fd7f-4d50-a6c1-e92828e24640",
+      "slug": "spices-seasonings-everest-mutton-masala-100g-131",
+      "name": "Everest Mutton Masala 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "05b757c6-87ff-4c18-ba75-3e0b92c5bdaf",
+      "slug": "spices-seasonings-catch-piri-piri-seasoning-50g-180",
+      "name": "Catch Piri Piri Seasoning 50g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "d2a9d3c1-3c83-4b97-907d-6e3aaba53a21",
+      "slug": "spices-seasonings-catch-cumin-powder-sprinkler-50g-178",
+      "name": "Catch Cumin Powder Sprinkler 50g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "c498d086-d9ce-4cdd-8ff8-e7ffce9c74a1",
+      "slug": "spices-seasonings-mdh-black-salt-powder-kala-namak-100g-116",
+      "name": "MDH Black Salt Powder (Kala Namak) 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "c6b906df-8645-45fa-a94e-f01815095c55",
+      "slug": "staples-bb-royal-nachni-ragi-flour-1kg-116",
+      "name": "bb Royal Nachni (Ragi) Flour 1kg",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "58473bfd-4e33-45fd-92e8-af88b1f90aa0",
+      "slug": "spices-seasonings-mdh-ajwain-powder-100g-111",
+      "name": "MDH Ajwain Powder 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "255983bb-2328-409e-af2f-13736cbddeac",
+      "slug": "spices-seasonings-badshah-kitchen-king-masala-100g-143",
+      "name": "Badshah Kitchen King Masala 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "a5d19a7a-cdb6-4a97-b157-461fb01b492f",
+      "slug": "spices-seasonings-bb-royal-kokum-garcinia-100g-109",
+      "name": "bb Royal Kokum (Garcinia) 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "103e2c2a-27be-4615-a45f-8afdcb6c605c",
+      "slug": "staples-ashirvaad-ragi-flour-1kg-114",
+      "name": "Ashirvaad Ragi Flour 1kg",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "b5e37c4a-64c8-428b-84cb-8cf1a01886a5",
+      "slug": "staples-toor-par-boiled-rice-5kg-107",
+      "name": "Toor Par Boiled Rice 5kg",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "20c5599c-5249-4258-a778-ff743ed00940",
+      "slug": "spices-seasonings-mdh-poppy-seed-powder-khus-khus-100g-118",
+      "name": "MDH Poppy Seed Powder (Khus Khus) 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "07429110-ada4-4d09-92ce-000af90ed9b0",
+      "slug": "cooking-essentials-rajgruh-cashew-flour-almond-meal-200g-155",
+      "name": "Rajgruh Cashew Flour (Almond Meal) 200g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "6701fad3-1fe6-45e1-baaa-7436e541bfd4",
+      "slug": "cooking-essentials-sil-green-chilli-paste-200g-163",
+      "name": "Sil Green Chilli Paste 200g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "16a19f33-b754-4aeb-b456-066b89584d08",
+      "slug": "cooking-essentials-swad-coconut-paste-200g-164",
+      "name": "Swad Coconut Paste 200g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "939f0178-0b18-4b09-bd21-3771cac49e0c",
+      "slug": "cooking-essentials-patanjali-jaggery-block-1kg-116",
+      "name": "Patanjali Jaggery Block 1kg",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "2c3f58d2-606d-406d-bfca-5b81046816c2",
+      "slug": "spices-seasonings-bb-royal-long-pepper-pippali-50g-103",
+      "name": "bb Royal Long Pepper (Pippali) 50g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "f88cf4c3-ba6a-4780-9741-e82e683b1db2",
+      "slug": "spices-seasonings-bb-royal-stone-flower-dagad-phool-25g-106",
+      "name": "bb Royal Stone Flower (Dagad Phool) 25g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "7d0c49f0-bd47-4654-ac1a-e42889d39afe",
+      "slug": "cooking-essentials-bakersville-food-color-gel-set-4x25g-190",
+      "name": "Bakersville Food Color Gel Set 4x25g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "f58fa4f6-fe35-4cba-94ea-ebe9f2960745",
+      "slug": "cooking-essentials-weikfield-gelatin-powder-25g-189",
+      "name": "Weikfield Gelatin Powder 25g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "ff1e6163-38e0-4f26-9cc1-e3826a090893",
+      "slug": "cooking-essentials-catch-pink-himalayan-salt-500g-124",
+      "name": "Catch Pink Himalayan Salt 500g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "ba96fc54-fbe3-45ef-84da-3ac6b876b4ab",
+      "slug": "cooking-essentials-veeba-italian-herb-and-garlic-dressing-300g-175",
+      "name": "Veeba Italian Herb and Garlic Dressing 300g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "2110ef3f-2168-4bf6-b5a3-101a54921f58",
+      "slug": "spices-seasonings-bb-royal-poppy-seeds-khus-khus-100g-105",
+      "name": "bb Royal Poppy Seeds (Khus Khus) 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "0cebf6e8-1cb5-4342-92f4-45832906800b",
+      "slug": "cooking-essentials-morde-butterscotch-chips-100g-150",
+      "name": "Morde Butterscotch Chips 100g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "2bbcb3d3-0bbd-4b3c-b8a5-fcb7028f5dbb",
+      "slug": "cooking-essentials-weikfield-dessert-gel-agar-agar-25g-157",
+      "name": "Weikfield Dessert Gel (Agar Agar) 25g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "e5f314d1-ba01-4c1f-94f1-44d95bf2bb44",
+      "slug": "cooking-essentials-weikfield-instant-dry-yeast-25g-149",
+      "name": "Weikfield Instant Dry Yeast 25g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "488b88a9-9087-40a4-9267-c8e0a3a8b2df",
+      "slug": "rajesh-masala-food-color-yellow-10g",
+      "name": "Rajesh Masala Food Color Yellow 10g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "f0f7ad64-3da0-4705-b83c-453ec7e30f34",
+      "slug": "haldiram-s-cornflakes-chivda-200g",
+      "name": "Haldiram's Cornflakes Chivda 200g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "ad4b7602-f98f-4687-84d4-9161c8d0fc3d",
+      "slug": "smith-jones-mint-sauce-220g",
+      "name": "Smith & Jones Mint Sauce 220g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "363b1b6e-04d5-4164-8695-ffa5caae4578",
+      "slug": "nestle-everyday-evaporated-milk-200ml",
+      "name": "Nestle Everyday Evaporated Milk 200ml",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "f934687f-856f-4d10-86e1-53f4ad670aa8",
+      "slug": "rajesh-masala-food-color-red-10g",
+      "name": "Rajesh Masala Food Color Red 10g",
+      "reason": "Navigation timeout of 20000 ms exceeded"
+    },
+    {
+      "id": "5ad69803-de31-4114-8854-6103f15bee13",
+      "slug": "catch-white-sesame-seeds-100g",
+      "name": "Catch White Sesame Seeds 100g",
+      "reason": "net::ERR_INTERNET_DISCONNECTED at https://www.bing.com/images/search?q=Catch%20White%20Sesame%20Seeds%20100g"
+    },
+    {
+      "id": "49fb95ef-efd7-49cf-ab77-5003ebf81d22",
+      "slug": "hamdard-kewra-water-100ml",
+      "name": "Hamdard Kewra Water 100ml",
+      "reason": "net::ERR_INTERNET_DISCONNECTED at https://www.bing.com/images/search?q=Hamdard%20Kewra%20Water%20100ml"
+    },
+    {
+      "id": "01e87267-e3f5-4f7b-89f8-73adedd25222",
+      "slug": "rajesh-masala-food-color-green-10g",
+      "name": "Rajesh Masala Food Color Green 10g",
+      "reason": "net::ERR_INTERNET_DISCONNECTED at https://www.bing.com/images/search?q=Rajesh%20Masala%20Food%20Color%20Green%2010g"
+    },
+    {
+      "id": "21e085ee-f88a-447d-82e5-808019fd7d91",
+      "slug": "weikfield-cream-of-tartar-50g",
+      "name": "Weikfield Cream of Tartar 50g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "a1a8e8cd-251e-467d-9168-3b4c7e69d606",
+      "slug": "spices-seasonings-mdh-turmeric-powder-haldi-100g-0",
+      "name": "MDH Turmeric Powder (Haldi) 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "54a12c96-c5a9-48b7-a1c6-d97ff67eb396",
+      "slug": "spices-seasonings-everest-meat-masala-100g-25",
+      "name": "Everest Meat Masala 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "eba41581-7d47-41ad-b8cb-93cf020b9749",
+      "slug": "spices-seasonings-bb-royal-cumin-seeds-jeera-200g-31",
+      "name": "bb Royal Cumin Seeds (Jeera) 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "c3eefea8-2805-478b-9206-180c68c0d632",
+      "slug": "spices-seasonings-bb-royal-green-cardamom-elaichi-25g-35",
+      "name": "bb Royal Green Cardamom (Elaichi) 25g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "ff2f4098-e02b-45d3-9367-4b001defaf4e",
+      "slug": "spices-seasonings-bb-royal-mustard-seeds-rai-100g-32",
+      "name": "bb Royal Mustard Seeds (Rai) 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "5a9258d8-2b2a-4ede-870e-3b775ef809c5",
+      "slug": "spices-seasonings-sil-ginger-paste-200g-56",
+      "name": "Sil Ginger Paste 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "38507bf2-944c-476f-892a-cf2eab3a425d",
+      "slug": "catch-nigella-seeds-kalonji-100g",
+      "name": "Catch Nigella Seeds (Kalonji) 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "989a5f6d-c58c-4524-bea9-dc31f04d6906",
+      "slug": "spices-seasonings-bb-royal-fenugreek-seeds-methi-dana-100g-39",
+      "name": "bb Royal Fenugreek Seeds (Methi Dana) 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "596d8fc0-6b88-460e-bb56-3f270bd64bfe",
+      "slug": "spices-seasonings-catch-black-pepper-powder-100g-12",
+      "name": "Catch Black Pepper Powder 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "3b783b2a-d9e7-427e-a7b2-bdfb753957f3",
+      "slug": "cooking-essentials-nandini-pure-ghee-500ml-22",
+      "name": "Nandini Pure Ghee 500ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "9076fe6d-126c-4d69-94ae-f1fe9717cd1a",
+      "slug": "staples-lal-qilla-traditional-basmati-rice-1kg-5",
+      "name": "Lal Qilla Traditional Basmati Rice 1kg",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "f3e893cd-02b6-41d5-80c7-3e1eb9e9f156",
+      "slug": "baby-care-pigeon-training-cup-200ml-184",
+      "name": "Pigeon Training Cup 200ml 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "83582131-42b2-430c-bf1c-608f05186c76",
+      "slug": "baby-care-slurrp-farm-puffs-cheesy-broccoli-174",
+      "name": "Slurrp Farm Puffs Cheesy Broccoli 20g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "21cd8896-d2a6-4cbf-ac30-3436ffec71dd",
+      "slug": "baby-care-pigeon-weaning-bottle-120ml-139",
+      "name": "Pigeon Weaning Bottle 120ml 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "df22cd3a-b5ed-4a03-ab13-013ac502044e",
+      "slug": "baby-care-chicco-suction-bowl-with-spoon-144",
+      "name": "Chicco Suction Bowl with Spoon 1 set",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e188702f-ce28-4b90-929f-71205fede61a",
+      "slug": "cooking-essentials-weikfield-vanilla-essence-20ml-54",
+      "name": "Weikfield Vanilla Essence 20ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e5ed445a-1c29-457c-93c6-59412402044b",
+      "slug": "staples-sunfeast-yippee-noodles-classic-70g-51",
+      "name": "Sunfeast Yippee Noodles Classic 70g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "f056d5d7-b801-428c-a2a7-a0b37b042299",
+      "slug": "baby-care-chicco-natural-feeling-bottle-180",
+      "name": "Chicco Natural Feeling Bottle 250ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "cb158d5d-a9e8-4d69-b204-64f388db4fc6",
+      "slug": "baby-care-tritan-baby-bottle-sterilizer-119",
+      "name": "Tritan Baby Bottle Sterilizer 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "05bc58aa-b4ae-4590-b109-57cc6d93c544",
+      "slug": "baby-care-babyhug-full-sleeves-romper-187",
+      "name": "Babyhug Full Sleeves Romper 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "c63e4fd6-984b-4e24-bca2-c0affe3e17a2",
+      "slug": "baby-care-himalaya-baby-care-gift-pack-106",
+      "name": "Himalaya Baby Care Gift Pack 1 set",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "55a687b3-6b9f-4b0f-af8f-40c9dd26032e",
+      "slug": "baby-care-pigeon-baby-tooth-gel-135",
+      "name": "Pigeon Baby Tooth Gel 45g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "46a0308c-e056-47ce-99ba-8c03e358e234",
+      "slug": "baby-care-mothercare-all-we-know-laundry-cleaner-117",
+      "name": "Mothercare All We Know Laundry Cleaner 1L",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "0b313fd2-6420-46e5-b1c1-a08c8756da43",
+      "slug": "cooking-essentials-fortune-sesame-oil-til-oil-500ml-12",
+      "name": "Fortune Sesame Oil (Til Oil) 500ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "0a32a0f4-7fa1-4c16-b160-39fac75fe87e",
+      "slug": "baby-care-babyhug-nappy-pads-large-193",
+      "name": "Babyhug Nappy Pads Large 20 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "5d3872d2-16cd-4aff-b47f-ae08bd1ddee2",
+      "slug": "baby-care-himalaya-baby-rice-cereal-130",
+      "name": "Himalaya Baby Rice Cereal 300g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "30c95ab8-15c6-4399-be8d-12ae04649043",
+      "slug": "baby-care-cerelac-baby-cereal-wheat-honey-73",
+      "name": "Cerelac Baby Cereal Wheat Honey 300g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e2de16e7-5a5a-4338-8dc0-5b6e1297fa2d",
+      "slug": "baby-care-himalaya-baby-massage-oil-50",
+      "name": "Himalaya Baby Massage Oil 200ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "af425fad-e177-4397-a7bb-5f6e8a5268fc",
+      "slug": "baby-care-johnsons-baby-lotion-38",
+      "name": "Johnson's Baby Lotion 200ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "020d44c0-ec9b-4f79-9903-e34b9bdbf762",
+      "slug": "baby-care-himalaya-baby-shampoo-gentle-45",
+      "name": "Himalaya Baby Shampoo Gentle 200ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "14e1c416-b4dc-4eee-a893-a4ddcf80601b",
+      "slug": "baby-care-pigeon-silicone-nipple-s-97",
+      "name": "Pigeon Silicone Nipple S 2 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "0d071fb4-5580-4579-8983-8c0c22c7d082",
+      "slug": "baby-care-pigeon-softouch-wide-neck-bottle-240ml-89",
+      "name": "Pigeon SofTouch Wide Neck Bottle 240ml 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "946f4e65-0b99-4e48-9407-6cba7a399193",
+      "slug": "baby-care-nan-pro-2-follow-up-formula-powder-80",
+      "name": "Nan Pro 2 Follow Up Formula Powder 400g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "d9512769-4eb5-42f5-b79d-c185a20b5794",
+      "slug": "baby-care-luvlap-anti-colic-feeding-bottle-150ml-95",
+      "name": "LuvLap Anti-Colic Feeding Bottle 150ml 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "d4f45717-1fbf-408c-98a8-ff6ca066d74f",
+      "slug": "baby-care-mee-mee-premium-feeding-bottle-250ml-96",
+      "name": "Mee Mee Premium Feeding Bottle 250ml 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "a1e7db89-a4c3-416c-bed0-7b789cfc7b1c",
+      "slug": "baby-care-chicco-corner-guards-128",
+      "name": "Chicco Corner Guards 4 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "da313316-6a78-4110-9d81-2c4e7ea11873",
+      "slug": "baby-care-enfagrow-a+-stage-3-nutritional-milk-powder-82",
+      "name": "Enfagrow A+ Stage 3 Nutritional Milk Powder 400g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "1b9c72bd-9ed1-4611-8408-fc19ba4be783",
+      "slug": "household-freshwrap-butter-paper-154",
+      "name": "Freshwrap Butter Paper 10m",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "b3a4bada-7715-476e-940d-4e70f4fde28c",
+      "slug": "baby-care-pigeon-silicone-nipple-m-98",
+      "name": "Pigeon Silicone Nipple M 2 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e8a1fd33-b0b0-40b3-ae8f-4a4b0e5daf19",
+      "slug": "household-flair-wax-candle-white-100",
+      "name": "Flair Wax Candle White 6 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "0e8e0ca4-8b99-4b0a-b3a2-62c752ec81cf",
+      "slug": "household-probioclean-natural-floor-cleaner-114",
+      "name": "Probioclean Natural Floor Cleaner 1L",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "917f0cef-b199-4060-a99a-156b9b3c2cb8",
+      "slug": "household-asian-paints-ezyclean-wall-cleaner-113",
+      "name": "Asian Paints Ezyclean Wall Cleaner 500ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "ca2a757e-865b-4c02-a4f7-6a33dcb86545",
+      "slug": "household-gala-clothes-peg-102",
+      "name": "Gala Clothes Peg 12 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "a8590844-8d4a-46f3-8b97-d2780477eff0",
+      "slug": "household-origami-kitchen-towel-roll-71",
+      "name": "Origami Kitchen Towel Roll 2 rolls",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "0f0d6f64-2229-4fc8-b7b5-a6af0f42aa75",
+      "slug": "household-freshwrap-zip-lock-bags-small-156",
+      "name": "Freshwrap Zip Lock Bags Small 30 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "b75f1749-ab5d-4100-b434-2d7b89f16a18",
+      "slug": "household-fresho-tissue-paper-roll-75",
+      "name": "Fresho Tissue Paper Roll 4 rolls",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "faa692d5-35c0-40e6-b513-7c21ad4f11c5",
+      "slug": "personal-care-himalaya-lip-balm-102",
+      "name": "Himalaya Lip Balm 10g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e207f563-7571-4e93-9648-f44ec8959840",
+      "slug": "personal-care-himalaya-men-acno-clean-wash-194",
+      "name": "Himalaya Men Acno-Clean Wash 100ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "30d93c2f-5e87-4145-8c35-75af2945a8a4",
+      "slug": "personal-care-park-avenue-premium-icon-perfume-154",
+      "name": "Park Avenue Premium Icon Perfume 150ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e6e2e317-ca3d-4751-abe7-ab7a463509d5",
+      "slug": "personal-care-ponds-white-beauty-sun-protect-spf-50-74",
+      "name": "Pond's White Beauty Sun Protect SPF 50 35g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "4171046d-9be8-4690-9b90-f9266ea8f971",
+      "slug": "personal-care-wild-stone-ultra-sensual-deodorant-65",
+      "name": "Wild Stone Ultra Sensual Deodorant 150ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "408be31b-8b56-4a36-95de-cfc988ce821e",
+      "slug": "beverages-rasna-khus-khus-concentrate-120",
+      "name": "Rasna Khus Khus Concentrate 750ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "2b47dacd-5241-42cb-905c-a8ccde4040c6",
+      "slug": "beverages-tata-tea-premium-3",
+      "name": "Tata Tea Premium 250g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "8c5b6919-1d7f-4102-98d1-ad71a58bbd92",
+      "slug": "household-gala-plastic-broom-trendy-168",
+      "name": "Gala Plastic Broom Trendy 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "03f9133b-60ab-4f1d-b6f8-493170222d94",
+      "slug": "household-freshwrap-aluminium-foil-41",
+      "name": "Freshwrap Aluminium Foil 21m",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "a37afeae-cc59-4b7b-9b1e-06caf01ec859",
+      "slug": "meat-seafood-itc-kitchen-of-india-dal-gosht-182",
+      "name": "ITC Kitchen of India Dal Gosht 285g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "4dd6e2ed-45f3-428f-aafd-4c10315c690f",
+      "slug": "meat-seafood-licious-chicken-butter-masala-marinated-142",
+      "name": "Licious Chicken Butter Masala Marinated 250g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "b36fca08-4181-46d7-a0f2-af62ecb125ec",
+      "slug": "meat-seafood-fresho-clams-cleaned-128",
+      "name": "Fresho Clams Cleaned 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "a25dcef1-feb0-4eb7-98e5-2b401859328b",
+      "slug": "meat-seafood-fresho-scallops-129",
+      "name": "Fresho Scallops 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "eb622f0d-9ca2-4e0f-8765-b126b427b879",
+      "slug": "meat-seafood-freshtohome-goat-ribs-144",
+      "name": "FreshToHome Goat Ribs 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "947121c3-f620-4a8d-b60f-4c37e53fa0b7",
+      "slug": "meat-seafood-freshtohome-marinated-fish-fry-187",
+      "name": "FreshToHome Marinated Fish Fry 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "b7b3d288-f13e-475f-8ebc-2ff7981dd35f",
+      "slug": "meat-seafood-freshtohome-cuttlefish-cleaned-198",
+      "name": "FreshToHome Cuttlefish Cleaned 250g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "04e1cba4-b6c4-4928-8fad-d3fcca9618c0",
+      "slug": "meat-seafood-freshtohome-mussels-69",
+      "name": "FreshToHome Mussels 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "08176f72-e7ca-42ec-a75c-594224c6e600",
+      "slug": "meat-seafood-freshtohome-tilapia-fish-55",
+      "name": "FreshToHome Tilapia Fish 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "a63f3fe4-e4ce-4f71-ab30-b794742b21bc",
+      "slug": "meat-seafood-itc-kitchen-of-india-rogan-josh-183",
+      "name": "ITC Kitchen of India Rogan Josh 285g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "5923058d-61b5-4d3f-aa29-e7d7fa2e97a6",
+      "slug": "meat-seafood-mtr-ready-to-eat-fish-curry-114",
+      "name": "MTR Ready to Eat Fish Curry 300g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "668135f4-ab49-4d9b-8b29-cfc56fb2ec96",
+      "slug": "bakery-fresho-palmier-butterfly-pastry-155",
+      "name": "Fresho Palmier Butterfly Pastry 6 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "823fcfd3-8e65-43ed-834b-205bb22f1891",
+      "slug": "bakery-fresho-cannoli-157",
+      "name": "Fresho Cannoli 2 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "a5ae508f-7d7a-41c4-a9b4-fa15afe2eab3",
+      "slug": "meat-seafood-licious-goat-nihari-cut-147",
+      "name": "Licious Goat Nihari Cut 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "7a22471a-a09f-4c56-b7f2-c48838fedf00",
+      "slug": "bakery-fresho-puff-pastry-veg-109",
+      "name": "Fresho Puff Pastry Veg 4 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "3b0e72e4-b218-48e2-b3d4-95b918eb8116",
+      "slug": "bakery-fresho-scone-plain-136",
+      "name": "Fresho Scone Plain 4 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e33c4b83-04dc-4c7f-821e-0e33a42a03a8",
+      "slug": "bakery-fresho-bread-pakora-113",
+      "name": "Fresho Bread Pakora 4 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "830d1638-2214-47fa-a3f3-0366178c0970",
+      "slug": "bakery-fresho-filo-pastry-sheets-196",
+      "name": "Fresho Filo Pastry Sheets 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "db449d16-959d-4237-a5d5-ad12036df45a",
+      "slug": "bakery-fresho-swiss-roll-chocolate-145",
+      "name": "Fresho Swiss Roll Chocolate 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "7b04f8e8-7f19-4860-87ee-b59db9ecda93",
+      "slug": "bakery-fresho-chocolate-donut-86",
+      "name": "Fresho Chocolate Donut 2 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "3d76c7fc-090e-4180-b73d-921b1b826b88",
+      "slug": "bakery-fresho-suji-rusk-60",
+      "name": "Fresho Suji Rusk 300g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "9353f171-e66e-4bd8-9468-0dd61eddc4e3",
+      "slug": "dairy-eggs-mother-dairy-ice-cream-kaju-draksh-184",
+      "name": "Mother Dairy Ice Cream Kaju Draksh 750ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "32806a65-4625-40cb-8c1e-e1cd3a0c4632",
+      "slug": "dairy-eggs-kwality-walls-magnum-classic-125",
+      "name": "Kwality Wall's Magnum Classic 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "4900435a-3d0f-45f6-98fa-745a3a973f4b",
+      "slug": "dairy-eggs-baskin-robbins-premium-chocolate-128",
+      "name": "Baskin Robbins Premium Chocolate 450ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "3958d915-df50-4334-bcc7-b0268c4e7025",
+      "slug": "bakery-fresho-fan-toast-94",
+      "name": "Fresho Fan Toast 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "e32865b5-8f62-4331-ba9b-bfaa52f1a8e3",
+      "slug": "dairy-eggs-amul-ghee-68",
+      "name": "Amul Ghee 1L",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "46f245a1-8137-4dbc-8546-20001340484a",
+      "slug": "dairy-eggs-mother-dairy-cow-ghee-70",
+      "name": "Mother Dairy Cow Ghee 1L",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "2d1e9b78-c258-4712-8d52-1eabb7c6c012",
+      "slug": "dairy-eggs-ananda-ghee-74",
+      "name": "Ananda Ghee 1L",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "f420a5dd-a296-4b69-b4d7-b924c5b61f9d",
+      "slug": "fruits-fresho-kokum-fresh-191",
+      "name": "Fresho Kokum Fresh 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "be0ee0c2-41ef-4ce8-8e63-6db482fc17e5",
+      "slug": "bakery-fresho-paneer-puff-110",
+      "name": "Fresho Paneer Puff 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "a1020811-4a0a-4df0-b037-2836c34b2079",
+      "slug": "bakery-fresho-samosa-112",
+      "name": "Fresho Samosa 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "94b60599-1dfc-49f6-b773-b301faf6251b",
+      "slug": "fruits-fresho-phalsa-fruit-152",
+      "name": "Fresho Phalsa Fruit 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "45dd8614-1853-4a0c-98e3-b465fbb1e81c",
+      "slug": "fruits-fresho-citrus-mix-pack-129",
+      "name": "Fresho Citrus Mix Pack 1kg",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "f7e49c33-38e2-4722-b360-40e2ebfee99b",
+      "slug": "fruits-fresho-tangerine-23",
+      "name": "Fresho Tangerine 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "c5babed4-448c-4b7b-af7c-6df8bc86ede3",
+      "slug": "vegetables-fresho-parsnip-161",
+      "name": "Fresho Parsnip 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "25d49e81-bd50-41af-93c3-67df00bf8b86",
+      "slug": "fruits-organic-tattva-mango-184",
+      "name": "Organic Tattva Mango 1kg",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "a809823a-b246-4e6f-bc5f-92f2b26e5a51",
+      "slug": "vegetables-fresho-raita-mix-pack-118",
+      "name": "Fresho Raita Mix Pack 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "8c8905aa-cd21-4fca-80d7-fe516eafc22e",
+      "slug": "vegetables-organic-tattva-cucumber-69",
+      "name": "Organic Tattva Cucumber 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "75c8d6ac-3f76-4af7-ac88-065e7e44ae0f",
+      "slug": "fruits-imported-green-apple-163",
+      "name": "Imported Green Apple 1kg",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "208aaa18-4d3f-4e48-bcbf-0d80fa8e47c1",
+      "slug": "vegetables-24-mantra-organic-green-chilli-78",
+      "name": "24 Mantra Organic Green Chilli 100g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "b362cc86-9ba1-4596-a4af-f1b20cc7ada1",
+      "slug": "vegetables-fresho-ginger-adrak-22",
+      "name": "Fresho Ginger (Adrak) 250g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "6bdfa23a-5151-42ea-8453-16491c2bd86e",
+      "slug": "fruits-fresho-blood-orange-22",
+      "name": "Fresho Blood Orange 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    }
+  ],
+  "finishedAt": "2026-03-15T05:32:51.973Z"
+}

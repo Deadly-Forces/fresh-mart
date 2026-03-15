@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import fs from "fs/promises";
 import path from "path";
 import dotenv from "dotenv";
@@ -17,7 +18,10 @@ if (!supabaseUrl || !supabaseServiceKey) {
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 const PRODUCT_IMAGE_DIR = path.resolve(process.cwd(), "public", "product-images");
-const REPORT_PATH = path.resolve(process.cwd(), "tmp", "product-image-search-report.json");
+const REPORT_PATH = path.resolve(
+  process.cwd(),
+  process.env.PRODUCT_IMAGE_REPORT_PATH || path.join("tmp", "product-image-search-report.json"),
+);
 const EDGE_EXECUTABLE =
   "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
 const USER_AGENT =
@@ -53,6 +57,23 @@ const DOMAIN_SCORES = new Map([
   ["snapdeal.com", 0.7],
   ["commercefoods.com", 0.75],
   ["meharshop.com", 0.75],
+]);
+const DISALLOWED_DOMAINS = ["youtube.com", "youtu.be", "pricehistory.app", "oooooya.com"];
+const BLOCKED_OUTPUT_HASHES = new Set([
+  "c71a998f3d44445c4722767c925389ce00932472",
+  "45059343215ae7ce2b458d3569c7de386c2a8d4f",
+  "1aeced7f220d026347f262060101524a5b48d88f",
+  "f8880db31efa9af7d578869c25616c5e38eb6a33",
+  "d1c4f88a03095d349dce2729ddc7a6b27751dd52",
+  "7df5fb3eda49dfc8730e67ffc81a2e9a5ee7494e",
+  "d8191861e3083267dbd4c9d4d6929b81ce1fd09c",
+  "cd0607a79f72fb4f1465895dffd430e5adf6c1c2",
+  "3f940418f1e28fc12ef58819f075066a4b1465ab",
+  "554a4bdf709560125ff205db384dcd00ea9c2454",
+  "e324c79156e0953145897c4b3f55fc88c4a817f1",
+  "4d5fb16a78704b0c40c71619e6ec69665aac51d1",
+  "3d1d91683cb259227d272885cb81ddf2a9f66c86",
+  "5bccbfbfa04ff8f0ed18bb92bb199d3144b937a5",
 ]);
 const BRAND_PREFIXES = [
   "fresho",
@@ -154,6 +175,53 @@ const STOP_WORDS = new Set([
   "whole",
   "powder",
 ]);
+const CONFLICT_TOKENS = new Set([
+  "pickle",
+  "cookies",
+  "cookie",
+  "biscuits",
+  "biscuit",
+  "chips",
+  "wafers",
+  "snack",
+  "snacks",
+  "juice",
+  "drink",
+  "beverage",
+  "syrup",
+  "jam",
+  "jelly",
+  "sauce",
+  "ketchup",
+  "puree",
+  "paste",
+  "masala",
+  "powder",
+  "seasoning",
+  "crisps",
+  "candy",
+  "supplement",
+  "capsule",
+  "capsules",
+  "tablet",
+  "tablets",
+  "soap",
+  "shampoo",
+  "conditioner",
+  "serum",
+  "cream",
+  "lotion",
+]);
+const FRESH_CATEGORY_SLUGS = new Set(["fruits", "vegetables"]);
+const PRIORITY_SITES_BY_CATEGORY = new Map([
+  ["fruits", ["bigbasket.com", "jiomart.com", "zepto.com"]],
+  ["vegetables", ["bigbasket.com", "jiomart.com", "zepto.com"]],
+  ["dairy-eggs", ["bigbasket.com", "jiomart.com", "amazon.in"]],
+  ["meat-seafood", ["bigbasket.com", "amazon.in", "jiomart.com"]],
+  ["bakery", ["bigbasket.com", "amazon.in", "jiomart.com"]],
+  ["personal-care", ["amazon.in", "jiomart.com", "bigbasket.com"]],
+]);
+const RELAXED_BRAND_PREFIXES = new Set(["fresho", "organic tattva", "24 mantra", "pro nature", "imported"]);
 
 function getArg(name, fallback = undefined) {
   const exact = process.argv.find((arg) => arg.startsWith(`${name}=`));
@@ -169,12 +237,23 @@ const limit = Number(getArg("--limit", "0")) || 0;
 const offset = Number(getArg("--offset", "0")) || 0;
 const force = hasFlag("--force");
 const concurrency = Math.max(1, Number(getArg("--concurrency", "4")) || 4);
-const slugFilter = new Set(
-  String(getArg("--slugs", ""))
-    .split(",")
-    .map((value) => value.trim())
-    .filter(Boolean),
-);
+const slugFilter = new Set();
+for (const slug of String(getArg("--slugs", ""))
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean)) {
+  slugFilter.add(slug);
+}
+const slugFilePath = getArg("--slugs-file", "");
+
+async function loadSlugFile() {
+  if (!slugFilePath) return;
+  const content = await fs.readFile(path.resolve(process.cwd(), slugFilePath), "utf8");
+  for (const line of content.split(/\r?\n/g)) {
+    const slug = line.trim();
+    if (slug) slugFilter.add(slug);
+  }
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -333,6 +412,19 @@ function quantitiesExplicitlyMatch(left, right) {
   return leftQuantities.some((quantity) => rightQuantities.includes(quantity));
 }
 
+function hasConflictingFormTokens(productText, candidateText) {
+  const productTokens = new Set(tokenize(productText));
+  const candidateTokens = new Set(tokenize(candidateText));
+
+  for (const token of candidateTokens) {
+    if (CONFLICT_TOKENS.has(token) && !productTokens.has(token)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function buildSearchQueries(product) {
   const noSize = stripQuantity(product.name);
   const noBrand = stripBrandPrefix(noSize);
@@ -341,6 +433,30 @@ function buildSearchQueries(product) {
   return Array.from(
     new Set([product.name, noSize, noBrand, ...aliases, tail].map((item) => item?.trim()).filter(Boolean)),
   ).slice(0, 4);
+}
+
+function buildSiteSearchQueries(product, query) {
+  const prioritySites = PRIORITY_SITES_BY_CATEGORY.get(product.categorySlug) || [];
+  const noBrand = stripBrandPrefix(stripQuantity(product.name));
+  const baseTerms = Array.from(new Set([query, product.name, noBrand].map((value) => value?.trim()).filter(Boolean)));
+  const siteQueries = [];
+
+  for (const site of prioritySites) {
+    for (const term of baseTerms) {
+      siteQueries.push(`site:${site} ${term}`);
+    }
+  }
+
+  if (FRESH_CATEGORY_SLUGS.has(product.categorySlug)) {
+    siteQueries.push(`site:bigbasket.com ${noBrand}`);
+    siteQueries.push(`site:jiomart.com ${noBrand}`);
+  }
+
+  return Array.from(new Set(siteQueries));
+}
+
+function canRelaxBrandRequirement(product, brandPrefix) {
+  return FRESH_CATEGORY_SLUGS.has(product.categorySlug) && RELAXED_BRAND_PREFIXES.has(brandPrefix || "");
 }
 
 function isPlaceholderImage(imageUrl) {
@@ -376,14 +492,27 @@ function normalizeUrl(url) {
   return value;
 }
 
-function getDomainScore(url) {
+function getHostname(url) {
   try {
-    const hostname = new URL(url).hostname.replace(/^www\./, "");
-    for (const [domain, score] of DOMAIN_SCORES.entries()) {
-      if (hostname === domain || hostname.endsWith(`.${domain}`)) return score;
-    }
-  } catch {}
+    return new URL(url).hostname.replace(/^www\./, "").toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+function getDomainScore(url) {
+  const hostname = getHostname(url);
+  if (!hostname) return 0.55;
+  for (const [domain, score] of DOMAIN_SCORES.entries()) {
+    if (hostname === domain || hostname.endsWith(`.${domain}`)) return score;
+  }
   return 0.55;
+}
+
+function isDisallowedDomain(url) {
+  const hostname = getHostname(url);
+  if (!hostname) return true;
+  return DISALLOWED_DOMAINS.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
 }
 
 function isLikelyProductPage(url, title) {
@@ -742,7 +871,101 @@ async function searchBing(query) {
     );
     return results
       .map((result) => ({ url: decodeBingUrl(result.href), title: result.title }))
-      .filter((result) => /^https?:/i.test(result.url));
+      .filter((result) => /^https?:/i.test(result.url))
+      .filter((result) => !isDisallowedDomain(result.url));
+  }).catch((error) => {
+    searchCache.delete(cacheKey);
+    throw error;
+  });
+
+  searchCache.set(cacheKey, task);
+  return task;
+}
+
+function isLikelyBrokenImageStats(stats) {
+  const { entropy, sharpness, mean } = stats;
+  const maxDiff = Math.max(...mean) - Math.min(...mean);
+
+  return (
+    entropy < 0.15 ||
+    (entropy < 0.7 && sharpness < 0.25) ||
+    (entropy < 1.2 && maxDiff < 1.5 && (mean[0] > 250 || mean[0] < 5))
+  );
+}
+
+async function validateOutputImage(buffer) {
+  const image = sharp(buffer);
+  const [metadata, stats] = await Promise.all([image.metadata(), image.stats()]);
+  const mean = stats.channels.map((channel) => Number(channel.mean.toFixed(1)));
+  const entropy = Number((stats.entropy ?? 0).toFixed(3));
+  const sharpness = Number((stats.sharpness ?? 0).toFixed(3));
+  const hash = crypto.createHash("sha1").update(buffer).digest("hex");
+
+  if (BLOCKED_OUTPUT_HASHES.has(hash)) {
+    throw new Error(`Blocked bad image hash ${hash}`);
+  }
+
+  if (
+    isLikelyBrokenImageStats({
+      entropy,
+      sharpness,
+      mean,
+    })
+  ) {
+    throw new Error(
+      `Rejected broken/loading-like image entropy=${entropy} sharpness=${sharpness} mean=${mean.join("/")}`,
+    );
+  }
+
+  return {
+    width: metadata.width ?? null,
+    height: metadata.height ?? null,
+    hash,
+  };
+}
+
+async function searchBingImages(query) {
+  const cacheKey = `bing-images:${query}`;
+  if (searchCache.has(cacheKey)) return searchCache.get(cacheKey);
+
+  const task = withBrowserPage(async (page) => {
+    await page.goto(`https://www.bing.com/images/search?q=${encodeURIComponent(query)}`, {
+      waitUntil: "domcontentloaded",
+      timeout: REQUEST_TIMEOUT_MS,
+    });
+    await sleep(1000);
+    const results = await page.evaluate(() =>
+      Array.from(document.querySelectorAll("a.iusc"))
+        .slice(0, 18)
+        .map((anchor) => ({
+          metadata: anchor.getAttribute("m"),
+          label: anchor.getAttribute("aria-label") || anchor.getAttribute("title") || "",
+        })),
+    );
+
+    return results
+      .map((result) => {
+        try {
+          const parsed = JSON.parse(result.metadata || "{}");
+          return {
+            pageUrl: parsed.purl || "",
+            imageUrl: parsed.murl || "",
+            title: parsed.t || result.label || "",
+            description: parsed.desc || "",
+          };
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean)
+      .map((result) => ({
+        ...result,
+        pageUrl: normalizeUrl(result.pageUrl),
+        imageUrl: normalizeUrl(result.imageUrl),
+      }))
+      .filter((result) => result.pageUrl && result.imageUrl)
+      .filter((result) => !isDisallowedDomain(result.pageUrl))
+      .filter((result) => isLikelyProductImage(result.imageUrl));
   }).catch((error) => {
     searchCache.delete(cacheKey);
     throw error;
@@ -812,6 +1035,10 @@ function evaluatePageMatch(product, result, pageSignals) {
     { source: "search-url", text: result.url },
     ...pageSignals.map((text, index) => ({ source: `page-signal-${index + 1}`, text })),
   ].filter((entry) => entry.text);
+  const hasConflictingForm =
+    signals.some((signal) => hasConflictingFormTokens(product.name, signal.text)) ||
+    hasConflictingFormTokens(product.name, result.title) ||
+    hasConflictingFormTokens(product.name, result.url);
   const signalsWithExplicitQuantities = signals.filter((signal) => extractQuantitySignatures(signal.text).length > 0);
   const hasConflictingExplicitQuantity =
     extractQuantitySignatures(product.name).length > 0 &&
@@ -823,6 +1050,7 @@ function evaluatePageMatch(product, result, pageSignals) {
     Math.max(1, new Set(tokenize(productCore)).size ? new Set(tokenize(productCore)).size - 1 : 1),
   );
   const trustedDomain = getDomainScore(result.url) >= 0.95;
+  const brandRequirementRelaxed = canRelaxBrandRequirement(product, brandPrefix);
   let bestMatch = {
     source: null,
     text: null,
@@ -861,19 +1089,29 @@ function evaluatePageMatch(product, result, pageSignals) {
     }
   }
 
+  const brandRequirementSatisfied =
+    bestMatch.brandMatched ||
+    (brandRequirementRelaxed &&
+      bestMatch.quantityCompatible &&
+      bestMatch.sharedTokens >= requiredShared &&
+      (bestMatch.coverage >= 0.8 || (trustedDomain && bestMatch.coverage >= 0.67 && bestMatch.score >= 0.5)));
+
   const accept =
+    !hasConflictingForm &&
     !hasConflictingExplicitQuantity &&
-    bestMatch.brandMatched &&
+    brandRequirementSatisfied &&
     bestMatch.quantityCompatible &&
     (bestMatch.coverage >= 0.999 && bestMatch.sharedTokens >= requiredShared) ||
-    (!hasConflictingExplicitQuantity &&
-      bestMatch.brandMatched &&
+    (!hasConflictingForm &&
+      !hasConflictingExplicitQuantity &&
+      brandRequirementSatisfied &&
       bestMatch.quantityCompatible &&
       bestMatch.coverage >= 0.8 &&
       bestMatch.sharedTokens >= requiredShared &&
       (trustedDomain || bestMatch.score >= 0.6)) ||
-    (!hasConflictingExplicitQuantity &&
-      bestMatch.brandMatched &&
+    (!hasConflictingForm &&
+      !hasConflictingExplicitQuantity &&
+      brandRequirementSatisfied &&
       bestMatch.quantityCompatible &&
       bestMatch.coverage >= 0.67 &&
       bestMatch.sharedTokens >= requiredShared + 1 &&
@@ -886,15 +1124,31 @@ function evaluatePageMatch(product, result, pageSignals) {
   };
 }
 
+function evaluateImageSearchMatch(product, result) {
+  return evaluatePageMatch(
+    product,
+    { title: result.title || "", url: result.pageUrl || "" },
+    [result.description || ""],
+  );
+}
+
 async function resolveImageCandidates(product) {
   const queries = buildSearchQueries(product);
   const candidates = [];
   const seen = new Set();
 
   for (const query of queries) {
-    let searchResults = await searchBing(query);
-    if (searchResults.length === 0) {
-      searchResults = await searchBing(`${query} buy online`);
+    const candidateQueries = [query, `${query} buy online`, ...buildSiteSearchQueries(product, query)];
+    let searchResults = [];
+
+    for (const candidateQuery of candidateQueries) {
+      const results = await searchBing(candidateQuery);
+      for (const result of results) {
+        if (!searchResults.some((existing) => existing.url === result.url)) {
+          searchResults.push(result);
+        }
+      }
+      if (searchResults.length >= 12) break;
     }
 
     const ranked = searchResults
@@ -934,6 +1188,32 @@ async function resolveImageCandidates(product) {
         if (candidates.length >= 16) return candidates;
       }
     }
+
+    if (candidates.length > 0) continue;
+
+    for (const candidateQuery of candidateQueries) {
+      const imageResults = await searchBingImages(candidateQuery);
+      for (const imageResult of imageResults) {
+        const match = evaluateImageSearchMatch(product, imageResult);
+        if (!match.accept) continue;
+
+        const key = `${imageResult.pageUrl}::${imageResult.imageUrl}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        candidates.push({
+          source: getHostname(imageResult.pageUrl) || "bing-images",
+          query: candidateQuery,
+          pageUrl: imageResult.pageUrl,
+          imageUrl: imageResult.imageUrl,
+          referer: domainReferer(imageResult.pageUrl),
+          matchedBy: match.source || "bing-image",
+          matchedText: match.text || imageResult.title,
+          matchCoverage: match.coverage,
+          matchScore: match.score,
+        });
+        if (candidates.length >= 16) return candidates;
+      }
+    }
   }
 
   return candidates;
@@ -950,6 +1230,7 @@ async function saveImageFile(imageUrl, slug, referer) {
     })
     .jpeg({ quality: 88, mozjpeg: true })
     .toBuffer();
+  await validateOutputImage(output);
   await fs.writeFile(localFsPath, output);
   return localFsPath;
 }
@@ -1056,6 +1337,7 @@ async function processProduct(product, index, total, report) {
 async function main() {
   await fs.mkdir(PRODUCT_IMAGE_DIR, { recursive: true });
   await fs.mkdir(path.dirname(REPORT_PATH), { recursive: true });
+  await loadSlugFile();
 
   const products = await fetchAllProducts();
   const candidates = products.filter((product) => {
