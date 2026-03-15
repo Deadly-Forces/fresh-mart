@@ -1,0 +1,221 @@
+{
+  "startedAt": "2026-03-15T10:03:26.276Z",
+  "totalProducts": 2600,
+  "candidateProducts": 95,
+  "selectedProducts": 20,
+  "updated": [
+    {
+      "id": "391937e3-2c01-4d1c-b607-618840d77aed",
+      "slug": "baby-care-pigeon-weaning-bottle-120ml-139",
+      "name": "Pigeon Weaning Bottle 120ml 1 pc",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-pigeon-weaning-bottle-120ml-139.jpg",
+      "source": "snapdeal.com",
+      "query": "Pigeon Weaning Bottle 120ml 1 pc",
+      "pageUrl": "https://www.snapdeal.com/product/pigeon-weaning-bottle-with-spoon/1411353",
+      "imageUrl": "https://g.sdlcdn.com/imgs/a/d/k/large/SDL238878487_1369733893_image1-c2b01.jpg",
+      "matchedBy": "page-signal-1",
+      "matchedText": "Pigeon Weaning Bottle with Spoon 120ml",
+      "matchCoverage": 1,
+      "matchScore": 0.6
+    },
+    {
+      "id": "78015a7e-d024-4ffd-9e99-b51dab4b410c",
+      "slug": "baby-care-himalaya-baby-care-gift-pack-106",
+      "name": "Himalaya Baby Care Gift Pack 1 set",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-himalaya-baby-care-gift-pack-106.jpg",
+      "source": "amazon.in",
+      "query": "Himalaya Baby Care Gift Pack 1 set",
+      "pageUrl": "https://www.amazon.in/Himalaya-4010C-Babycare-Gift-Pack/dp/B008YD53KC",
+      "imageUrl": "https://m.media-amazon.com/images/I/71kwVZ-3zML.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Himalaya Baby Gift Pack Series,Pack of 1 set,white : Amazon.in: Baby ...",
+      "matchCoverage": 0.8,
+      "matchScore": 0.4444444444444444
+    },
+    {
+      "id": "50465824-18f8-4757-bf84-403b8f13ae4f",
+      "slug": "baby-care-pigeon-training-cup-200ml-184",
+      "name": "Pigeon Training Cup 200ml 1 pc",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-pigeon-training-cup-200ml-184.jpg",
+      "source": "babymirno.com",
+      "query": "Pigeon Training Cup 200ml 1 pc",
+      "pageUrl": "https://www.babymirno.com/product/pigeon-training-master-series-straw-cup-200ml/",
+      "imageUrl": "https://www.babymirno.com/wp-content/uploads/payment.png",
+      "matchedBy": "search-title",
+      "matchedText": "Pigeon Training Master Series Straw Cup (200ml)",
+      "matchCoverage": 1,
+      "matchScore": 0.5
+    },
+    {
+      "id": "62f1e7d4-3f31-449a-99e6-9a5e753f10ab",
+      "slug": "baby-care-chicco-natural-feeling-bottle-180",
+      "name": "Chicco Natural Feeling Bottle 250ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-chicco-natural-feeling-bottle-180.jpg",
+      "source": "amazon.in",
+      "query": "Chicco Natural Feeling Bottle 250ml",
+      "pageUrl": "https://www.amazon.in/Chicco-Natural-Feeling-Anti-Colic-Toddlers/dp/B09WYWFPH8",
+      "imageUrl": "https://m.media-amazon.com/images/I/61flZICeXsL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Chicco Natural Feeling 250ml Baby Milk Feeding Plastic Bottle with Wide Neck, Anti-Colic for Easy Milk Flow, for Babies & Toddlers 2m+ (Pink)",
+      "matchCoverage": 1,
+      "matchScore": 0.2222222222222222
+    },
+    {
+      "id": "15b6725f-5bfe-40a4-8847-c33a50a1a855",
+      "slug": "baby-care-babyhug-full-sleeves-romper-187",
+      "name": "Babyhug Full Sleeves Romper 1 pc",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-babyhug-full-sleeves-romper-187.jpg",
+      "source": "babyhug.in",
+      "query": "Babyhug Full Sleeves Romper 1 pc",
+      "pageUrl": "https://babyhug.in/products/babyhug-disney-full-sleeves-romper-with-minnie-mouse-graphics-white?id=20399448",
+      "imageUrl": "https://cdn.fcglcdn.com/brainbees/images/products/583x720/20399448a.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Babyhug Disney Full Sleeves Romper with Minnie Mouse Graphics - White",
+      "matchCoverage": 1,
+      "matchScore": 0.4
+    },
+    {
+      "id": "bede1bce-893f-4ca9-bc13-1bc8e8d472d4",
+      "slug": "baby-care-cerelac-baby-cereal-wheat-honey-73",
+      "name": "Cerelac Baby Cereal Wheat Honey 300g",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-cerelac-baby-cereal-wheat-honey-73.jpg",
+      "source": "amazon.in",
+      "query": "Cerelac Baby Cereal Wheat Honey 300g",
+      "pageUrl": "https://www.amazon.in/CERELAC-Baby-Cereal-Milk-Wheat/dp/B0DP2H24X5",
+      "imageUrl": "https://m.media-amazon.com/images/I/81JU9WKdrdL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "CERELAC Baby Cereal with Milk, Wheat - Amazon",
+      "matchCoverage": 0.8,
+      "matchScore": 0.5714285714285714
+    },
+    {
+      "id": "7dbc1509-afe8-4c90-b932-0d7e898f26fc",
+      "slug": "baby-care-johnsons-cottontouch-baby-lotion-44",
+      "name": "Johnson's Cottontouch Baby Lotion 200ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-johnsons-cottontouch-baby-lotion-44.jpg",
+      "source": "amazon.in",
+      "query": "Johnson's Cottontouch Baby Lotion 200ml",
+      "pageUrl": "https://www.amazon.in/Johnsons-79603260-Baby-Lotion-200ml/dp/B07FHHCR44",
+      "imageUrl": "https://m.media-amazon.com/images/I/51UCx5R6W4L._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Johnson's Baby Lotion (White, 200ml) - Amazon.in",
+      "matchCoverage": 0.75,
+      "matchScore": 0.6
+    },
+    {
+      "id": "01a0b5e2-0960-4953-8e86-323a22048c56",
+      "slug": "baby-care-pigeon-silicone-nipple-m-98",
+      "name": "Pigeon Silicone Nipple M 2 pcs",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-pigeon-silicone-nipple-m-98.jpg",
+      "source": "amazon.in",
+      "query": "Pigeon Silicone Nipple M 2 pcs",
+      "pageUrl": "https://www.amazon.in/Pigeon-Silicone-Nipple-Shield-13mm/dp/B00ES97N0O",
+      "imageUrl": "https://m.media-amazon.com/images/I/51O9vAYMTZL._AC_PT0_BL0_SX216_SY110_FMwebp_QL25_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Pigeon Silicone Nipple Shield 13mm - 2 Pcs, F",
+      "matchCoverage": 1,
+      "matchScore": 0.6
+    },
+    {
+      "id": "9b90084f-9c98-440e-840b-5bb06b454dad",
+      "slug": "baby-care-himalaya-baby-massage-oil-50",
+      "name": "Himalaya Baby Massage Oil 200ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-himalaya-baby-massage-oil-50.jpg",
+      "source": "amazon.in",
+      "query": "Himalaya Baby Massage Oil 200ml",
+      "pageUrl": "https://www.amazon.in/Himalaya-Baby-Massage-500ml-200ml/dp/B08QSHGSWV",
+      "imageUrl": "https://m.media-amazon.com/images/I/61H+hPp3qaL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Himalaya Baby Massage Oil (500ml) & Himalaya Baby Massage Oil (200ml)",
+      "matchCoverage": 1,
+      "matchScore": 1
+    },
+    {
+      "id": "0ca8baa9-5a5c-4ec9-a7f2-e14cee65ca60",
+      "slug": "baby-care-johnsons-baby-lotion-39",
+      "name": "Johnson's Baby Lotion 500ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-johnsons-baby-lotion-39.jpg",
+      "source": "amazon.in",
+      "query": "Johnson's Baby Lotion 500ml",
+      "pageUrl": "https://www.amazon.in/Johnsons-19804821-Baby-Lotion-500ml/dp/B008YD5G1I",
+      "imageUrl": "https://m.media-amazon.com/images/I/51UCx5R6W4L._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Johnson's Baby Lotion, 500ml",
+      "matchCoverage": 1,
+      "matchScore": 1
+    }
+  ],
+  "failed": [
+    {
+      "id": "695ed653-b4db-4593-a27a-bd8c62444609",
+      "slug": "baby-care-slurrp-farm-puffs-cheesy-broccoli-174",
+      "name": "Slurrp Farm Puffs Cheesy Broccoli 20g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "a8fc968b-dc74-4e2c-96da-bae6d10e2079",
+      "slug": "baby-care-mothercare-all-we-know-laundry-cleaner-117",
+      "name": "Mothercare All We Know Laundry Cleaner 1L",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "c8491623-956e-43cf-b9ea-9561e8bba6d4",
+      "slug": "baby-care-himalaya-baby-rice-cereal-130",
+      "name": "Himalaya Baby Rice Cereal 300g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "22caaf05-9aa7-4b9e-9fd0-3dd89cdb409e",
+      "slug": "baby-care-mee-mee-straw-sipper-141",
+      "name": "Mee Mee Straw Sipper 1 pc",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "f0f448ad-b76c-4dac-bd64-8de725cde583",
+      "slug": "baby-care-pigeon-baby-tooth-gel-135",
+      "name": "Pigeon Baby Tooth Gel 45g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "76e26478-3811-479a-97ae-f21856e6881c",
+      "slug": "baby-care-babyhug-nappy-pads-large-193",
+      "name": "Babyhug Nappy Pads Large 20 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "824ad56e-1f9a-42cf-9e80-fa8dd4f9e04c",
+      "slug": "baby-care-chicco-corner-guards-128",
+      "name": "Chicco Corner Guards 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "0f744a7d-3103-4f36-a036-e7d23e61dcb6",
+      "slug": "baby-care-himalaya-baby-shampoo-gentle-45",
+      "name": "Himalaya Baby Shampoo Gentle 200ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "17f31959-be3b-4799-820d-b2af0d2c6ce7",
+      "slug": "baby-care-tritan-baby-bottle-sterilizer-119",
+      "name": "Tritan Baby Bottle Sterilizer 1 pc",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "c5657102-4743-45a3-b4c9-6cb30619d313",
+      "slug": "baby-care-chicco-suction-bowl-with-spoon-144",
+      "name": "Chicco Suction Bowl with Spoon 1 set",
+      "reason": "no-source-found"
+    }
+  ],
+  "finishedAt": "2026-03-15T10:05:05.290Z"
+}

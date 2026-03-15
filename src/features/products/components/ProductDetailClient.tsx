@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { ProductCard } from "./ProductCard";
 import { useHydrated } from "@/hooks/useHydrated";
+import { PRODUCT_IMAGE_PLACEHOLDER_PATH } from "@/lib/products/localProductImage";
 
 const ReviewsSection = dynamic(
   () =>
@@ -87,6 +88,14 @@ export function ProductDetailClient({
     );
   }
 
+  const galleryImages =
+    Array.isArray(product.images) && product.images.length > 0
+      ? product.images
+      : product.image
+        ? [product.image]
+        : [PRODUCT_IMAGE_PLACEHOLDER_PATH];
+  const primaryImage = galleryImages[0] ?? PRODUCT_IMAGE_PLACEHOLDER_PATH;
+
   const currentVariant = product.variants?.find(
     (v: any) => v.id === selectedVariant,
   ) || { price: product.price, name: "Regular" };
@@ -96,7 +105,7 @@ export function ProductDetailClient({
       productId: product.id,
       name: `${product.name} (${currentVariant.name})`,
       price: currentVariant.price,
-      image: product.images[0],
+      image: primaryImage,
       quantity: quantity,
       unit: product.unit,
     });
@@ -114,7 +123,7 @@ export function ProductDetailClient({
       slug: product.slug,
       price: currentVariant.price,
       comparePrice: product.comparePrice,
-      image: product.images[0],
+      image: primaryImage,
       unit: product.unit,
       rating: product.rating,
       reviewsCount: product.reviewsCount,
@@ -159,7 +168,7 @@ export function ProductDetailClient({
         <div className="w-full lg:w-[52%]">
           <div className="relative aspect-square bg-gradient-to-br from-secondary/60 to-background rounded-[32px] overflow-hidden mb-4 border border-border/50 shadow-sm flex items-center justify-center p-8 group">
             <Image
-              src={product.images[selectedImage]}
+              src={galleryImages[selectedImage] ?? primaryImage}
               alt={product.name}
               fill
               className="object-contain p-12 mix-blend-multiply group-hover:scale-105 transition-transform duration-700 [transition-timing-function:cubic-bezier(0.25,0.46,0.45,0.94)]"
@@ -168,7 +177,7 @@ export function ProductDetailClient({
             />
           </div>
           <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 px-1">
-            {product.images.map((img: string, i: number) => (
+            {galleryImages.map((img: string, i: number) => (
               <button
                 key={i}
                 className={`w-20 h-20 shrink-0 rounded-button border-2 overflow-hidden transition-colors ${
@@ -444,3 +453,4 @@ export function ProductDetailClient({
     </div>
   );
 }
+

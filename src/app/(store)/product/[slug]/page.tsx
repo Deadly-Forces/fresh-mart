@@ -60,7 +60,7 @@ function buildDetail(
 
   return {
     ...base,
-    images: [base.image, base.image, base.image, base.image, base.image],
+    images: base.images && base.images.length > 0 ? base.images : [base.image],
     stock: base.stock ?? 50,
     description,
     nutritionalInfo,

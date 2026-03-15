@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { resolveProductImage } from "@/lib/products/resolveProductImages";
 import { createClient } from "@/lib/supabase/server";
 import { AutoRefresh } from "@/components/admin/AutoRefresh";
 import { DeleteProductButton, InlineStockEditor } from "./ProductActions";
@@ -53,7 +54,7 @@ export default async function AdminProductsPage({
 
   let productsQuery = supabase
     .from("products")
-    .select("id, name, price, stock, is_active, images, categories(name)")
+    .select("id, slug, name, price, stock, is_active, images, categories(name)")
     .order("created_at", { ascending: false });
 
   if (searchQuery) {
@@ -62,15 +63,17 @@ export default async function AdminProductsPage({
 
   const { data: productsData } = await productsQuery.range(from, to);
 
-  const products = (productsData || []).map((p: any) => ({
-    id: p.id,
-    name: p.name,
-    category: p.categories?.name || "Uncategorized",
-    price: Number(p.price || 0),
-    stock: p.stock ?? 0,
-    active: p.is_active !== false,
-    image_url: p.images?.[0] || null,
-  }));
+  const products = await Promise.all(
+    (productsData || []).map(async (p: any) => ({
+      id: p.id,
+      name: p.name,
+      category: p.categories?.name || "Uncategorized",
+      price: Number(p.price || 0),
+      stock: p.stock ?? 0,
+      active: p.is_active !== false,
+      image_url: await resolveProductImage(p.slug, p.images),
+    })),
+  );
 
   const total = totalProducts ?? 0;
   const activeStock = Number(totalStock ?? 0);

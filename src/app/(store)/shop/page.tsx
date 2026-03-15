@@ -11,6 +11,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { resolveProductImage } from "@/lib/products/resolveProductImages";
 import { createClient } from "@/lib/supabase/server";
 
 type Props = {
@@ -87,30 +88,32 @@ export default async function ShopPage(props: Props) {
     fetchFrom += BATCH_SIZE;
   }
 
-  const productsList = (allProducts || []).map((p: any) => {
-    // Handle array or object returns for relation
-    let catSlug = "other";
-    if (Array.isArray(p.categories) && p.categories.length > 0) {
-      catSlug = p.categories[0].slug;
-    } else if (p.categories && !Array.isArray(p.categories)) {
-      catSlug = (p.categories as any).slug;
-    }
+  const productsList = await Promise.all(
+    (allProducts || []).map(async (p: any) => {
+      // Handle array or object returns for relation
+      let catSlug = "other";
+      if (Array.isArray(p.categories) && p.categories.length > 0) {
+        catSlug = p.categories[0].slug;
+      } else if (p.categories && !Array.isArray(p.categories)) {
+        catSlug = (p.categories as any).slug;
+      }
 
-    return {
-      id: p.id,
-      name: p.name,
-      slug: p.slug,
-      price: Number(p.price),
-      comparePrice: p.compare_price ? Number(p.compare_price) : undefined,
-      image: p.images?.[0] || "/placeholder.svg",
-      unit: p.unit as string | undefined, // Type assertion for unit
-      categorySlug: catSlug,
-      stock: p.stock as number | undefined, // Type assertion for stock
-      brand: (p as any).brand || "", // Adding to satisfy UI filters
-      badge: (p as any).tags?.[0] || "", // Map first tag to badge if available
-      rating: 4.0, // Default rating
-    };
-  });
+      return {
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        price: Number(p.price),
+        comparePrice: p.compare_price ? Number(p.compare_price) : undefined,
+        image: await resolveProductImage(p.slug, p.images),
+        unit: p.unit as string | undefined,
+        categorySlug: catSlug,
+        stock: p.stock as number | undefined,
+        brand: (p as any).brand || "",
+        badge: (p as any).tags?.[0] || "",
+        rating: 4.0,
+      };
+    }),
+  );
 
   // Calculate category counts dynamically
   const categoryCounts: Record<string, number> = {};

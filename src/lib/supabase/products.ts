@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { resolveProductImages } from "@/lib/products/resolveProductImages";
 
 /** Shape expected by ProductGrid / ProductCard */
 export interface MappedProduct {
@@ -8,6 +9,7 @@ export interface MappedProduct {
   price: number;
   comparePrice?: number;
   image: string;
+  images?: string[];
   unit?: string;
   rating?: number;
   reviewsCount?: number;
@@ -24,7 +26,7 @@ const PRODUCT_COLUMNS_INNER =
   "id, name, slug, price, compare_price, images, unit, stock, tags, is_featured, categories!inner(slug)";
 
 /** Map a raw Supabase product row to MappedProduct */
-function mapRow(p: any): MappedProduct {
+async function mapRow(p: any): Promise<MappedProduct> {
   let catSlug = "other";
   if (Array.isArray(p.categories) && p.categories.length > 0) {
     catSlug = p.categories[0].slug;
@@ -32,13 +34,16 @@ function mapRow(p: any): MappedProduct {
     catSlug = (p.categories as any).slug;
   }
 
+  const images = await resolveProductImages(p.slug, p.images);
+
   return {
     id: p.id,
     name: p.name,
     slug: p.slug,
     price: Number(p.price),
     comparePrice: p.compare_price ? Number(p.compare_price) : undefined,
-    image: p.images?.[0] || "/placeholder.svg",
+    image: images[0] ?? "/placeholder.svg",
+    images,
     unit: p.unit ?? undefined,
     categorySlug: catSlug,
     stock: p.stock ?? undefined,
@@ -60,7 +65,7 @@ export async function fetchProductBySlug(
     .eq("is_active", true)
     .single();
 
-  return data ? mapRow(data) : null;
+  return data ? await mapRow(data) : null;
 }
 
 /**
@@ -91,7 +96,7 @@ export async function fetchProducts(opts?: {
   // If a small limit is specified, no batching needed
   if (opts?.limit) {
     const { data } = await query.limit(opts.limit);
-    return (data || []).map(mapRow);
+    return Promise.all((data || []).map(mapRow));
   }
 
   // Paginated fetch to avoid max_rows cap
@@ -111,7 +116,7 @@ export async function fetchProducts(opts?: {
     }
   }
 
-  return all.map(mapRow);
+  return Promise.all(all.map(mapRow));
 }
 
 /** Get category counts from all active products */
@@ -168,5 +173,5 @@ export async function fetchRelatedProducts(
     .neq("id", excludeId)
     .limit(limit);
 
-  return (data || []).map(mapRow);
+  return Promise.all((data || []).map(mapRow));
 }

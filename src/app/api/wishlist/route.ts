@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { resolveProductImage } from "@/lib/products/resolveProductImages";
 import { createClient } from "@/lib/supabase/server";
 import { rateLimit } from "@/lib/security";
 
@@ -48,8 +49,8 @@ export async function GET() {
     }
 
     // Transform into WishlistProduct shape
-    const items = (data ?? [])
-      .map((row: Record<string, unknown>) => {
+    const items = (
+      await Promise.all((data ?? []).map(async (row: Record<string, unknown>) => {
         const p = row.products as Record<string, unknown> | null;
         if (!p) return null;
         const cat = p.categories as { slug: string } | null;
@@ -60,12 +61,13 @@ export async function GET() {
           slug: p.slug as string,
           price: Number(p.price),
           comparePrice: p.compare_price ? Number(p.compare_price) : undefined,
-          image: images?.[0] ?? "",
+          image: await resolveProductImage(p.slug as string, images),
           unit: (p.unit as string) ?? undefined,
           stock: p.stock != null ? Number(p.stock) : undefined,
           categorySlug: cat?.slug ?? undefined,
         };
-      })
+      }))
+    )
       .filter(Boolean);
 
     return NextResponse.json({ items }, {

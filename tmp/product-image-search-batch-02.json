@@ -1,0 +1,212 @@
+{
+  "startedAt": "2026-03-15T10:05:39.442Z",
+  "totalProducts": 2600,
+  "candidateProducts": 95,
+  "selectedProducts": 20,
+  "updated": [
+    {
+      "id": "0ca8baa9-5a5c-4ec9-a7f2-e14cee65ca60",
+      "slug": "baby-care-johnsons-baby-lotion-39",
+      "name": "Johnson's Baby Lotion 500ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-johnsons-baby-lotion-39.jpg",
+      "source": "amazon.in",
+      "query": "Johnson's Baby Lotion 500ml",
+      "pageUrl": "https://www.amazon.in/Johnsons-19804821-Baby-Lotion-500ml/dp/B008YD5G1I",
+      "imageUrl": "https://m.media-amazon.com/images/I/51UCx5R6W4L._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Johnson's Baby Lotion, 500ml",
+      "matchCoverage": 1,
+      "matchScore": 1
+    },
+    {
+      "id": "7dbc1509-afe8-4c90-b932-0d7e898f26fc",
+      "slug": "baby-care-johnsons-cottontouch-baby-lotion-44",
+      "name": "Johnson's Cottontouch Baby Lotion 200ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-johnsons-cottontouch-baby-lotion-44.jpg",
+      "source": "amazon.in",
+      "query": "Johnson's Cottontouch Baby Lotion 200ml",
+      "pageUrl": "https://www.amazon.in/Johnsons-79603260-Baby-Lotion-200ml/dp/B07FHHCR44",
+      "imageUrl": "https://m.media-amazon.com/images/I/51UCx5R6W4L._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Johnson's Baby Lotion (White, 200ml) - Amazon.in",
+      "matchCoverage": 0.75,
+      "matchScore": 0.6
+    },
+    {
+      "id": "91115836-4bea-44e9-ba75-6bc80cac14c9",
+      "slug": "baby-care-pigeon-softouch-wide-neck-bottle-240ml-89",
+      "name": "Pigeon SofTouch Wide Neck Bottle 240ml 1 pc",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-pigeon-softouch-wide-neck-bottle-240ml-89.jpg",
+      "source": "amazon.in",
+      "query": "Pigeon SofTouch Wide Neck Bottle 240ml 1 pc",
+      "pageUrl": "https://www.amazon.in/Pigeon-Newborns-Toddlers-Borosilicate-Anti-Colic/dp/B0C7QS4QX3",
+      "imageUrl": "https://m.media-amazon.com/images/I/61flZICeXsL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Buy Pigeon Wide Neck Glass Feeding Bottle 240 ml …",
+      "matchCoverage": 0.8,
+      "matchScore": 0.5714285714285714
+    },
+    {
+      "id": "e151632f-c35b-4640-99f0-4e1e6a28638e",
+      "slug": "baby-care-johnsons-baby-lotion-38",
+      "name": "Johnson's Baby Lotion 200ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-johnsons-baby-lotion-38.jpg",
+      "source": "amazon.in",
+      "query": "Johnson's Baby Lotion 200ml",
+      "pageUrl": "https://www.amazon.in/Johnsons-79603260-Baby-Lotion-200ml/dp/B07FHHCR44",
+      "imageUrl": "https://m.media-amazon.com/images/I/51UCx5R6W4L._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Johnson's Baby Lotion (White, 200ml) - Amazon.in",
+      "matchCoverage": 1,
+      "matchScore": 0.6
+    },
+    {
+      "id": "9b90084f-9c98-440e-840b-5bb06b454dad",
+      "slug": "baby-care-himalaya-baby-massage-oil-50",
+      "name": "Himalaya Baby Massage Oil 200ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-himalaya-baby-massage-oil-50.jpg",
+      "source": "amazon.in",
+      "query": "Himalaya Baby Massage Oil 200ml",
+      "pageUrl": "https://www.amazon.in/Himalaya-Baby-Massage-Oil-Coconut/dp/B09X661THZ",
+      "imageUrl": "https://m.media-amazon.com/images/I/61H+hPp3qaL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Himalaya Baby Massage Oil (Coconut) 200 ml",
+      "matchCoverage": 1,
+      "matchScore": 1
+    },
+    {
+      "id": "01a0b5e2-0960-4953-8e86-323a22048c56",
+      "slug": "baby-care-pigeon-silicone-nipple-m-98",
+      "name": "Pigeon Silicone Nipple M 2 pcs",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-pigeon-silicone-nipple-m-98.jpg",
+      "source": "amazon.in",
+      "query": "Pigeon Silicone Nipple M 2 pcs",
+      "pageUrl": "https://www.amazon.in/Pigeon-Silicone-Nipple-Shield-13mm/dp/B00ES97N0O",
+      "imageUrl": "https://m.media-amazon.com/images/I/51O9vAYMTZL._AC_PT0_BL0_SX245_SY275_FMwebp_QL25_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Pigeon Silicone Nipple Shield 13mm - 2 Pcs, F",
+      "matchCoverage": 1,
+      "matchScore": 0.6
+    },
+    {
+      "id": "1076e07f-28e7-431b-bc0a-6153fbb37104",
+      "slug": "baby-care-pigeon-silicone-nipple-s-97",
+      "name": "Pigeon Silicone Nipple S 2 pcs",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-pigeon-silicone-nipple-s-97.jpg",
+      "source": "amazon.in",
+      "query": "Pigeon Silicone Nipple S 2 pcs",
+      "pageUrl": "https://www.amazon.in/Pigeon-Silicone-Nipple-Shield-13mm/dp/B00ES97N0O",
+      "imageUrl": "https://m.media-amazon.com/images/I/51O9vAYMTZL._AC_PT0_BL0_SX245_SY275_FMwebp_QL25_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Pigeon Silicone Nipple Shield 13mm - 2 Pcs, F",
+      "matchCoverage": 1,
+      "matchScore": 0.6
+    },
+    {
+      "id": "c1cc21c9-d88e-49ee-86ef-dd636196b5bd",
+      "slug": "household-probioclean-natural-floor-cleaner-114",
+      "name": "Probioclean Natural Floor Cleaner 1L",
+      "categorySlug": "household",
+      "localPath": "/product-images/household-probioclean-natural-floor-cleaner-114.jpg",
+      "source": "amazon.in",
+      "query": "Probioclean Natural Floor Cleaner 1L",
+      "pageUrl": "https://www.amazon.in/RIVOFF-Probiotic-Multi-Surface-Long-Lasting-Protection/dp/B0G3XV93VT",
+      "imageUrl": "https://m.media-amazon.com/images/I/4141RRmezCL._SS40_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Probiotic Floor Cleaner Combo 500ML & 1L (1.5L) | Natural Cleaning ...",
+      "matchCoverage": 0.75,
+      "matchScore": 0.6
+    },
+    {
+      "id": "ffd517c6-2eb8-4cc4-9798-7a8c508ac5cd",
+      "slug": "household-syska-led-tube-light-22w-163",
+      "name": "Syska LED Tube Light 22W 1 pc",
+      "categorySlug": "household",
+      "localPath": "/product-images/household-syska-led-tube-light-22w-163.jpg",
+      "source": "snapdeal.com",
+      "query": "Syska LED Tube Light 22W 1 pc",
+      "pageUrl": "https://www.snapdeal.com/product/syska-22w-122-led-tube/622221328109",
+      "imageUrl": "https://g.sdlcdn.com/imgs/h/n/8/Syska-22W-122-LED-Tube-SDL921518054-2-75ae7.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Syska 22W 122 LED Tube Light Cool Day Light - Pack of 10",
+      "matchCoverage": 1,
+      "matchScore": 0.625
+    }
+  ],
+  "failed": [
+    {
+      "id": "d2761d4e-9663-4222-9ba4-2bb69dfac1f5",
+      "slug": "household-asian-paints-ezyclean-wall-cleaner-113",
+      "name": "Asian Paints Ezyclean Wall Cleaner 500ml",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "9c7211e1-2e2f-48e6-9f46-39f237de37ef",
+      "slug": "household-freshwrap-butter-paper-154",
+      "name": "Freshwrap Butter Paper 10m",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "9a4f0c79-75b0-46b5-8cc2-2edbf0f9eedf",
+      "slug": "household-gala-plastic-broom-trendy-168",
+      "name": "Gala Plastic Broom Trendy 1 pc",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "3b4ebb31-0bcb-4d67-b002-6b269be26610",
+      "slug": "household-flair-wax-candle-white-100",
+      "name": "Flair Wax Candle White 6 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "431e3c25-5ce6-4043-a528-182995420921",
+      "slug": "household-gala-clothes-peg-102",
+      "name": "Gala Clothes Peg 12 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "41f83a1a-97c5-4389-be5e-9c4e194b3a63",
+      "slug": "household-freshwrap-zip-lock-bags-small-156",
+      "name": "Freshwrap Zip Lock Bags Small 30 pcs",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "43d34268-c9b4-413a-beff-6e81939bd213",
+      "slug": "household-freshwrap-aluminium-foil-41",
+      "name": "Freshwrap Aluminium Foil 21m",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "0440afcf-cdf0-46b3-9e92-81cecf116c35",
+      "slug": "household-fresho-tissue-paper-roll-75",
+      "name": "Fresho Tissue Paper Roll 4 rolls",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "2432dffb-bf93-4597-af96-52ba2cb9f044",
+      "slug": "household-origami-kitchen-towel-roll-71",
+      "name": "Origami Kitchen Towel Roll 2 rolls",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "698c9a69-7b34-4c43-819c-70cdaed3fcbd",
+      "slug": "personal-care-wow-onion-black-seed-shampoo-121",
+      "name": "WOW Onion Black Seed Shampoo 300ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "6d0cdfe6-45f8-422e-a861-bee9f633bc82",
+      "slug": "personal-care-park-avenue-premium-icon-perfume-154",
+      "name": "Park Avenue Premium Icon Perfume 150ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    }
+  ],
+  "finishedAt": "2026-03-15T10:07:44.543Z"
+}

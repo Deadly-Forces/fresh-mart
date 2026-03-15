@@ -1,0 +1,185 @@
+{
+  "startedAt": "2026-03-15T10:14:51.626Z",
+  "totalProducts": 2600,
+  "candidateProducts": 95,
+  "selectedProducts": 20,
+  "updated": [
+    {
+      "id": "3c890397-e2e1-4b3d-912f-655f9baaf13e",
+      "slug": "meat-seafood-freshtohome-tilapia-fish-55",
+      "name": "FreshToHome Tilapia Fish 500g",
+      "categorySlug": "meat-seafood",
+      "localPath": "/product-images/meat-seafood-freshtohome-tilapia-fish-55.jpg",
+      "source": "amazon.in",
+      "query": "FreshToHome Tilapia Fish 500g",
+      "pageUrl": "https://www.amazon.in/FreshToHome-Tilapia-Jalebi-Fish-Large/dp/B09ZF3RLFX",
+      "imageUrl": "https://m.media-amazon.com/images/I/31-3lu77gyL._SX38_SY50_CR,0,0,38,50_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "FreshToHome Tilapia/Jalebi Fish (Large) - Amazon",
+      "matchCoverage": 1,
+      "matchScore": 0.6
+    },
+    {
+      "id": "9b251a9f-4d94-4321-bbbf-c2db7df50430",
+      "slug": "meat-seafood-freshtohome-goat-biryani-cut-37",
+      "name": "FreshToHome Goat Biryani Cut 500g",
+      "categorySlug": "meat-seafood",
+      "localPath": "/product-images/meat-seafood-freshtohome-goat-biryani-cut-37.jpg",
+      "source": "amazon.in",
+      "query": "FreshToHome Goat Biryani Cut 500g",
+      "pageUrl": "https://www.amazon.in/FreshToHome-Premium-Goat-Biryani-include/dp/B09Z9MPVFV",
+      "imageUrl": "https://m.media-amazon.com/images/I/41CYJXK8UgL._SX38_SY50_CR,0,0,38,50_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "FreshToHome Premium Goat Biryani Cut | 480g to 500g Pack",
+      "matchCoverage": 1,
+      "matchScore": 0.8
+    },
+    {
+      "id": "305ee05e-7175-4a0c-b8b1-33b487829ba2",
+      "slug": "dairy-eggs-amul-taaza-homogenised-toned-milk-137",
+      "name": "Amul Taaza Homogenised Toned Milk 500ml",
+      "categorySlug": "dairy-eggs",
+      "localPath": "/product-images/dairy-eggs-amul-taaza-homogenised-toned-milk-137.jpg",
+      "source": "amazon.in",
+      "query": "Amul Taaza Homogenised Toned Milk 500ml",
+      "pageUrl": "https://www.amazon.in/Amul-Milk-Toned-500ml/dp/B018VFFZSC",
+      "imageUrl": "https://m.media-amazon.com/images/I/71tvOVpvOBL.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Amul Taaza Homogenized Toned Milk, 500 Ml",
+      "matchCoverage": 0.75,
+      "matchScore": 0.75
+    },
+    {
+      "id": "c6064400-330b-4576-bc8b-16f6357a0d82",
+      "slug": "dairy-eggs-baskin-robbins-premium-chocolate-128",
+      "name": "Baskin Robbins Premium Chocolate 450ml",
+      "categorySlug": "dairy-eggs",
+      "localPath": "/product-images/dairy-eggs-baskin-robbins-premium-chocolate-128.jpg",
+      "source": "news.baskinrobbins.com",
+      "query": "Baskin Robbins Premium Chocolate 450ml",
+      "pageUrl": "https://news.baskinrobbins.com/news/here-by-popular-demand-baskin-robbinsR-debuts-the-dubai-chocolate-collection",
+      "imageUrl": "https://s3.amazonaws.com/cms.ipressroom.com/286/files/20259/202510301405/690370b73d63322738cd9d77_Dubai+Chocolate+Shake+and+Sundae/Dubai+Chocolate+Shake+and+Sundae_b66f237d-288e-4c32-b95e-e15ff8b496bf-prv.jpg",
+      "matchedBy": "page-signal-1",
+      "matchedText": "Here by Popular Demand! Baskin-Robbins® Debuts the Dubai Chocolate ...",
+      "matchCoverage": 1,
+      "matchScore": 0.3
+    },
+    {
+      "id": "85cac268-3df7-48da-ac47-54c8f3059296",
+      "slug": "dairy-eggs-ananda-ghee-74",
+      "name": "Ananda Ghee 1L",
+      "categorySlug": "dairy-eggs",
+      "localPath": "/product-images/dairy-eggs-ananda-ghee-74.jpg",
+      "source": "snapdeal.com",
+      "query": "Ananda Ghee 1L",
+      "pageUrl": "https://www.snapdeal.com/product/gopaljee-ananda-cow-ghee-1/662169267092",
+      "imageUrl": "https://g.sdlcdn.com/imgs/b/n/a/large/Gopaljee-Ananda-Cow-Ghee-1-SDL705990180-1-a1f8d.jpg",
+      "matchedBy": "page-signal-1",
+      "matchedText": "Gopaljee Ananda Cow Ghee 1 ltr",
+      "matchCoverage": 1,
+      "matchScore": 0.4
+    },
+    {
+      "id": "07ba4816-fdff-4ee9-9146-74627e90ecb5",
+      "slug": "dairy-eggs-aashirvaad-svasti-ghee-71",
+      "name": "Aashirvaad Svasti Ghee 1L",
+      "categorySlug": "dairy-eggs",
+      "localPath": "/product-images/dairy-eggs-aashirvaad-svasti-ghee-71.jpg",
+      "source": "amazon.in",
+      "query": "Aashirvaad Svasti Ghee 1L",
+      "pageUrl": "https://www.amazon.in/Aashirvaad-Svasti-Pure-Cow-Ghee/dp/B09FDTL2R8",
+      "imageUrl": "https://m.media-amazon.com/images/I/819XszDoQBL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Aashirvaad Svasti Pure Cow Ghee, 1L - Amazon.in",
+      "matchCoverage": 1,
+      "matchScore": 0.3333333333333333
+    }
+  ],
+  "failed": [
+    {
+      "id": "077967e0-2ae1-41c0-9016-a08fdb6b3eb2",
+      "slug": "bakery-fresho-swiss-roll-chocolate-145",
+      "name": "Fresho Swiss Roll Chocolate 200g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "dd9e80b1-fe12-413d-be51-7670011ff679",
+      "slug": "bakery-fresho-palmier-butterfly-pastry-155",
+      "name": "Fresho Palmier Butterfly Pastry 6 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "00e437d0-6464-4247-a892-47ca6c4880e4",
+      "slug": "bakery-fresho-filo-pastry-sheets-196",
+      "name": "Fresho Filo Pastry Sheets 200g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "69045733-5efb-41f5-969a-635994a2d3ff",
+      "slug": "bakery-fresho-puff-pastry-veg-109",
+      "name": "Fresho Puff Pastry Veg 4 pcs",
+      "reason": "Attempted to use detached Frame '38C9AA5E985514C9A4AF45DF86A25AE0'."
+    },
+    {
+      "id": "59a290b8-73b7-45ef-a534-66a3207d729c",
+      "slug": "bakery-fresho-paneer-puff-110",
+      "name": "Fresho Paneer Puff 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "40d8310f-2cfd-40ad-9ed8-264c8e3510d4",
+      "slug": "bakery-fresho-samosa-112",
+      "name": "Fresho Samosa 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "cac91c5c-ee2c-4c10-a084-dfc6dc2bbbc9",
+      "slug": "bakery-fresho-bread-pakora-113",
+      "name": "Fresho Bread Pakora 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "43de12b6-edf5-417f-8115-35c65806cc0f",
+      "slug": "bakery-fresho-cannoli-157",
+      "name": "Fresho Cannoli 2 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "2272fb57-2a27-44c0-b117-244d94d230ab",
+      "slug": "bakery-fresho-scone-plain-136",
+      "name": "Fresho Scone Plain 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "b8a15318-e6e6-42d0-87a9-0f52ea7ab0fc",
+      "slug": "bakery-fresho-suji-rusk-60",
+      "name": "Fresho Suji Rusk 300g",
+      "reason": "Attempted to use detached Frame '28903BD6BF228A165D3E59D314E635B7'."
+    },
+    {
+      "id": "9dc91588-7009-4b87-9303-3465d901274c",
+      "slug": "bakery-fresho-chocolate-donut-86",
+      "name": "Fresho Chocolate Donut 2 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "4f71540a-a046-4d86-ae0d-80b1e2cc1bc9",
+      "slug": "bakery-fresho-fan-toast-94",
+      "name": "Fresho Fan Toast 200g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "f758b775-9763-4ecd-b697-5577c927b21f",
+      "slug": "dairy-eggs-kwality-walls-magnum-classic-125",
+      "name": "Kwality Wall's Magnum Classic 1 pc",
+      "reason": "Attempted to use detached Frame 'B23F16D98AFF671D4A950D943DA59E72'."
+    },
+    {
+      "id": "32ed09eb-4080-4512-81d7-8f8933a06f4e",
+      "slug": "dairy-eggs-mother-dairy-ice-cream-kaju-draksh-184",
+      "name": "Mother Dairy Ice Cream Kaju Draksh 750ml",
+      "reason": "no-source-found"
+    }
+  ],
+  "finishedAt": "2026-03-15T10:23:25.039Z"
+}

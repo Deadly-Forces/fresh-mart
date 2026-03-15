@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useCartStore, type CartItem } from "@/features/cart/store/useCartStore";
+import { PRODUCT_IMAGE_PLACEHOLDER_PATH } from "@/lib/products/localProductImage";
 
 /**
  * Syncs the Zustand cart (localStorage) with the server-side cart_items table
@@ -25,7 +26,7 @@ export function CartSyncProvider() {
           product_id,
           variant_id,
           quantity,
-          products!inner(name, price, images, unit),
+          products!inner(name, slug, price, images, unit),
           product_variants(name, price)
         `,
         )
@@ -36,6 +37,7 @@ export function CartSyncProvider() {
       return (data as Record<string, unknown>[]).map((item) => {
         const product = item.products as {
           name: string;
+          slug: string;
           price: number;
           images: string[] | null;
           unit: string | null;
@@ -50,7 +52,7 @@ export function CartSyncProvider() {
           productId: item.product_id as string,
           variantId: (item.variant_id as string) ?? undefined,
           name: variant ? `${product.name} - ${variant.name}` : product.name,
-          image: product.images?.[0] ?? "",
+          image: product.images?.[0] ?? PRODUCT_IMAGE_PLACEHOLDER_PATH,
           price: variant?.price ?? product.price,
           unit: product.unit ?? undefined,
           quantity: item.quantity as number,
@@ -160,3 +162,4 @@ export function CartSyncProvider() {
 
   return null;
 }
+

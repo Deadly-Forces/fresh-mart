@@ -785,7 +785,7 @@ function queueReportWrite(report) {
 
 function isRetriableBrowserError(error) {
   const message = String(error?.message || error || "");
-  return /(Target closed|Connection closed|Session closed|Protocol error|Browser has disconnected)/i.test(message);
+  return /(Target closed|Connection closed|Session closed|Protocol error|Browser has disconnected|Execution context was destroyed|Navigating frame was detached|Cannot find context with specified id|Attempted to use detached Frame)/i.test(message);
 }
 
 async function resetBrowser() {
@@ -1400,3 +1400,5 @@ main().catch(async (error) => {
   }
   process.exit(1);
 });
+
+

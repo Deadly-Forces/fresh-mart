@@ -1,0 +1,149 @@
+{
+  "startedAt": "2026-03-15T10:08:12.562Z",
+  "totalProducts": 2600,
+  "candidateProducts": 95,
+  "selectedProducts": 20,
+  "updated": [
+    {
+      "id": "e0d5d0ab-6a66-47c5-915c-ab435a033e0b",
+      "slug": "personal-care-himalaya-lip-balm-102",
+      "name": "Himalaya Lip Balm 10g",
+      "categorySlug": "personal-care",
+      "localPath": "/product-images/personal-care-himalaya-lip-balm-102.jpg",
+      "source": "amazon.in",
+      "query": "Himalaya Lip Balm 10g",
+      "pageUrl": "https://www.amazon.in/Himalaya-Herbals-Lip-Balm-grams/dp/B003Q8RTAW",
+      "imageUrl": "https://m.media-amazon.com/images/I/610FVsqMHkL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-1",
+      "matchedText": "Himalaya Lip Balm",
+      "matchCoverage": 1,
+      "matchScore": 1
+    },
+    {
+      "id": "c3b638e2-f38a-4003-be60-07483876fb70",
+      "slug": "personal-care-wild-stone-ultra-sensual-deodorant-65",
+      "name": "Wild Stone Ultra Sensual Deodorant 150ml",
+      "categorySlug": "personal-care",
+      "localPath": "/product-images/personal-care-wild-stone-ultra-sensual-deodorant-65.jpg",
+      "source": "amazon.in",
+      "query": "Wild Stone Ultra Sensual Deodorant 150ml",
+      "pageUrl": "https://www.amazon.in/Wild-Stone-Sensual-Perfume-Deodorant/dp/B07MQKDGGZ",
+      "imageUrl": "https://m.media-amazon.com/images/I/41n7Dx2A5OL._SS40_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Wild Stone Ultra Sensual Perfume and Deodorant …",
+      "matchCoverage": 1,
+      "matchScore": 0.7142857142857143
+    }
+  ],
+  "failed": [
+    {
+      "id": "85cc8d61-87de-4d17-a924-2c0ed2f485ae",
+      "slug": "personal-care-himalaya-men-acno-clean-wash-194",
+      "name": "Himalaya Men Acno-Clean Wash 100ml",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "45e840af-210a-489e-ae3a-fe6ce64ac938",
+      "slug": "personal-care-ponds-white-beauty-sun-protect-spf-50-74",
+      "name": "Pond's White Beauty Sun Protect SPF 50 35g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "0be8686b-2e57-442b-a15a-02b74e65ad8d",
+      "slug": "beverages-epigamia-protein-smoothie-mango-123",
+      "name": "Epigamia Protein Smoothie Mango 180ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "088ea7b4-1b8c-4dba-b51a-b5608b091130",
+      "slug": "beverages-rasna-khus-khus-concentrate-120",
+      "name": "Rasna Khus Khus Concentrate 750ml",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "be9e05e6-c569-4384-9f2b-f519b9ee5388",
+      "slug": "beverages-tata-tea-premium-3",
+      "name": "Tata Tea Premium 250g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "88ca0a40-1def-4156-9174-cc92b905db9f",
+      "slug": "snacks-ritebite-max-protein-bar-peanut-110",
+      "name": "RiteBite Max Protein Bar Peanut 70g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "25a45f71-e57e-4f99-97cd-4f1f613d933e",
+      "slug": "snacks-haldirams-moong-dal-28",
+      "name": "Haldiram's Moong Dal 400g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "8e81e206-0332-40a1-8fc4-b41facebaf23",
+      "slug": "meat-seafood-freshtohome-cuttlefish-cleaned-198",
+      "name": "FreshToHome Cuttlefish Cleaned 250g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "922fcc37-275c-4a04-bbf9-38ecefac0eca",
+      "slug": "meat-seafood-freshtohome-marinated-fish-fry-187",
+      "name": "FreshToHome Marinated Fish Fry 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "47c139af-9588-4d07-9788-80893b2a014b",
+      "slug": "meat-seafood-itc-kitchen-of-india-rogan-josh-183",
+      "name": "ITC Kitchen of India Rogan Josh 285g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "1bdb0145-aa06-4aa2-92af-df0d0aeed20a",
+      "slug": "meat-seafood-itc-kitchen-of-india-dal-gosht-182",
+      "name": "ITC Kitchen of India Dal Gosht 285g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "9aafc1ca-205d-4279-98fd-70e84a5e954a",
+      "slug": "meat-seafood-licious-goat-nihari-cut-147",
+      "name": "Licious Goat Nihari Cut 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "870e61d5-28d2-47b7-aef1-ad535a8ccdbd",
+      "slug": "meat-seafood-freshtohome-goat-ribs-144",
+      "name": "FreshToHome Goat Ribs 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "36f6ef49-fb5a-441f-aeab-44438d62e4c5",
+      "slug": "meat-seafood-licious-chicken-butter-masala-marinated-142",
+      "name": "Licious Chicken Butter Masala Marinated 250g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "b132bc0d-627f-4fd1-ad35-b8ff33282dcd",
+      "slug": "meat-seafood-fresho-scallops-129",
+      "name": "Fresho Scallops 200g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "c1318666-217c-4de3-8c76-a573b3d04f36",
+      "slug": "meat-seafood-fresho-clams-cleaned-128",
+      "name": "Fresho Clams Cleaned 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "aadfd4b1-18ef-49ec-9f9d-a61ec469d82c",
+      "slug": "meat-seafood-mtr-ready-to-eat-fish-curry-114",
+      "name": "MTR Ready to Eat Fish Curry 300g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    },
+    {
+      "id": "b52e4aa2-afcc-4556-ba13-ef81ecb5f1d1",
+      "slug": "meat-seafood-freshtohome-mussels-69",
+      "name": "FreshToHome Mussels 500g",
+      "reason": "Execution context was destroyed, most likely because of a navigation."
+    }
+  ],
+  "finishedAt": "2026-03-15T10:10:33.642Z"
+}

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-labelledby="title desc">
+  <title id="title">Product image placeholder</title>
+  <desc id="desc">A neutral grocery placeholder illustration used when a product photo is unavailable.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8faf5" />
+      <stop offset="100%" stop-color="#e7efe2" />
+    </linearGradient>
+    <linearGradient id="bag" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7bb661" />
+      <stop offset="100%" stop-color="#4f8d45" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="640" rx="48" fill="url(#bg)" />
+  <circle cx="500" cy="132" r="74" fill="#ffffff" opacity="0.55" />
+  <circle cx="132" cy="520" r="92" fill="#ffffff" opacity="0.4" />
+  <g transform="translate(150 118)">
+    <path d="M88 102c0-45 37-82 82-82s82 37 82 82h-34c0-26-22-48-48-48s-48 22-48 48H88Z" fill="#7f5f3c" />
+    <path d="M46 132h248l-20 264c-3 34-31 60-65 60H131c-34 0-62-26-65-60L46 132Z" fill="url(#bag)" />
+    <path d="M66 172h208" stroke="#e8f5e6" stroke-width="16" stroke-linecap="round" opacity="0.6" />
+    <ellipse cx="126" cy="214" rx="34" ry="42" fill="#ef4444" />
+    <path d="M126 164c12-14 26-18 38-12" stroke="#2f6b2d" stroke-width="8" stroke-linecap="round" fill="none" />
+    <circle cx="208" cy="226" r="40" fill="#f59e0b" />
+    <path d="M208 178c4-16 16-28 32-34" stroke="#2f6b2d" stroke-width="8" stroke-linecap="round" fill="none" />
+    <rect x="110" y="270" width="120" height="116" rx="18" fill="#f4f1e8" />
+    <path d="M134 304h72M134 336h72" stroke="#c7bea7" stroke-width="12" stroke-linecap="round" />
+  </g>
+  <text x="320" y="584" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#5f6f61">
+    Image unavailable
+  </text>
+</svg>

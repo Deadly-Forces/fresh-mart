@@ -169,6 +169,23 @@ const offset = Number(getArg("--offset", "0")) || 0;
 const force = hasFlag("--force");
 const useFacts = hasFlag("--use-facts");
 const concurrency = Math.max(1, Number(getArg("--concurrency", "2")) || 2);
+const slugFilter = new Set();
+for (const slug of String(getArg("--slugs", ""))
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean)) {
+  slugFilter.add(slug);
+}
+const slugFilePath = getArg("--slugs-file", "");
+
+async function loadSlugFile() {
+  if (!slugFilePath) return;
+  const content = await fs.readFile(path.resolve(process.cwd(), slugFilePath), "utf8");
+  for (const line of content.split(/\r?\n/g)) {
+    const slug = line.trim();
+    if (slug) slugFilter.add(slug);
+  }
+}
 
 function normalizeText(value) {
   return value
@@ -692,8 +709,11 @@ async function main() {
   await fs.mkdir(PRODUCT_IMAGE_DIR, { recursive: true });
   await fs.mkdir(path.dirname(REPORT_PATH), { recursive: true });
 
+  await loadSlugFile();
+
   const products = await fetchAllProducts();
   const candidates = products.filter((product) => {
+    if (slugFilter.size > 0 && !slugFilter.has(product.slug)) return false;
     if (force) return true;
     if (isCurrentImageLocal(product.currentImage)) return false;
     return isPlaceholderImage(product.currentImage) || !product.currentImage;
@@ -754,3 +774,4 @@ main().catch((error) => {
   console.error(error);
   process.exit(1);
 });
+

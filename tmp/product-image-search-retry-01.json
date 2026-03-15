@@ -1,0 +1,314 @@
+{
+  "startedAt": "2026-03-15T10:50:02.906Z",
+  "totalProducts": 2600,
+  "candidateProducts": 31,
+  "selectedProducts": 31,
+  "updated": [
+    {
+      "id": "f0f448ad-b76c-4dac-bd64-8de725cde583",
+      "slug": "baby-care-pigeon-baby-tooth-gel-135",
+      "name": "Pigeon Baby Tooth Gel 45g",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-pigeon-baby-tooth-gel-135.jpg",
+      "source": "fivelittleducksme.com",
+      "query": "Pigeon Baby Tooth Gel 45g",
+      "pageUrl": "https://fivelittleducksme.com/products/pigeon-baby-tooth-gel-natural-45g",
+      "imageUrl": "http://fivelittleducksme.com/cdn/shop/files/PigeonBabyToothGelNatural45g_2939574c-57af-4e8c-8d57-150936675806.jpg?v=1718972633",
+      "matchedBy": "search-title",
+      "matchedText": "Pigeon Baby Tooth Gel Natural 45g – fivelittleduck",
+      "matchCoverage": 1,
+      "matchScore": 0.6666666666666666
+    },
+    {
+      "id": "22caaf05-9aa7-4b9e-9fd0-3dd89cdb409e",
+      "slug": "baby-care-mee-mee-straw-sipper-141",
+      "name": "Mee Mee Straw Sipper 1 pc",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-mee-mee-straw-sipper-141.jpg",
+      "source": "amazon.in",
+      "query": "Mee Mee Straw Sipper 1 pc",
+      "pageUrl": "https://www.amazon.in/Mee-Handle-Straw-Sipper-Plastic/dp/B07TLZF5WY",
+      "imageUrl": "https://m.media-amazon.com/images/I/41F5mNvYoIL._SS40_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Mee Mee Twin Handle Straw Sipper Cup (Blue, Plastic)",
+      "matchCoverage": 1,
+      "matchScore": 0.5
+    },
+    {
+      "id": "0f744a7d-3103-4f36-a036-e7d23e61dcb6",
+      "slug": "baby-care-himalaya-baby-shampoo-gentle-45",
+      "name": "Himalaya Baby Shampoo Gentle 200ml",
+      "categorySlug": "baby-care",
+      "localPath": "/product-images/baby-care-himalaya-baby-shampoo-gentle-45.jpg",
+      "source": "snapdeal.com",
+      "query": "Himalaya Baby Shampoo Gentle 200ml",
+      "pageUrl": "https://www.snapdeal.com/product/himalaya-baby-hair-oil-200ml/685861718456",
+      "imageUrl": "https://g.sdlcdn.com/imgs/j/e/q/large/Himalaya-Baby-Hair-Oil-200ml-SDL238425778-1-1a965.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Himalaya Baby Hair Oil (200ml) & Himalaya Gentle Baby Shampoo …",
+      "matchCoverage": 1,
+      "matchScore": 0.6666666666666666
+    },
+    {
+      "id": "2432dffb-bf93-4597-af96-52ba2cb9f044",
+      "slug": "household-origami-kitchen-towel-roll-71",
+      "name": "Origami Kitchen Towel Roll 2 rolls",
+      "categorySlug": "household",
+      "localPath": "/product-images/household-origami-kitchen-towel-roll-71.jpg",
+      "source": "amazon.in",
+      "query": "Origami Kitchen Towel Roll 2 rolls",
+      "pageUrl": "https://www.amazon.in/Origami-Reusable-Washable-Absorbent-Antimicrobial/dp/B00W1SO1A4",
+      "imageUrl": "https://m.media-amazon.com/images/I/612ETM59zGL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Origami Non Woven Reusable & Washable Kitchen Towel Roll",
+      "matchCoverage": 0.8,
+      "matchScore": 0.5
+    },
+    {
+      "id": "698c9a69-7b34-4c43-819c-70cdaed3fcbd",
+      "slug": "personal-care-wow-onion-black-seed-shampoo-121",
+      "name": "WOW Onion Black Seed Shampoo 300ml",
+      "categorySlug": "personal-care",
+      "localPath": "/product-images/personal-care-wow-onion-black-seed-shampoo-121.jpg",
+      "source": "amazon.in",
+      "query": "WOW Onion Black Seed Shampoo 300ml",
+      "pageUrl": "https://www.amazon.in/WOW-Skin-Science-Pro-Vitamin-Controls/dp/B08JWB74DM",
+      "imageUrl": "https://m.media-amazon.com/images/I/51r7I5AOTIL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "WOW Skin Science||Combo ion Black Seed Oil Shampoo with Red Onion Seed ...",
+      "matchCoverage": 1,
+      "matchScore": 0.45454545454545453
+    },
+    {
+      "id": "6d0cdfe6-45f8-422e-a861-bee9f633bc82",
+      "slug": "personal-care-park-avenue-premium-icon-perfume-154",
+      "name": "Park Avenue Premium Icon Perfume 150ml",
+      "categorySlug": "personal-care",
+      "localPath": "/product-images/personal-care-park-avenue-premium-icon-perfume-154.jpg",
+      "source": "amazon.in",
+      "query": "Park Avenue Premium Icon Perfume 150ml",
+      "pageUrl": "https://www.amazon.in/Park-Avenue-Premium-Perfume-150ml/dp/B094JC8FVS",
+      "imageUrl": "https://m.media-amazon.com/images/I/01RPy1SfeqL._SS40_.gif",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Park Avenue Premium Perfume, Icon, 150ml",
+      "matchCoverage": 1,
+      "matchScore": 1
+    },
+    {
+      "id": "0be8686b-2e57-442b-a15a-02b74e65ad8d",
+      "slug": "beverages-epigamia-protein-smoothie-mango-123",
+      "name": "Epigamia Protein Smoothie Mango 180ml",
+      "categorySlug": "beverages",
+      "localPath": "/product-images/beverages-epigamia-protein-smoothie-mango-123.jpg",
+      "source": "amazon.in",
+      "query": "Epigamia Protein Smoothie Mango 180ml",
+      "pageUrl": "https://www.amazon.in/Epigamia-Greek-Yogurt-Smoothie-Alphonso/dp/B07L1FZXGV",
+      "imageUrl": "https://m.media-amazon.com/images/I/61Q-utm+-kL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "page-signal-1",
+      "matchedText": "Epigamia Mango Smoothie, 180 ml | Real Fruits, Zero Preservatives | Protein Source | Lactose Free | Greek Yogurt Smoothie : Amazon.in: Grocery & Gourmet Foods",
+      "matchCoverage": 1,
+      "matchScore": 0.17647058823529413
+    },
+    {
+      "id": "88ca0a40-1def-4156-9174-cc92b905db9f",
+      "slug": "snacks-ritebite-max-protein-bar-peanut-110",
+      "name": "RiteBite Max Protein Bar Peanut 70g",
+      "categorySlug": "snacks",
+      "localPath": "/product-images/snacks-ritebite-max-protein-bar-peanut-110.jpg",
+      "source": "amazon.in",
+      "query": "RiteBite Max Protein Bar Peanut 70g",
+      "pageUrl": "https://www.amazon.in/RiteBite-Max-Protein-Active-Minerals/dp/B0F4JVVF2T",
+      "imageUrl": "https://m.media-amazon.com/images/I/41kAJx2U4LL._SX38_SY50_CR,0,0,38,50_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "RiteBite Max Protein Active Peanut Butter Protein Bars + Active …",
+      "matchCoverage": 0.8,
+      "matchScore": 0.5714285714285714
+    },
+    {
+      "id": "25a45f71-e57e-4f99-97cd-4f1f613d933e",
+      "slug": "snacks-haldirams-moong-dal-28",
+      "name": "Haldiram's Moong Dal 400g",
+      "categorySlug": "snacks",
+      "localPath": "/product-images/snacks-haldirams-moong-dal-28.jpg",
+      "source": "amazon.in",
+      "query": "Haldiram's Moong Dal 400g",
+      "pageUrl": "https://www.amazon.in/Haldirams-Moong-Dal-400gms-Pack/dp/B07P633J56",
+      "imageUrl": "https://m.media-amazon.com/images/I/71YZiTaWEUL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Haldiram's Nagpur Moong Dal, 400 Gm (200 Gm X Pack Of 2)",
+      "matchCoverage": 1,
+      "matchScore": 0.75
+    },
+    {
+      "id": "870e61d5-28d2-47b7-aef1-ad535a8ccdbd",
+      "slug": "meat-seafood-freshtohome-goat-ribs-144",
+      "name": "FreshToHome Goat Ribs 500g",
+      "categorySlug": "meat-seafood",
+      "localPath": "/product-images/meat-seafood-freshtohome-goat-ribs-144.jpg",
+      "source": "amazon.in",
+      "query": "FreshToHome Goat Ribs 500g",
+      "pageUrl": "https://www.amazon.in/FreshToHome-Premium-Fresh-Never-Frozen/dp/B0C9T97P66",
+      "imageUrl": "https://m.media-amazon.com/images/I/21nW+2ft4DL.png",
+      "matchedBy": "search-title",
+      "matchedText": "FreshToHome Premium Goat Ribs Cut | 480g to 500g pack - Amazon",
+      "matchCoverage": 1,
+      "matchScore": 0.5
+    },
+    {
+      "id": "aadfd4b1-18ef-49ec-9f9d-a61ec469d82c",
+      "slug": "meat-seafood-mtr-ready-to-eat-fish-curry-114",
+      "name": "MTR Ready to Eat Fish Curry 300g",
+      "categorySlug": "meat-seafood",
+      "localPath": "/product-images/meat-seafood-mtr-ready-to-eat-fish-curry-114.jpg",
+      "source": "amazon.in",
+      "query": "MTR Ready to Eat Fish Curry 300g",
+      "pageUrl": "https://www.amazon.in/MTR-Ready-Mixed-Vegetable-Curry/dp/B002VED6QS",
+      "imageUrl": "https://m.media-amazon.com/images/I/5187PJovx-L._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "MTR Ready to Eat Mixed Vegetable Curry 300g - Amazon",
+      "matchCoverage": 0.75,
+      "matchScore": 0.5
+    },
+    {
+      "id": "b52e4aa2-afcc-4556-ba13-ef81ecb5f1d1",
+      "slug": "meat-seafood-freshtohome-mussels-69",
+      "name": "FreshToHome Mussels 500g",
+      "categorySlug": "meat-seafood",
+      "localPath": "/product-images/meat-seafood-freshtohome-mussels-69.jpg",
+      "source": "amazon.in",
+      "query": "site:amazon.in FreshToHome Mussels 500g",
+      "pageUrl": "https://www.amazon.in/FreshToHome-Mussels-Karuttha-Kallumakkaya-cleaned/dp/B0C9TW1VNB",
+      "imageUrl": "https://m.media-amazon.com/images/I/61E4KMxRXIL._SL1000_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "FreshToHome Black Mussels/Karuttha Kallumakkaya Raw Meat | not boiled ...",
+      "matchCoverage": 1,
+      "matchScore": 0.2222222222222222
+    },
+    {
+      "id": "f758b775-9763-4ecd-b697-5577c927b21f",
+      "slug": "dairy-eggs-kwality-walls-magnum-classic-125",
+      "name": "Kwality Wall's Magnum Classic 1 pc",
+      "categorySlug": "dairy-eggs",
+      "localPath": "/product-images/dairy-eggs-kwality-walls-magnum-classic-125.jpg",
+      "source": "flipkart.com",
+      "query": "kwality wall magnum buy online",
+      "pageUrl": "https://www.flipkart.com/kwality-wall-s-chocolate-magnum-truffle/p/itmb180b646cc27b",
+      "imageUrl": "https://rukminim1.flixcart.com/image/832/832/kzllrbk0/ice-cream/n/o/x/80-magnum-ice-cream-chocolate-truffle-1-kwality-walls-original-imagbkype7fyagdg.jpeg?q=70",
+      "matchedBy": "search-title",
+      "matchedText": "Kwality Wall's Chocolate Magnum Truffle Price in India - Buy Kwality ...",
+      "matchCoverage": 1,
+      "matchScore": 0.3333333333333333
+    }
+  ],
+  "failed": [
+    {
+      "id": "76e26478-3811-479a-97ae-f21856e6881c",
+      "slug": "baby-care-babyhug-nappy-pads-large-193",
+      "name": "Babyhug Nappy Pads Large 20 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "41f83a1a-97c5-4389-be5e-9c4e194b3a63",
+      "slug": "household-freshwrap-zip-lock-bags-small-156",
+      "name": "Freshwrap Zip Lock Bags Small 30 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "431e3c25-5ce6-4043-a528-182995420921",
+      "slug": "household-gala-clothes-peg-102",
+      "name": "Gala Clothes Peg 12 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "0440afcf-cdf0-46b3-9e92-81cecf116c35",
+      "slug": "household-fresho-tissue-paper-roll-75",
+      "name": "Fresho Tissue Paper Roll 4 rolls",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "43d34268-c9b4-413a-beff-6e81939bd213",
+      "slug": "household-freshwrap-aluminium-foil-41",
+      "name": "Freshwrap Aluminium Foil 21m",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "45e840af-210a-489e-ae3a-fe6ce64ac938",
+      "slug": "personal-care-ponds-white-beauty-sun-protect-spf-50-74",
+      "name": "Pond's White Beauty Sun Protect SPF 50 35g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "088ea7b4-1b8c-4dba-b51a-b5608b091130",
+      "slug": "beverages-rasna-khus-khus-concentrate-120",
+      "name": "Rasna Khus Khus Concentrate 750ml",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "be9e05e6-c569-4384-9f2b-f519b9ee5388",
+      "slug": "beverages-tata-tea-premium-3",
+      "name": "Tata Tea Premium 250g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "8e81e206-0332-40a1-8fc4-b41facebaf23",
+      "slug": "meat-seafood-freshtohome-cuttlefish-cleaned-198",
+      "name": "FreshToHome Cuttlefish Cleaned 250g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "922fcc37-275c-4a04-bbf9-38ecefac0eca",
+      "slug": "meat-seafood-freshtohome-marinated-fish-fry-187",
+      "name": "FreshToHome Marinated Fish Fry 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "47c139af-9588-4d07-9788-80893b2a014b",
+      "slug": "meat-seafood-itc-kitchen-of-india-rogan-josh-183",
+      "name": "ITC Kitchen of India Rogan Josh 285g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "1bdb0145-aa06-4aa2-92af-df0d0aeed20a",
+      "slug": "meat-seafood-itc-kitchen-of-india-dal-gosht-182",
+      "name": "ITC Kitchen of India Dal Gosht 285g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "9aafc1ca-205d-4279-98fd-70e84a5e954a",
+      "slug": "meat-seafood-licious-goat-nihari-cut-147",
+      "name": "Licious Goat Nihari Cut 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "36f6ef49-fb5a-441f-aeab-44438d62e4c5",
+      "slug": "meat-seafood-licious-chicken-butter-masala-marinated-142",
+      "name": "Licious Chicken Butter Masala Marinated 250g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "b132bc0d-627f-4fd1-ad35-b8ff33282dcd",
+      "slug": "meat-seafood-fresho-scallops-129",
+      "name": "Fresho Scallops 200g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "c1318666-217c-4de3-8c76-a573b3d04f36",
+      "slug": "meat-seafood-fresho-clams-cleaned-128",
+      "name": "Fresho Clams Cleaned 500g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "69045733-5efb-41f5-969a-635994a2d3ff",
+      "slug": "bakery-fresho-puff-pastry-veg-109",
+      "name": "Fresho Puff Pastry Veg 4 pcs",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "b8a15318-e6e6-42d0-87a9-0f52ea7ab0fc",
+      "slug": "bakery-fresho-suji-rusk-60",
+      "name": "Fresho Suji Rusk 300g",
+      "reason": "no-source-found"
+    }
+  ],
+  "finishedAt": "2026-03-15T11:14:53.796Z"
+}

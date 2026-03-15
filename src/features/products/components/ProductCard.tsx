@@ -11,6 +11,7 @@ import { useCartStore } from "@/features/cart/store/useCartStore";
 import { useWishlistStore } from "@/features/wishlist/store/useWishlistStore";
 import { toast } from "sonner";
 import { useHydrated } from "@/hooks/useHydrated";
+import { PRODUCT_IMAGE_PLACEHOLDER_PATH } from "@/lib/products/localProductImage";
 
 interface ProductCardProps {
   id: string;
@@ -51,6 +52,8 @@ export const ProductCard = memo(function ProductCard({
   );
   const hydrated = useHydrated();
   const [showSparkle, setShowSparkle] = useState(false);
+  const fallbackImage = image || PRODUCT_IMAGE_PLACEHOLDER_PATH;
+  const [displayImage, setDisplayImage] = useState(fallbackImage);
   const sparkleTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -58,6 +61,10 @@ export const ProductCard = memo(function ProductCard({
       if (sparkleTimeoutRef.current) clearTimeout(sparkleTimeoutRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    setDisplayImage(fallbackImage);
+  }, [fallbackImage]);
 
   const isLiked = hydrated
     ? wishlistItemExists
@@ -69,12 +76,12 @@ export const ProductCard = memo(function ProductCard({
       productId: id,
       name,
       price,
-      image,
+      image: displayImage,
       quantity: 1,
       unit,
     });
     toast.success(`Added ${name} to cart!`);
-  }, [addItem, id, name, price, image, unit]);
+  }, [addItem, id, name, price, displayImage, unit]);
 
   const handleIncrement = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -104,7 +111,7 @@ export const ProductCard = memo(function ProductCard({
       slug,
       price,
       comparePrice,
-      image,
+      image: displayImage,
       unit,
       rating,
       reviewsCount,
@@ -121,7 +128,18 @@ export const ProductCard = memo(function ProductCard({
     toast.success(
       wasLiked ? `Removed ${name} from wishlist` : `Added ${name} to wishlist`,
     );
-  }, [toggleItem, wishlistItemExists, id, name, slug, price, comparePrice, image, unit, rating, reviewsCount, badge]);
+  }, [toggleItem, wishlistItemExists, id, name, slug, price, comparePrice, displayImage, unit, rating, reviewsCount, badge]);
+
+  const handleImageError = useCallback(() => {
+    if (displayImage !== fallbackImage) {
+      setDisplayImage(fallbackImage);
+      return;
+    }
+
+    if (displayImage !== PRODUCT_IMAGE_PLACEHOLDER_PATH) {
+      setDisplayImage(PRODUCT_IMAGE_PLACEHOLDER_PATH);
+    }
+  }, [displayImage, fallbackImage]);
 
   return (
     <div
@@ -174,11 +192,12 @@ export const ProductCard = memo(function ProductCard({
         className="block relative aspect-square w-full bg-gradient-to-br from-secondary/40 to-secondary/10 overflow-hidden"
       >
         <Image
-          src={image}
+          src={displayImage}
           alt={name}
           fill
           className="object-contain p-6 mix-blend-multiply dark:mix-blend-normal group-hover:scale-110 transition-transform duration-500 ease-out"
           sizes="(max-width: 768px) 50vw, 25vw"
+          onError={handleImageError}
         />
       </Link>
 

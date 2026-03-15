@@ -336,6 +336,12 @@ BEGIN
 END;
 $$;
 
+-- Older databases created generate_referral_code() as a trigger function on
+-- profiles. Drop that legacy trigger/function first so the helper version
+-- below can be created without a return-type conflict.
+DROP TRIGGER IF EXISTS on_profile_generate_referral ON public.profiles;
+DROP FUNCTION IF EXISTS public.generate_referral_code();
+
 CREATE OR REPLACE FUNCTION public.generate_referral_code()
 RETURNS TEXT
 LANGUAGE sql

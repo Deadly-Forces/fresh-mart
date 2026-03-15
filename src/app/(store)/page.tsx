@@ -8,6 +8,7 @@ import { TrustBar } from "@/features/home/components/TrustBar";
 import { CategoryGrid } from "@/features/home/components/CategoryGrid";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { PopularSearches } from "@/features/home/components/PopularSearches";
+import { resolveProductImage } from "@/lib/products/resolveProductImages";
 import { createClient } from "@/lib/supabase/server";
 
 const HeroBackground = dynamic(
@@ -29,29 +30,31 @@ export default async function HomePage() {
     .eq("is_active", true)
     .limit(8);
 
-  const featuredProducts = (featuredData || []).map((p: any) => {
-    let catSlug = "other";
-    if (Array.isArray(p.categories) && p.categories.length > 0) {
-      catSlug = p.categories[0].slug;
-    } else if (p.categories && !Array.isArray(p.categories)) {
-      catSlug = (p.categories as any).slug;
-    }
+  const featuredProducts = await Promise.all(
+    (featuredData || []).map(async (p: any) => {
+      let catSlug = "other";
+      if (Array.isArray(p.categories) && p.categories.length > 0) {
+        catSlug = p.categories[0].slug;
+      } else if (p.categories && !Array.isArray(p.categories)) {
+        catSlug = (p.categories as any).slug;
+      }
 
-    return {
-      id: p.id,
-      name: p.name,
-      slug: p.slug,
-      price: Number(p.price),
-      comparePrice: p.compare_price ? Number(p.compare_price) : undefined,
-      image: p.images?.[0] || "/placeholder.svg",
-      unit: p.unit,
-      categorySlug: catSlug,
-      stock: p.stock,
-      brand: p.brand || "",
-      badge: p.tags?.[0] || "",
-      rating: 4.0,
-    };
-  });
+      return {
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        price: Number(p.price),
+        comparePrice: p.compare_price ? Number(p.compare_price) : undefined,
+        image: await resolveProductImage(p.slug, p.images),
+        unit: p.unit,
+        categorySlug: catSlug,
+        stock: p.stock,
+        brand: p.brand || "",
+        badge: p.tags?.[0] || "",
+        rating: 4.0,
+      };
+    }),
+  );
 
   return (
     <div className="overflow-x-hidden">
