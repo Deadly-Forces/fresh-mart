@@ -3,7 +3,38 @@
   "totalProducts": 2600,
   "candidateProducts": 139,
   "selectedProducts": 139,
-  "updated": [],
+  "updated": [
+    {
+      "id": "972b58fa-fd7f-4d50-a6c1-e92828e24640",
+      "slug": "spices-seasonings-everest-mutton-masala-100g-131",
+      "name": "Everest Mutton Masala 100g",
+      "categorySlug": "spices-seasonings",
+      "localPath": "/product-images/spices-seasonings-everest-mutton-masala-100g-131.jpg",
+      "source": "amazon.in",
+      "query": "Everest Mutton Masala 100g",
+      "pageUrl": "https://www.amazon.in/Everest-Masala-Powder-Meat-Carton/dp/B00TIMLOH4",
+      "imageUrl": "https://m.media-amazon.com/images/I/81Hh2oV2LXL._AC_QL10_SX1960_SY110_FMwebp_.jpg",
+      "matchedBy": "page-signal-2",
+      "matchedText": "Everest Meat Masala - 100g | Black Pepper–Coriander–Chilli Blend for Rich, Aromatic Meat Curries & Gravies | Hot, Dark Tan Meat Masala Powder for Mutton.",
+      "matchCoverage": 1,
+      "matchScore": 0.13333333333333333
+    },
+    {
+      "id": "255983bb-2328-409e-af2f-13736cbddeac",
+      "slug": "spices-seasonings-badshah-kitchen-king-masala-100g-143",
+      "name": "Badshah Kitchen King Masala 100g",
+      "categorySlug": "spices-seasonings",
+      "localPath": "/product-images/spices-seasonings-badshah-kitchen-king-masala-100g-143.jpg",
+      "source": "amazon.in",
+      "query": "Badshah Kitchen King Masala 100g",
+      "pageUrl": "https://www.amazon.in/Badshah-Kitchen-King-Masala-100g/dp/B004XTDV14",
+      "imageUrl": "https://m.media-amazon.com/images/I/71FL1+r4LAL._AC_QL10_SX980_SY55_FMwebp_.jpg",
+      "matchedBy": "search-title",
+      "matchedText": "Badshah Kitchen King Masala - 100g - Amazon.in",
+      "matchCoverage": 1,
+      "matchScore": 0.6
+    }
+  ],
   "failed": [
     {
       "id": "af26061d-30da-42dd-b744-7d093447255e",
@@ -75,6 +106,42 @@
       "id": "f4f287a7-5e24-4cb3-9871-7ff0c74c779e",
       "slug": "staples-tata-sampann-biryani-basmati-rice-1kg-100",
       "name": "Tata Sampann Biryani Basmati Rice 1kg",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "58473bfd-4e33-45fd-92e8-af88b1f90aa0",
+      "slug": "spices-seasonings-mdh-ajwain-powder-100g-111",
+      "name": "MDH Ajwain Powder 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "c6b906df-8645-45fa-a94e-f01815095c55",
+      "slug": "staples-bb-royal-nachni-ragi-flour-1kg-116",
+      "name": "bb Royal Nachni (Ragi) Flour 1kg",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "b5e37c4a-64c8-428b-84cb-8cf1a01886a5",
+      "slug": "staples-toor-par-boiled-rice-5kg-107",
+      "name": "Toor Par Boiled Rice 5kg",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "a5d19a7a-cdb6-4a97-b157-461fb01b492f",
+      "slug": "spices-seasonings-bb-royal-kokum-garcinia-100g-109",
+      "name": "bb Royal Kokum (Garcinia) 100g",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "103e2c2a-27be-4615-a45f-8afdcb6c605c",
+      "slug": "staples-ashirvaad-ragi-flour-1kg-114",
+      "name": "Ashirvaad Ragi Flour 1kg",
+      "reason": "no-source-found"
+    },
+    {
+      "id": "07429110-ada4-4d09-92ce-000af90ed9b0",
+      "slug": "cooking-essentials-rajgruh-cashew-flour-almond-meal-200g-155",
+      "name": "Rajgruh Cashew Flour (Almond Meal) 200g",
       "reason": "no-source-found"
     }
   ]
