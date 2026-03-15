@@ -94,7 +94,9 @@ export default async function AdminDashboardPage() {
     const { count } = (await supabase
       .from("return_requests" as any)
       .select("*", { count: "exact", head: true })
-      .eq("status", "pending")) as { count: number | null };
+      .in("status", ["pending", "manual_review"])) as {
+      count: number | null;
+    };
     pendingReturns = count || 0;
   } catch (err) {
     console.warn("Return requests count fetch failed:", err);

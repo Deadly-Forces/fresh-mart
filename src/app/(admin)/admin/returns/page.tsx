@@ -66,6 +66,9 @@ export default async function AdminReturnsPage() {
   const stats = {
     total: enrichedRequests.length,
     pending: enrichedRequests.filter((r: any) => r.status === "pending").length,
+    manualReview: enrichedRequests.filter(
+      (r: any) => r.status === "manual_review",
+    ).length,
     approved: enrichedRequests.filter((r: any) => r.status === "approved")
       .length,
     refunded: enrichedRequests.filter((r: any) => r.status === "refunded")
@@ -81,7 +84,7 @@ export default async function AdminReturnsPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-6 gap-4">
         <div className="bg-card border border-border rounded-card p-4 text-center">
           <p className="text-2xl font-bold">{stats.total}</p>
           <p className="text-xs text-muted-foreground">Total Requests</p>
@@ -91,6 +94,12 @@ export default async function AdminReturnsPage() {
             {stats.pending}
           </p>
           <p className="text-xs text-muted-foreground">Pending</p>
+        </div>
+        <div className="bg-card border border-orange-200 dark:border-orange-800 rounded-card p-4 text-center">
+          <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+            {stats.manualReview}
+          </p>
+          <p className="text-xs text-muted-foreground">Manual Review</p>
         </div>
         <div className="bg-card border border-blue-200 dark:border-blue-800 rounded-card p-4 text-center">
           <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">

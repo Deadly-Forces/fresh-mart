@@ -41,9 +41,11 @@ export async function cancelOrderAction(orderId: string) {
       return { error: "Order not found." };
     }
 
-    if (!CANCELLABLE_STATUSES.includes(order.status)) {
+    const currentStatus = order.status ?? "pending";
+
+    if (!CANCELLABLE_STATUSES.includes(currentStatus)) {
       return {
-        error: `Cannot cancel an order that is already ${order.status.replace("_", " ")}.`,
+        error: `Cannot cancel an order that is already ${currentStatus.replace("_", " ")}.`,
       };
     }
 
@@ -72,22 +74,9 @@ export async function cancelOrderAction(orderId: string) {
 
     // Restore stock for each item (best effort — don't fail the cancel if this errors)
     if (orderItems && orderItems.length > 0) {
-      for (const item of orderItems) {
-        if (item.product_id) {
-          const { data: product } = await supabase
-            .from("products")
-            .select("stock")
-            .eq("id", item.product_id)
-            .single();
-
-          if (product) {
-            await supabase
-              .from("products")
-              .update({ stock: (product.stock ?? 0) + item.quantity })
-              .eq("id", item.product_id);
-          }
-        }
-      }
+      await supabase.rpc("restore_order_inventory" as any, {
+        p_order_id: orderId,
+      });
     }
 
     revalidatePath("/profile");

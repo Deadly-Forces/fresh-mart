@@ -49,6 +49,7 @@ const categoryUpdateSchema = z.object({
 
 const orderStatusSchema = z.enum([
   "pending",
+  "manual_review",
   "confirmed",
   "packed",
   "processing",
@@ -323,14 +324,14 @@ export async function updateProductImagesAction(
 
 export async function updateUserRoleAction(
   userId: string,
-  role: "customer" | "admin" | "delivery",
+      role: "customer" | "admin" | "delivery" | "picker",
 ) {
   try {
     if (!isValidUUID(userId)) {
       return { error: "Invalid user ID." };
     }
 
-    const roleSchema = z.enum(["customer", "admin", "delivery"]);
+    const roleSchema = z.enum(["customer", "admin", "delivery", "picker"]);
     const validation = roleSchema.safeParse(role);
     if (!validation.success) {
       return { error: "Invalid role." };
@@ -481,6 +482,7 @@ export async function updateOrderStatusAction(
         confirmed: "Order Confirmed! 🎉",
         packed: "Order Packed 📦",
         processing: "Order Processing",
+        manual_review: "Order Needs Review",
         out_for_delivery: "Out for Delivery! 🚴",
         delivered: "Order Delivered! ✅",
         cancelled: "Order Cancelled",
@@ -489,6 +491,7 @@ export async function updateOrderStatusAction(
         confirmed: `Your order #${orderId.slice(0, 8).toUpperCase()} has been confirmed and is being prepared.`,
         packed: `Your order #${orderId.slice(0, 8).toUpperCase()} has been packed and is ready for dispatch.`,
         processing: `Your order #${orderId.slice(0, 8).toUpperCase()} is being processed.`,
+        manual_review: `Your order #${orderId.slice(0, 8).toUpperCase()} has been placed under manual review.`,
         out_for_delivery: `Your order #${orderId.slice(0, 8).toUpperCase()} is out for delivery.`,
         delivered: `Your order #${orderId.slice(0, 8).toUpperCase()} has been delivered. Enjoy!`,
         cancelled: `Your order #${orderId.slice(0, 8).toUpperCase()} has been cancelled. Refund will be processed.`,

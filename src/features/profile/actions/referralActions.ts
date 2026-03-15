@@ -133,8 +133,8 @@ export async function applyReferralCodeAction(code: string) {
       description: "Referral bonus — a friend joined using your code",
     });
     await (supabase.rpc as Function)("increment_loyalty_points", {
-      user_row_id: referrer.id,
-      amount: bonusPoints,
+      p_user_id: referrer.id,
+      p_points: bonusPoints,
     }).then(({ error }: { error: any }) => {
       // Fallback if RPC doesn't exist
       if (error) {

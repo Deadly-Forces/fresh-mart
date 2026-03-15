@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useHydrated } from "@/hooks/useHydrated";
 
 const ORDER_STATUSES = [
+  "manual_review",
   "processing",
   "confirmed",
   "packed",

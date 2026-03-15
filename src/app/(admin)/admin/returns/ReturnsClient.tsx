@@ -77,7 +77,14 @@ export function ReturnsClient({ requests }: { requests: ReturnRequest[] }) {
       <div className="bg-card border border-border rounded-card overflow-hidden">
         {/* Filter tabs */}
         <div className="border-b border-border px-4 py-3 flex gap-2 flex-wrap">
-          {["all", "pending", "approved", "refunded", "rejected"].map((s) => (
+          {[
+            "all",
+            "pending",
+            "manual_review",
+            "approved",
+            "refunded",
+            "rejected",
+          ].map((s) => (
             <button
               key={s}
               onClick={() => setFilter(s)}
@@ -289,6 +296,7 @@ export function ReturnsClient({ requests }: { requests: ReturnRequest[] }) {
                   className="w-full rounded-button border border-border bg-background px-3 py-2 text-sm"
                 >
                   <option value="pending">Pending</option>
+                  <option value="manual_review">Manual Review</option>
                   <option value="approved">Approved</option>
                   <option value="refunded">Refunded</option>
                   <option value="rejected">Rejected</option>

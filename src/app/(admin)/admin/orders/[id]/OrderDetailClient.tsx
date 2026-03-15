@@ -56,6 +56,7 @@ export function OrderDetailClient({ order }: { order: OrderDetail }) {
   const router = useRouter();
 
   const statuses = [
+    "manual_review",
     "processing",
     "confirmed",
     "packed",
@@ -72,6 +73,7 @@ export function OrderDetailClient({ order }: { order: OrderDetail }) {
         order.id,
         status as
           | "pending"
+          | "manual_review"
           | "processing"
           | "confirmed"
           | "packed"

@@ -174,7 +174,8 @@ export function UsersClient({ users }: { users: UserRow[] }) {
                       >
                         <option value="customer">Customer</option>
                         <option value="admin">Admin</option>
-                        <option value="delivery">Delivery</option>
+                    <option value="delivery">Delivery</option>
+                    <option value="picker">Picker</option>
                       </select>
                     </td>
                   </tr>

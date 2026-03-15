@@ -166,10 +166,19 @@ export async function updateReturnRequestAction(
               if (rpcError) {
                 return supabase
                   .from("profiles")
-                  .update({
-                    loyalty_points: refundPoints,
-                  } as any)
-                  .eq("id", request.user_id);
+                  .select("loyalty_points")
+                  .eq("id", request.user_id)
+                  .single()
+                  .then(({ data }) =>
+                    supabase
+                      .from("profiles")
+                      .update({
+                        loyalty_points:
+                          ((data?.loyalty_points as number) || 0) +
+                          refundPoints,
+                      } as any)
+                      .eq("id", request.user_id),
+                  );
               }
             });
         }

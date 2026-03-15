@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { ProfileDashboard } from "@/features/profile/components/ProfileDashboard";
-import { UserOrderItem } from "@/types";
+import { OrderStatus, UserOrderItem } from "@/types";
 
 export const dynamic = "force-dynamic";
 
@@ -77,13 +77,7 @@ export default async function ProfilePage({
   // Map the Supabase response to our UserOrder type structure
   const orders = (rawOrders || []).map((order: Record<string, unknown>) => ({
     id: String(order.id),
-    status: String(order.status) as
-      | "pending"
-      | "confirmed"
-      | "packed"
-      | "out_for_delivery"
-      | "delivered"
-      | "cancelled",
+    status: String(order.status) as OrderStatus,
     total: Number(order.total),
     created_at: String(order.created_at),
     payment_method: order.payment_method

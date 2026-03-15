@@ -70,6 +70,12 @@ const STATUS_CONFIG: Record<
     color: "text-amber-600",
     bg: "bg-amber-500/10",
   },
+  manual_review: {
+    label: "Manual Review",
+    icon: AlertTriangle,
+    color: "text-orange-600",
+    bg: "bg-orange-500/10",
+  },
   approved: {
     label: "Approved",
     icon: CheckCircle2,
@@ -236,9 +242,11 @@ export function ReturnRefundTab({ orders }: ReturnRefundTabProps) {
                 <div
                   className={`h-1 ${
                     req.status === "refunded"
-                      ? "bg-gradient-to-r from-emerald-400 to-green-500"
-                      : req.status === "rejected"
+                  ? "bg-gradient-to-r from-emerald-400 to-green-500"
+                  : req.status === "rejected"
                         ? "bg-gradient-to-r from-red-400 to-red-500"
+                        : req.status === "manual_review"
+                          ? "bg-gradient-to-r from-orange-400 to-amber-500"
                         : req.status === "approved"
                           ? "bg-gradient-to-r from-blue-400 to-blue-500"
                           : "bg-gradient-to-r from-amber-400 to-yellow-500"

@@ -12,7 +12,7 @@ export default async function AdminWishlistPage() {
   const { data: wishlistData } = await supabase
     .from("wishlist")
     .select(
-      "id, product_id, user_id, created_at, products:product_id ( name, price, image_url )",
+      "id, product_id, user_id, created_at, products:product_id ( name, price, images )",
     )
     .order("created_at", { ascending: false });
 
@@ -31,11 +31,12 @@ export default async function AdminWishlistPage() {
   entries.forEach((e: any) => {
     const pid = e.product_id;
     const product = e.products as any;
+    const imageUrl = Array.isArray(product?.images) ? product.images[0] : null;
     if (!productCounts[pid]) {
       productCounts[pid] = {
         name: product?.name || "Unknown",
         price: Number(product?.price || 0),
-        image_url: product?.image_url || null,
+        image_url: imageUrl || null,
         count: 0,
       };
     }

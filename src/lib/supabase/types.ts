@@ -6,16 +6,31 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+type TableDef<
+  Row,
+  Insert,
+  Update,
+  Relationships extends readonly unknown[] = [],
+> = {
+  Row: Row;
+  Insert: Insert;
+  Update: Update;
+  Relationships: Relationships;
+};
+
+type EmptySchema = {
+  Views: { [_ in never]: never };
+  CompositeTypes: { [_ in never]: never };
+};
+
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.1";
   };
-  public: {
+  public: EmptySchema & {
     Tables: {
-      addresses: {
-        Row: {
+      addresses: TableDef<
+        {
           area: string | null;
           building: string | null;
           city: string | null;
@@ -30,8 +45,8 @@ export type Database = {
           state: string | null;
           street: string | null;
           user_id: string | null;
-        };
-        Insert: {
+        },
+        {
           area?: string | null;
           building?: string | null;
           city?: string | null;
@@ -46,8 +61,8 @@ export type Database = {
           state?: string | null;
           street?: string | null;
           user_id?: string | null;
-        };
-        Update: {
+        },
+        {
           area?: string | null;
           building?: string | null;
           city?: string | null;
@@ -62,8 +77,8 @@ export type Database = {
           state?: string | null;
           street?: string | null;
           user_id?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "addresses_user_id_fkey";
             columns: ["user_id"];
@@ -71,10 +86,10 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      banners: {
-        Row: {
+        ]
+      >;
+      banners: TableDef<
+        {
           created_at: string | null;
           ends_at: string | null;
           id: string;
@@ -84,8 +99,8 @@ export type Database = {
           sort_order: number | null;
           starts_at: string | null;
           title: string;
-        };
-        Insert: {
+        },
+        {
           created_at?: string | null;
           ends_at?: string | null;
           id?: string;
@@ -95,8 +110,8 @@ export type Database = {
           sort_order?: number | null;
           starts_at?: string | null;
           title: string;
-        };
-        Update: {
+        },
+        {
           created_at?: string | null;
           ends_at?: string | null;
           id?: string;
@@ -106,35 +121,34 @@ export type Database = {
           sort_order?: number | null;
           starts_at?: string | null;
           title?: string;
-        };
-        Relationships: [];
-      };
-      cart_items: {
-        Row: {
+        }
+      >;
+      cart_items: TableDef<
+        {
           created_at: string | null;
           id: string;
           product_id: string | null;
           quantity: number;
           user_id: string | null;
           variant_id: string | null;
-        };
-        Insert: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           product_id?: string | null;
           quantity?: number;
           user_id?: string | null;
           variant_id?: string | null;
-        };
-        Update: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           product_id?: string | null;
           quantity?: number;
           user_id?: string | null;
           variant_id?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "cart_items_product_id_fkey";
             columns: ["product_id"];
@@ -156,10 +170,10 @@ export type Database = {
             referencedRelation: "product_variants";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      categories: {
-        Row: {
+        ]
+      >;
+      categories: TableDef<
+        {
           id: string;
           image_url: string | null;
           is_active: boolean | null;
@@ -167,8 +181,8 @@ export type Database = {
           parent_id: string | null;
           slug: string;
           sort_order: number | null;
-        };
-        Insert: {
+        },
+        {
           id?: string;
           image_url?: string | null;
           is_active?: boolean | null;
@@ -176,8 +190,8 @@ export type Database = {
           parent_id?: string | null;
           slug: string;
           sort_order?: number | null;
-        };
-        Update: {
+        },
+        {
           id?: string;
           image_url?: string | null;
           is_active?: boolean | null;
@@ -185,8 +199,8 @@ export type Database = {
           parent_id?: string | null;
           slug?: string;
           sort_order?: number | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "categories_parent_id_fkey";
             columns: ["parent_id"];
@@ -194,31 +208,31 @@ export type Database = {
             referencedRelation: "categories";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      coupon_usage: {
-        Row: {
+        ]
+      >;
+      coupon_usage: TableDef<
+        {
           coupon_id: string;
           id: string;
           order_id: string | null;
           used_at: string;
           user_id: string;
-        };
-        Insert: {
+        },
+        {
           coupon_id: string;
           id?: string;
           order_id?: string | null;
           used_at?: string;
           user_id: string;
-        };
-        Update: {
+        },
+        {
           coupon_id?: string;
           id?: string;
           order_id?: string | null;
           used_at?: string;
           user_id?: string;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "coupon_usage_coupon_id_fkey";
             columns: ["coupon_id"];
@@ -233,10 +247,17 @@ export type Database = {
             referencedRelation: "orders";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      coupons: {
-        Row: {
+          {
+            foreignKeyName: "coupon_usage_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      coupons: TableDef<
+        {
           code: string;
           created_at: string | null;
           description: string | null;
@@ -250,8 +271,8 @@ export type Database = {
           type: Database["public"]["Enums"]["coupon_type"];
           used_count: number | null;
           value: number;
-        };
-        Insert: {
+        },
+        {
           code: string;
           created_at?: string | null;
           description?: string | null;
@@ -265,8 +286,8 @@ export type Database = {
           type: Database["public"]["Enums"]["coupon_type"];
           used_count?: number | null;
           value: number;
-        };
-        Update: {
+        },
+        {
           code?: string;
           created_at?: string | null;
           description?: string | null;
@@ -280,11 +301,10 @@ export type Database = {
           type?: Database["public"]["Enums"]["coupon_type"];
           used_count?: number | null;
           value?: number;
-        };
-        Relationships: [];
-      };
-      delivery_slots: {
-        Row: {
+        }
+      >;
+      delivery_slots: TableDef<
+        {
           current_orders: number | null;
           end_time: string;
           id: string;
@@ -292,8 +312,8 @@ export type Database = {
           label: string;
           max_orders: number;
           start_time: string;
-        };
-        Insert: {
+        },
+        {
           current_orders?: number | null;
           end_time: string;
           id?: string;
@@ -301,8 +321,8 @@ export type Database = {
           label: string;
           max_orders: number;
           start_time: string;
-        };
-        Update: {
+        },
+        {
           current_orders?: number | null;
           end_time?: string;
           id?: string;
@@ -310,11 +330,10 @@ export type Database = {
           label?: string;
           max_orders?: number;
           start_time?: string;
-        };
-        Relationships: [];
-      };
-      loyalty_transactions: {
-        Row: {
+        }
+      >;
+      loyalty_transactions: TableDef<
+        {
           created_at: string | null;
           description: string;
           id: string;
@@ -322,8 +341,8 @@ export type Database = {
           points: number;
           type: string;
           user_id: string;
-        };
-        Insert: {
+        },
+        {
           created_at?: string | null;
           description: string;
           id?: string;
@@ -331,8 +350,8 @@ export type Database = {
           points: number;
           type: string;
           user_id: string;
-        };
-        Update: {
+        },
+        {
           created_at?: string | null;
           description?: string;
           id?: string;
@@ -340,8 +359,8 @@ export type Database = {
           points?: number;
           type?: string;
           user_id?: string;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "loyalty_transactions_order_id_fkey";
             columns: ["order_id"];
@@ -356,31 +375,30 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      newsletter_subscribers: {
-        Row: {
+        ]
+      >;
+      newsletter_subscribers: TableDef<
+        {
           email: string;
           id: string;
           is_active: boolean | null;
           subscribed_at: string | null;
-        };
-        Insert: {
+        },
+        {
           email: string;
           id?: string;
           is_active?: boolean | null;
           subscribed_at?: string | null;
-        };
-        Update: {
+        },
+        {
           email?: string;
           id?: string;
           is_active?: boolean | null;
           subscribed_at?: string | null;
-        };
-        Relationships: [];
-      };
-      notifications: {
-        Row: {
+        }
+      >;
+      notifications: TableDef<
+        {
           created_at: string | null;
           id: string;
           is_read: boolean | null;
@@ -388,8 +406,8 @@ export type Database = {
           title: string;
           type: Database["public"]["Enums"]["notification_type"];
           user_id: string | null;
-        };
-        Insert: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           is_read?: boolean | null;
@@ -397,8 +415,8 @@ export type Database = {
           title: string;
           type: Database["public"]["Enums"]["notification_type"];
           user_id?: string | null;
-        };
-        Update: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           is_read?: boolean | null;
@@ -406,8 +424,8 @@ export type Database = {
           title?: string;
           type?: Database["public"]["Enums"]["notification_type"];
           user_id?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "notifications_user_id_fkey";
             columns: ["user_id"];
@@ -415,40 +433,40 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      order_items: {
-        Row: {
+        ]
+      >;
+      order_items: TableDef<
+        {
           created_at: string | null;
           id: string;
           order_id: string;
           price: number;
-          product_id: string;
+          product_id: string | null;
           product_snapshot: Json;
           quantity: number;
           variant_id: string | null;
-        };
-        Insert: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           order_id: string;
           price: number;
-          product_id: string;
+          product_id?: string | null;
           product_snapshot: Json;
           quantity: number;
           variant_id?: string | null;
-        };
-        Update: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           order_id?: string;
           price?: number;
-          product_id?: string;
+          product_id?: string | null;
           product_snapshot?: Json;
           quantity?: number;
           variant_id?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "order_items_order_id_fkey";
             columns: ["order_id"];
@@ -470,58 +488,64 @@ export type Database = {
             referencedRelation: "product_variants";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      orders: {
-        Row: {
+        ]
+      >;
+      orders: TableDef<
+        {
           address_id: string | null;
           applied_promocode: string | null;
           created_at: string | null;
+          delivery_fee: number | null;
           delivery_slot: string | null;
           discount_amount: number | null;
           id: string;
-          payment_method: string;
+          notes: string | null;
+          payment_method: Database["public"]["Enums"]["payment_method"];
           payment_status: string;
-          status: string;
-          substitution_preference: string | null;
+          status: Database["public"]["Enums"]["order_status"] | null;
           subtotal: number | null;
+          substitution_preference: string | null;
           total: number;
           updated_at: string | null;
           user_id: string;
-        };
-        Insert: {
+        },
+        {
           address_id?: string | null;
           applied_promocode?: string | null;
           created_at?: string | null;
+          delivery_fee?: number | null;
           delivery_slot?: string | null;
           discount_amount?: number | null;
           id?: string;
-          payment_method: string;
+          notes?: string | null;
+          payment_method: Database["public"]["Enums"]["payment_method"];
           payment_status?: string;
-          status?: string;
-          substitution_preference?: string | null;
+          status?: Database["public"]["Enums"]["order_status"] | null;
           subtotal?: number | null;
+          substitution_preference?: string | null;
           total: number;
           updated_at?: string | null;
           user_id: string;
-        };
-        Update: {
+        },
+        {
           address_id?: string | null;
           applied_promocode?: string | null;
           created_at?: string | null;
+          delivery_fee?: number | null;
           delivery_slot?: string | null;
           discount_amount?: number | null;
           id?: string;
-          payment_method?: string;
+          notes?: string | null;
+          payment_method?: Database["public"]["Enums"]["payment_method"];
           payment_status?: string;
-          status?: string;
-          substitution_preference?: string | null;
+          status?: Database["public"]["Enums"]["order_status"] | null;
           subtotal?: number | null;
+          substitution_preference?: string | null;
           total?: number;
           updated_at?: string | null;
           user_id?: string;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "orders_address_id_fkey";
             columns: ["address_id"];
@@ -529,34 +553,41 @@ export type Database = {
             referencedRelation: "addresses";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      product_variants: {
-        Row: {
+          {
+            foreignKeyName: "orders_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      product_variants: TableDef<
+        {
           id: string;
           name: string;
           price: number;
           product_id: string | null;
           sku: string;
           stock: number | null;
-        };
-        Insert: {
+        },
+        {
           id?: string;
           name: string;
           price: number;
           product_id?: string | null;
           sku: string;
           stock?: number | null;
-        };
-        Update: {
+        },
+        {
           id?: string;
           name?: string;
           price?: number;
           product_id?: string | null;
           sku?: string;
           stock?: number | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "product_variants_product_id_fkey";
             columns: ["product_id"];
@@ -564,10 +595,10 @@ export type Database = {
             referencedRelation: "products";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      products: {
-        Row: {
+        ]
+      >;
+      products: TableDef<
+        {
           category_id: string | null;
           compare_price: number | null;
           created_at: string | null;
@@ -585,8 +616,8 @@ export type Database = {
           stock: number | null;
           tags: string[] | null;
           unit: string | null;
-        };
-        Insert: {
+        },
+        {
           category_id?: string | null;
           compare_price?: number | null;
           created_at?: string | null;
@@ -604,8 +635,8 @@ export type Database = {
           stock?: number | null;
           tags?: string[] | null;
           unit?: string | null;
-        };
-        Update: {
+        },
+        {
           category_id?: string | null;
           compare_price?: number | null;
           created_at?: string | null;
@@ -623,8 +654,8 @@ export type Database = {
           stock?: number | null;
           tags?: string[] | null;
           unit?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "products_category_id_fkey";
             columns: ["category_id"];
@@ -632,10 +663,10 @@ export type Database = {
             referencedRelation: "categories";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      profiles: {
-        Row: {
+        ]
+      >;
+      profiles: TableDef<
+        {
           avatar_url: string | null;
           country_code: string | null;
           created_at: string | null;
@@ -652,8 +683,8 @@ export type Database = {
           referral_code: string | null;
           role: Database["public"]["Enums"]["user_role"] | null;
           updated_at: string | null;
-        };
-        Insert: {
+        },
+        {
           avatar_url?: string | null;
           country_code?: string | null;
           created_at?: string | null;
@@ -670,8 +701,8 @@ export type Database = {
           referral_code?: string | null;
           role?: Database["public"]["Enums"]["user_role"] | null;
           updated_at?: string | null;
-        };
-        Update: {
+        },
+        {
           avatar_url?: string | null;
           country_code?: string | null;
           created_at?: string | null;
@@ -688,56 +719,10 @@ export type Database = {
           referral_code?: string | null;
           role?: Database["public"]["Enums"]["user_role"] | null;
           updated_at?: string | null;
-        };
-        Relationships: [];
-      };
-      promocodes: {
-        Row: {
-          code: string;
-          created_at: string | null;
-          discount_type: string;
-          discount_value: number;
-          id: string;
-          is_active: boolean | null;
-          max_discount: number | null;
-          min_order_value: number | null;
-          times_used: number | null;
-          usage_limit: number | null;
-          valid_from: string | null;
-          valid_until: string | null;
-        };
-        Insert: {
-          code: string;
-          created_at?: string | null;
-          discount_type: string;
-          discount_value: number;
-          id?: string;
-          is_active?: boolean | null;
-          max_discount?: number | null;
-          min_order_value?: number | null;
-          times_used?: number | null;
-          usage_limit?: number | null;
-          valid_from?: string | null;
-          valid_until?: string | null;
-        };
-        Update: {
-          code?: string;
-          created_at?: string | null;
-          discount_type?: string;
-          discount_value?: number;
-          id?: string;
-          is_active?: boolean | null;
-          max_discount?: number | null;
-          min_order_value?: number | null;
-          times_used?: number | null;
-          usage_limit?: number | null;
-          valid_from?: string | null;
-          valid_until?: string | null;
-        };
-        Relationships: [];
-      };
-      push_subscriptions: {
-        Row: {
+        }
+      >;
+      push_subscriptions: TableDef<
+        {
           auth: string;
           created_at: string | null;
           endpoint: string;
@@ -747,8 +732,8 @@ export type Database = {
           updated_at: string | null;
           user_agent: string | null;
           user_id: string | null;
-        };
-        Insert: {
+        },
+        {
           auth: string;
           created_at?: string | null;
           endpoint: string;
@@ -758,8 +743,8 @@ export type Database = {
           updated_at?: string | null;
           user_agent?: string | null;
           user_id?: string | null;
-        };
-        Update: {
+        },
+        {
           auth?: string;
           created_at?: string | null;
           endpoint?: string;
@@ -769,8 +754,8 @@ export type Database = {
           updated_at?: string | null;
           user_agent?: string | null;
           user_id?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "push_subscriptions_user_id_fkey";
             columns: ["user_id"];
@@ -778,34 +763,34 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      referrals: {
-        Row: {
+        ]
+      >;
+      referrals: TableDef<
+        {
           created_at: string | null;
           id: string;
           referred_id: string;
           referrer_id: string;
           reward_points: number | null;
           status: string;
-        };
-        Insert: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           referred_id: string;
           referrer_id: string;
           reward_points?: number | null;
           status?: string;
-        };
-        Update: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           referred_id?: string;
           referrer_id?: string;
           reward_points?: number | null;
           status?: string;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "referrals_referred_id_fkey";
             columns: ["referred_id"];
@@ -820,10 +805,128 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      support_tickets: {
-        Row: {
+        ]
+      >;
+      return_requests: TableDef<
+        {
+          admin_notes: string | null;
+          created_at: string | null;
+          description: string | null;
+          id: string;
+          images: string[] | null;
+          items: Json | null;
+          order_id: string;
+          reason: string;
+          refund_amount: number | null;
+          status: string;
+          updated_at: string | null;
+          user_id: string;
+        },
+        {
+          admin_notes?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          images?: string[] | null;
+          items?: Json | null;
+          order_id: string;
+          reason: string;
+          refund_amount?: number | null;
+          status?: string;
+          updated_at?: string | null;
+          user_id: string;
+        },
+        {
+          admin_notes?: string | null;
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          images?: string[] | null;
+          items?: Json | null;
+          order_id?: string;
+          reason?: string;
+          refund_amount?: number | null;
+          status?: string;
+          updated_at?: string | null;
+          user_id?: string;
+        },
+        [
+          {
+            foreignKeyName: "return_requests_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "return_requests_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      reviews: TableDef<
+        {
+          comment: string | null;
+          created_at: string | null;
+          id: string;
+          images: string[] | null;
+          is_approved: boolean | null;
+          order_id: string | null;
+          product_id: string | null;
+          rating: number | null;
+          user_id: string | null;
+        },
+        {
+          comment?: string | null;
+          created_at?: string | null;
+          id?: string;
+          images?: string[] | null;
+          is_approved?: boolean | null;
+          order_id?: string | null;
+          product_id?: string | null;
+          rating?: number | null;
+          user_id?: string | null;
+        },
+        {
+          comment?: string | null;
+          created_at?: string | null;
+          id?: string;
+          images?: string[] | null;
+          is_approved?: boolean | null;
+          order_id?: string | null;
+          product_id?: string | null;
+          rating?: number | null;
+          user_id?: string | null;
+        },
+        [
+          {
+            foreignKeyName: "reviews_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      support_tickets: TableDef<
+        {
           category: string | null;
           created_at: string | null;
           draft_response: string | null;
@@ -839,8 +942,8 @@ export type Database = {
           summary: string | null;
           updated_at: string | null;
           user_id: string | null;
-        };
-        Insert: {
+        },
+        {
           category?: string | null;
           created_at?: string | null;
           draft_response?: string | null;
@@ -856,8 +959,8 @@ export type Database = {
           summary?: string | null;
           updated_at?: string | null;
           user_id?: string | null;
-        };
-        Update: {
+        },
+        {
           category?: string | null;
           created_at?: string | null;
           draft_response?: string | null;
@@ -873,8 +976,8 @@ export type Database = {
           summary?: string | null;
           updated_at?: string | null;
           user_id?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "support_tickets_order_id_fkey";
             columns: ["order_id"];
@@ -889,187 +992,28 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-        ];
-      };
-      return_requests: {
-        Row: {
-          admin_notes: string | null;
-          created_at: string | null;
-          description: string | null;
-          id: string;
-          images: string[] | null;
-          items: Json | null;
-          order_id: string;
-          reason: string;
-          refund_amount: number | null;
-          status: string;
-          updated_at: string | null;
-          user_id: string;
-        };
-        Insert: {
-          admin_notes?: string | null;
-          created_at?: string | null;
-          description?: string | null;
-          id?: string;
-          images?: string[] | null;
-          items?: Json | null;
-          order_id: string;
-          reason: string;
-          refund_amount?: number | null;
-          status?: string;
-          updated_at?: string | null;
-          user_id: string;
-        };
-        Update: {
-          admin_notes?: string | null;
-          created_at?: string | null;
-          description?: string | null;
-          id?: string;
-          images?: string[] | null;
-          items?: Json | null;
-          order_id?: string;
-          reason?: string;
-          refund_amount?: number | null;
-          status?: string;
-          updated_at?: string | null;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "return_requests_order_id_fkey";
-            columns: ["order_id"];
-            isOneToOne: false;
-            referencedRelation: "orders";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "return_requests_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      reviews: {
-        Row: {
-          comment: string | null;
-          created_at: string | null;
-          id: string;
-          images: string[] | null;
-          is_approved: boolean | null;
-          order_id: string | null;
-          product_id: string | null;
-          rating: number | null;
-          user_id: string | null;
-        };
-        Insert: {
-          comment?: string | null;
-          created_at?: string | null;
-          id?: string;
-          images?: string[] | null;
-          is_approved?: boolean | null;
-          order_id?: string | null;
-          product_id?: string | null;
-          rating?: number | null;
-          user_id?: string | null;
-        };
-        Update: {
-          comment?: string | null;
-          created_at?: string | null;
-          id?: string;
-          images?: string[] | null;
-          is_approved?: boolean | null;
-          order_id?: string | null;
-          product_id?: string | null;
-          rating?: number | null;
-          user_id?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "reviews_product_id_fkey";
-            columns: ["product_id"];
-            isOneToOne: false;
-            referencedRelation: "products";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "reviews_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      user_addresses: {
-        Row: {
-          area: string | null;
-          building: string | null;
-          city: string;
-          created_at: string | null;
-          id: string;
-          is_default: boolean | null;
-          label: string;
-          landmark: string | null;
-          pincode: string;
-          state: string;
-          street: string | null;
-          updated_at: string | null;
-          user_id: string;
-        };
-        Insert: {
-          area?: string | null;
-          building?: string | null;
-          city: string;
-          created_at?: string | null;
-          id?: string;
-          is_default?: boolean | null;
-          label: string;
-          landmark?: string | null;
-          pincode: string;
-          state: string;
-          street?: string | null;
-          updated_at?: string | null;
-          user_id: string;
-        };
-        Update: {
-          area?: string | null;
-          building?: string | null;
-          city?: string;
-          created_at?: string | null;
-          id?: string;
-          is_default?: boolean | null;
-          label?: string;
-          landmark?: string | null;
-          pincode?: string;
-          state?: string;
-          street?: string | null;
-          updated_at?: string | null;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
-      wishlist: {
-        Row: {
+        ]
+      >;
+      wishlist: TableDef<
+        {
           created_at: string | null;
           id: string;
           product_id: string | null;
           user_id: string | null;
-        };
-        Insert: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           product_id?: string | null;
           user_id?: string | null;
-        };
-        Update: {
+        },
+        {
           created_at?: string | null;
           id?: string;
           product_id?: string | null;
           user_id?: string | null;
-        };
-        Relationships: [
+        },
+        [
           {
             foreignKeyName: "wishlist_product_id_fkey";
             columns: ["product_id"];
@@ -1084,32 +1028,58 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-        ];
-      };
-    };
-    Views: {
-      [_ in never]: never;
+        ]
+      >;
     };
     Functions: {
+      auto_advance_orders: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
+      };
       create_order_with_items: {
         Args: {
           p_address_id: string;
-          p_applied_promocode?: string;
+          p_applied_promocode?: string | null;
           p_delivery_slot: string;
-          p_discount_amount?: number;
-          p_items?: Json;
-          p_payment_method: string;
-          p_substitution_preference?: string;
+          p_discount_amount?: number | null;
+          p_items?: Json | null;
+          p_payment_method: Database["public"]["Enums"]["payment_method"];
+          p_substitution_preference?: string | null;
           p_total: number;
         };
         Returns: Json;
       };
-      get_total_stock: { Args: never; Returns: number };
+      generate_referral_code: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
+      get_total_stock: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      has_role: {
+        Args: {
+          required_roles: string[];
+        };
+        Returns: boolean;
+      };
       increment_coupon_usage: {
-        Args: { p_coupon_id: string };
+        Args: {
+          p_coupon_id: string;
+        };
         Returns: undefined;
       };
-      is_admin: { Args: never; Returns: boolean };
+      increment_loyalty_points: {
+        Args: {
+          p_points: number;
+          p_user_id: string;
+        };
+        Returns: undefined;
+      };
+      is_admin: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       match_products: {
         Args: {
           match_count: number;
@@ -1117,7 +1087,7 @@ export type Database = {
           query_embedding: string;
         };
         Returns: {
-          description: string;
+          description: string | null;
           id: string;
           images: string[];
           name: string;
@@ -1125,8 +1095,12 @@ export type Database = {
           similarity: number;
         }[];
       };
-      show_limit: { Args: never; Returns: number };
-      show_trgm: { Args: { "": string }; Returns: string[] };
+      restore_order_inventory: {
+        Args: {
+          p_order_id: string;
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
       coupon_type: "flat" | "percentage";
@@ -1134,17 +1108,15 @@ export type Database = {
       notification_type: "order_update" | "promo" | "system";
       order_status:
         | "pending"
+        | "processing"
+        | "manual_review"
         | "confirmed"
         | "packed"
         | "out_for_delivery"
         | "delivered"
-        | "cancelled"
-        | "processing";
+        | "cancelled";
       payment_method: "card" | "upi" | "wallet" | "cod";
       user_role: "customer" | "admin" | "delivery" | "picker";
-    };
-    CompositeTypes: {
-      [_ in never]: never;
     };
   };
 };
@@ -1152,7 +1124,7 @@ export type Database = {
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
 
 type DefaultSchema = DatabaseWithoutInternals[Extract<
-  keyof Database,
+  keyof DatabaseWithoutInternals,
   "public"
 >];
 
@@ -1277,12 +1249,13 @@ export const Constants = {
       notification_type: ["order_update", "promo", "system"],
       order_status: [
         "pending",
+        "processing",
+        "manual_review",
         "confirmed",
         "packed",
         "out_for_delivery",
         "delivered",
         "cancelled",
-        "processing",
       ],
       payment_method: ["card", "upi", "wallet", "cod"],
       user_role: ["customer", "admin", "delivery", "picker"],

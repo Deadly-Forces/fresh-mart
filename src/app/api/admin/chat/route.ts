@@ -55,7 +55,7 @@ export async function POST(req: Request) {
                 description: "Fetch the most recent orders with status, total, and date.",
                 parameters: z.object({
                     limit: z.number().optional().describe("Number of orders to return, default 10"),
-                    status: z.string().optional().describe("Filter by order status: pending, confirmed, packed, shipping, delivered, cancelled"),
+                    status: z.string().optional().describe("Filter by order status: pending, processing, manual_review, confirmed, packed, out_for_delivery, delivered, cancelled"),
                 }),
                 execute: async ({ limit = 10, status }) => {
                     let query = supabase
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
                 description: "Update the status of a specific order by its ID.",
                 parameters: z.object({
                     orderId: z.string().describe("The full order UUID"),
-                    status: z.enum(["confirmed", "packed", "shipping", "delivered", "cancelled"]).describe("New status to set"),
+                    status: z.enum(["manual_review", "processing", "confirmed", "packed", "out_for_delivery", "delivered", "cancelled"]).describe("New status to set"),
                 }),
                 execute: async ({ orderId, status }) => {
                     const { error } = await supabase
@@ -138,12 +138,18 @@ export async function POST(req: Request) {
                 execute: async ({ limit = 10 }) => {
                     const { data } = await supabase
                         .from("order_items")
-                        .select("product_name, quantity")
+                        .select("product_snapshot, quantity")
                         .limit(500);
                     if (!data) return [];
                     const agg: Record<string, number> = {};
                     for (const item of data) {
-                        agg[item.product_name] = (agg[item.product_name] || 0) + item.quantity;
+                        const productName =
+                            typeof item.product_snapshot === "object" &&
+                            item.product_snapshot &&
+                            "name" in item.product_snapshot
+                                ? String(item.product_snapshot.name)
+                                : "Unknown Product";
+                        agg[productName] = (agg[productName] || 0) + item.quantity;
                     }
                     return Object.entries(agg)
                         .sort((a, b) => b[1] - a[1])
@@ -160,10 +166,20 @@ export async function POST(req: Request) {
                 execute: async ({ query }) => {
                     const { data } = await supabase
                         .from("products")
-                        .select("id, name, price, stock, unit, is_active, category")
+                        .select("id, name, price, stock, unit, is_active, categories(slug)")
                         .ilike("name", `%${query}%`)
                         .limit(10);
-                    return data || [];
+                    return (data || []).map((product) => ({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        stock: product.stock,
+                        unit: product.unit,
+                        is_active: product.is_active,
+                        category: Array.isArray(product.categories)
+                            ? product.categories[0]?.slug ?? null
+                            : product.categories?.slug ?? null,
+                    }));
                 },
             }),
 
@@ -194,7 +210,7 @@ export async function POST(req: Request) {
                 execute: async () => {
                     const { data } = await supabase
                         .from("coupons")
-                        .select("code, discount_type, discount_value, min_order, uses_count, max_uses, expires_at, is_active")
+                        .select("code, type, value, min_order, used_count, max_uses, expires_at, is_active")
                         .eq("is_active", true)
                         .order("created_at", { ascending: false })
                         .limit(20);
@@ -210,7 +226,7 @@ export async function POST(req: Request) {
                 }),
                 execute: async ({ limit = 10 }) => {
                     const { data } = await supabase
-                        .from("returns")
+                        .from("return_requests")
                         .select("id, reason, status, created_at, order_id")
                         .order("created_at", { ascending: false })
                         .limit(limit);

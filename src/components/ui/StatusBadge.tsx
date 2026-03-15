@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 type StatusType =
   | "pending"
   | "processing"
+  | "manual_review"
   | "confirmed"
   | "packed"
   | "out_for_delivery"
@@ -24,6 +25,11 @@ const statusConfig: Record<
     label: "Processing",
     bg: "bg-warning/10",
     text: "text-warning",
+  },
+  manual_review: {
+    label: "Manual Review",
+    bg: "bg-amber-500/10",
+    text: "text-amber-600",
   },
   confirmed: {
     label: "Confirmed",
